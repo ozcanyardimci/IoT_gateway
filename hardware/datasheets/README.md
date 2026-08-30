@@ -34,6 +34,14 @@ as each subsystem is worked through, not filled in all at once.
 | Littelfuse SMBJ36A | Input surge TVS diode | [Datasheet](https://www.littelfuse.com/assetdocs/tvs-diodes-smbj-series-datasheet?assetguid=ba555e99-a12d-4f72-a0b6-86b06c67171e) |
 | Würth WCAP-CSSA 8853522140011 | Input EMI/safety Y-cap (replaces an earlier, unresolvable teardown marking — see power.md) | [Datasheet](https://www.we-online.com/components/products/datasheet/8853522140011.pdf) |
 
+## Connectors & wiring standards (step 6)
+
+| Item | Role | Source |
+|---|---|---|
+| Phoenix Contact MC 1,5/2-ST-3,5 | Power input terminal block | [Datasheet](https://www.mouser.com/datasheet/3/507/5/phoenix_contact_1840366_en.pdf) |
+| NFPA 70 (NEC) Table 310.15(B)(16) | Wire ampacity reference | Standard reference, not freely hosted — consult a current NEC copy |
+| Engineering ToolBox AWG current-rating table | Wire ampacity cross-check (enclosure, non-bundled) | https://www.engineeringtoolbox.com/wire-gauges-d_419.html |
+
 ## Application notes (distinct from plain datasheets — layout/decoupling guidance)
 
 | Document | Covers | Source |
