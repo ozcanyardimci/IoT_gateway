@@ -122,3 +122,44 @@ Materiality check on the three flagged gaps above:
 under worst-case conditions (100M link, continuous transmit) with a bench current probe;
 confirm it falls within the 200mA budgeted margin. This is the standard way an unpublished
 datasheet max gets closed out — margin at design time, measurement at hardware bring-up.
+
+---
+
+## Step 3 results: grounding & isolation architecture (2026-08-30)
+
+### Isolation boundary map (from teardown + datasheet facts, not assumed)
+| Interface | Galvanically isolated? | How |
+|---|---|---|
+| Digital inputs (8x) | **Yes** | LTV-247 optocouplers (3750 Vrms rated) |
+| RS485 | **Yes** | Mornsun TD321S485H-A isolated module |
+| Ethernet | **Yes** | Magjack's integrated transformer (Würth 7499010441) |
+| Relay outputs (4x) | **Yes, on the switched-load side only** | Mechanical relay contacts (ALDP105) — the coil/control side is NOT isolated from logic ground |
+| Power input | **No** | P-MOSFET reverse-polarity protection is not galvanic isolation — field power return is directly connected to system ground |
+| Analog input/output | **No** (as built on the reference board) | LDO + op-amp stage shares ground with logic; ESP32-S3's own ADC does the conversion — no isolation barrier present |
+| RS232 | **No** | MAX3232E has no isolation |
+| LTE / WiFi | N/A | No field-wiring connection, no isolation barrier needed |
+
+### Ground domains defined
+- **GND_LOGIC** — ESP32-S3, W5500, PCA9535PW, MAX3232E, relay coil-driver control side (transistor + flyback diode reference), regulator returns, and the analog LDO/op-amp local ground (tied to GND_LOGIC at one point — see open item below).
+- **GND_FIELD_DI** — isolated field-side return for the 8 digital inputs, common across all 8 channels, isolated from GND_LOGIC by the optocouplers.
+- **GND_RS485_ISO** — isolated bus-side ground, provided internally by the Mornsun module. Never joined to GND_LOGIC.
+- **Chassis/frame ground** — bonded to the metal DIN-rail enclosure. Tied to GND_LOGIC (via the field power return) at a **single point** near the power entry, so surge/TVS protection has a low-impedance path to dump transients into the chassis without creating a ground loop elsewhere on the board.
+
+### Board-to-board header implication
+Only **GND_LOGIC** crosses the header between LTEBOARD and IOBOARD — the MCU only ever
+touches the non-isolated side of every interface (optocoupler output transistor, RS485
+module's isolated-UART-facing side, relay coil driver). GND_FIELD_DI and GND_RS485_ISO stay
+local to IOBOARD and never cross the header. This also means the header needs enough GND_LOGIC
+pins for return-current capacity on the digital signals, not just one.
+
+### Open decision — analog input isolation (need your call)
+The reference board does **not** isolate the analog input (0-10V / 4-20mA), and we're
+otherwise following its architecture. But an unisolated 4-20mA loop input is a common real
+source of ground-loop and noise problems in actual industrial deployments — a professional
+building this today, for an industrial product rather than a like-for-like clone, would
+often add isolation here (e.g. an isolated ADC front-end or isolation amplifier). Two
+options: (a) replicate as-is (non-isolated, matches the reference, simpler/cheaper), or
+(b) add isolation on the analog input as a deliberate improvement over the reference design.
+Your call — this affects the analog I/O subsystem's design later, but the ground architecture
+above already accounts for either choice (GND_LOGIC assumption holds for (a); (b) would add
+a fourth isolated domain, GND_ANALOG_ISO).
