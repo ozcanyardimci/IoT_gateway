@@ -105,3 +105,20 @@ architecture) needs to account for the LTE rail's return path separately as well
   placeholder, not a verified AME8808 number. Low risk given how small the value is either way,
   but should be corrected if the exact datasheet turns up later.
 - W5500 has no manufacturer-published max current; the 200 mA figure is our own margin choice.
+
+### Resolution of unverified items (2026-08-30)
+Materiality check on the three flagged gaps above:
+- **AME8808 exact datasheet** — not important for power budgeting. Quiescent current is
+  negligible regardless of exact variant; only matters later during analog-stage circuit
+  design (dropout voltage, output tolerance), not for rail sizing.
+- **Quectel idle-current table** — not important. Rail sizing is driven by the verified
+  2-3A transient spec, not the idle figure.
+- **W5500 max current (no manufacturer figure published)** — real gap, handled the standard
+  industrial way: conservative derating now (132mA typical → budgeted 200mA, already folded
+  into the 3.3V-LOGIC rail's ~1A target with its own 20-30% margin on top), closed empirically
+  later rather than chased on paper now.
+
+**Commissioning test item (tracked for Rev-A bring-up):** measure actual W5500 current draw
+under worst-case conditions (100M link, continuous transmit) with a bench current probe;
+confirm it falls within the 200mA budgeted margin. This is the standard way an unpublished
+datasheet max gets closed out — margin at design time, measurement at hardware bring-up.
