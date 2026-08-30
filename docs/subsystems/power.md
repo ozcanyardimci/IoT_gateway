@@ -221,3 +221,58 @@ RF PA current burst specifically. Recommend sizing extra output bulk capacitance
 3.3V-LTE rail (near the Quectel module, matching what the real board's teardown showed —
 bulk caps placed right at the modem) rather than relying on the regulator's transient
 response alone. This is a schematic/BOM addition at step 7, not a different part choice.
+
+---
+
+## Step 5 results: protection design & sequencing (2026-08-30)
+
+Real, currently-orderable parts. Two of our earlier teardown-based part guesses turned out
+to be wrong on closer verification — corrected here rather than carried forward silently.
+
+### Correction to earlier teardown identification
+- **"PJ307U" was assumed to be Toshiba SSM3J307T.** On verification, SSM3J307T is a real
+  part, but it's rated **Vds = -20V only** — no safety margin over our 30V max input, and it
+  has no current DigiKey/Mouser stock. Not usable here regardless of what the real board
+  actually has. Using **Toshiba SSM3J351R,LF** instead: -60V rating (2x margin over 30V),
+  low Rds(on), same SOT-23-family footprint, in stock at DigiKey.
+- **"WE-S 542501" does not resolve to a real Würth part number** in Würth's own catalog,
+  DigiKey, Mouser, or Octopart — likely a misread board marking during the photo teardown,
+  not an actual orderable part. Using **Würth WCAP-CSSA 8853522140011** (4.7nF, X1/Y2 safety
+  rated, 250VAC) instead — a real, in-stock, correctly-rated EMI suppression cap for this use.
+
+### Sequencing (fixed order from the input connector)
+1. **Terminal block** (input connector, sized per step 6 wiring selection — not yet done)
+2. **PTC resettable fuse — Littelfuse RXEF135**: 1.35A hold / 2.70A trip / 72V max.
+3. **Reverse-polarity protection — Toshiba SSM3J351R,LF** (P-channel MOSFET, "ideal diode"
+   configuration): -60V rating, low Rds(on).
+4. **Surge/EMI — Littelfuse SMBJ36A TVS diode** (36V standoff, 58.1V clamp, 600W peak pulse
+   10/1000µs) + **Würth WCAP-CSSA 8853522140011 Y-cap** (4.7nF, X1/Y2, 250VAC).
+5. Into the four DC-DC modules from step 4.
+
+Fuse-then-MOSFET-then-TVS (not TVS first) is a deliberate choice: if the TVS eventually
+fails from cumulative surge energy, TVS diodes typically fail **shorted** — having the fuse
+upstream means that failure blows the fuse and disconnects the fault, rather than leaving a
+permanent short with no protection response. The trade-off is slightly slower surge-clamp
+response than a TVS placed right at the connector — acceptable here given this isn't a
+formal-certification design.
+
+### Fuse sizing rationale (shown, not just asserted)
+Fuses are thermal/slow-acting — sized against realistic **sustained** current, not
+millisecond-scale bursts (those are handled by the DC-DC modules' own current limiting and
+local bulk capacitance, not the input fuse). Estimated sustained output power, using typical
+(not instantaneous-peak) figures:
+- 3.3V-LOGIC: ~400mA × 3.3V ≈ 1.3W
+- 3.3V-LTE: ~500mA × 3.8V ≈ 1.9W (assumption — Quectel's real sustained active-session
+  current wasn't fully verified earlier; flagged, not invented as fact)
+- 5V: 160mA × 5V ≈ 0.8W (all 4 relays energized)
+- 3.3V-ANALOG-ISO: ~0.1W (negligible)
+
+Total ≈ 4.1W output. At ~85% typical buck efficiency, input power ≈ 4.8W. At minimum input
+voltage (10V, worst case for max input current): **I_in ≈ 0.48A**. RXEF135's 1.35A hold
+current gives ~2.8x margin above this estimate — enough to avoid nuisance tripping from our
+own estimation uncertainty, while still tripping meaningfully below a real fault condition.
+
+### Open item carried to commissioning (same pattern as the W5500 item)
+The 3.3V-LTE sustained-current assumption (500mA) above is an estimate, not a verified
+figure. **Commissioning test item**: measure actual sustained input current under a real
+LTE data session at Rev-A bring-up; confirm the fuse choice still holds with adequate margin.
