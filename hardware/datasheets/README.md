@@ -22,6 +22,18 @@ as each subsystem is worked through, not filled in all at once.
 | AME8805/8813 | Same-family reference for AME8808 (analog LDO) — **AME8808's own datasheet not found in extractable form, treat as unverified substitute, not confirmed** | [AME official datasheet](https://www.ame.com.tw/datasheet/11-AME8805%208813_061313_R.13.pdf) |
 | LM2904 | Analog stage op-amp | [Diodes Inc. LM2902/LM2904 datasheet](https://www.diodes.com/assets/Datasheets/LM2902-04.pdf) |
 
+## Power modules & protection components (selected 2026-08-30, step 4-5)
+
+| Part | Role | Datasheet / source |
+|---|---|---|
+| Würth MagI3C-VDLM 171013801 | 3.3V-LOGIC and 5V rail buck module (used twice, retapped) | [Datasheet](https://www.we-online.com/en/components/products/datasheet/171013801.pdf) |
+| Würth MagI3C-VDLM 171033801 | 3.3V-LTE rail buck module (3A) | [Datasheet](https://www.we-online.com/components/products/datasheet/171033801.pdf) |
+| Recom R1SX-3305 (alt: Mornsun B3305S-1WR3) | Isolated supply for the analog input's field side | [Recom datasheet](https://recom-power.com/pdf/Econoline/R1SX.pdf) · [Mornsun datasheet](https://www.mornsun-power.com/public/uploads/pdf/B_S-1WR3.pdf) |
+| Littelfuse RXEF135 | Input PTC resettable fuse | [Datasheet](https://www.littelfuse.com/assetdocs/resettable-ptc-rxef-datasheet?assetguid=e9a7b6b3-79ce-478c-a39a-0a70ee48ccec) |
+| Toshiba SSM3J351R,LF | Reverse-polarity P-MOSFET (replaces an earlier, incorrect teardown guess — see power.md) | [Product page](https://toshiba.semicon-storage.com/us/semiconductor/product/mosfets/detail.SSM3J351R.html) |
+| Littelfuse SMBJ36A | Input surge TVS diode | [Datasheet](https://www.littelfuse.com/assetdocs/tvs-diodes-smbj-series-datasheet?assetguid=ba555e99-a12d-4f72-a0b6-86b06c67171e) |
+| Würth WCAP-CSSA 8853522140011 | Input EMI/safety Y-cap (replaces an earlier, unresolvable teardown marking — see power.md) | [Datasheet](https://www.we-online.com/components/products/datasheet/8853522140011.pdf) |
+
 ## Application notes (distinct from plain datasheets — layout/decoupling guidance)
 
 | Document | Covers | Source |
