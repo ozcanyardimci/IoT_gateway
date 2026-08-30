@@ -7,6 +7,13 @@ Status: **not started** (roadmap step 4a). Simulation only, using pre-made DC-DC
 Reverse-polarity protection, overcurrent/surge protection, and 3.3V/5V regulation from a
 10-30VDC field input, feeding both boards over the board-to-board header.
 
+**Operating temperature range (added late, 2026-08-30 — this was missing from the original
+step 1 requirements and should have been defined from the start):** assumed **-20C to +60C
+ambient**, a common spec for indoor DIN-rail industrial equipment, used to check all step 4-6
+component choices below. This was never explicitly confirmed as a real requirement — it's an
+assumption, not a decision Ozcan made. If the intended deployment is different (outdoor,
+uncontrolled cabinet, etc.), this range and every derating check below needs revisiting.
+
 ## Decisions
 - **Regulation approach: pre-made DC-DC modules**, not a custom-designed buck converter.
   Faster and lower-risk; trades off some of the "design your own regulator" learning for
@@ -244,7 +251,14 @@ to be wrong on closer verification — corrected here rather than carried forwar
 1. **Terminal block** (input connector, sized per step 6 wiring selection — not yet done)
 2. **PTC resettable fuse — Littelfuse RXEF135**: 1.35A hold / 2.70A trip / 72V max.
 3. **Reverse-polarity protection — Toshiba SSM3J351R,LF** (P-channel MOSFET, "ideal diode"
-   configuration): -60V rating, low Rds(on).
+   configuration): -60V rating, low Rds(on). **Correction (2026-08-30, final recheck): this
+   part's own datasheet VGSS rating is only -20V/+10V.** In the standard ideal-diode
+   topology (source on the input rail, gate pulled toward the negative rail through a
+   resistor), Vgs magnitude approaches the full input voltage — up to 30V here — which
+   exceeds the part's rating and risks gate damage in normal operation, not just a fault
+   condition. **Fix, approved 2026-08-30: add a ~15-18V Zener diode across gate-source** to
+   clamp Vgs within the safe -20V/+10V range regardless of input voltage. Standard,
+   well-known fix for this exact problem — added to the circuit now, not deferred.
 4. **Surge/EMI — Littelfuse SMBJ36A TVS diode** (36V standoff, 58.1V clamp, 600W peak pulse
    10/1000µs) + **Würth WCAP-CSSA 8853522140011 Y-cap** (4.7nF, X1/Y2, 250VAC).
 5. Into the four DC-DC modules from step 4.
@@ -269,8 +283,15 @@ local bulk capacitance, not the input fuse). Estimated sustained output power, u
 
 Total ≈ 4.1W output. At ~85% typical buck efficiency, input power ≈ 4.8W. At minimum input
 voltage (10V, worst case for max input current): **I_in ≈ 0.48A**. RXEF135's 1.35A hold
-current gives ~2.8x margin above this estimate — enough to avoid nuisance tripping from our
-own estimation uncertainty, while still tripping meaningfully below a real fault condition.
+current (at 20C) gives ~2.8x margin above this estimate.
+
+**Correction (2026-08-30, final recheck): PTC fuses derate with temperature, and this
+matters at our assumed 60C ambient.** RXEF135's hold current drops from 1.35A at 20C to
+**0.85A at 60C** per its datasheet derating curve. Re-checking margin at the worst-case
+ambient, not room temperature: 0.85A / 0.48A ≈ **1.77x margin** — still adequate (comfortably
+above the commonly-used 1.5x minimum), but notably tighter than the room-temperature number
+implied. Using the 60C-derated figure going forward, not the 20C one, since that's the
+realistic worst case for this design's assumed operating range.
 
 ### Open item carried to commissioning (same pattern as the W5500 item)
 The 3.3V-LTE sustained-current assumption (500mA) above is an estimate, not a verified
@@ -303,6 +324,22 @@ Exact secondary TVS and ferrite bead part numbers are **not finalized yet** — 
 current apportionment between the two stages depends on impedances and timing that should be
 verified in ngspice (step 8's surge simulation), not calculated by hand with false
 confidence. Tracked as an open item for step 8, not a part-number gap to fill blindly now.
+
+### New item (2026-08-30, final recheck): inrush current at power-up — flagged, not fixed yet
+Never previously addressed: when the device is first connected to a live 10-30V supply, all
+four DC-DC modules' input capacitance charges simultaneously, causing a current spike whose
+size depends on the source's own impedance/current limiting — not something to guess by hand.
+**Approved fix, deferred to step 8**: simulate this in ngspice; if the spike is large enough
+to risk nuisance-tripping the fuse or stressing the MOSFET, add an NTC thermistor in series
+at the input as the standard fix. Same pattern as the TVS/ferrite item above — flagged now,
+resolved with simulation data, not assumed either way.
+
+### Confirmed (2026-08-30, final recheck): MagI3C modules have built-in overcurrent/short-circuit protection
+Checked directly against both 171013801 and 171033801 datasheets — both explicitly state
+cycle-by-cycle current limiting via peak-current-mode control, with a dedicated "Overcurrent
+Protection (OCP) and Short Circuit Protection (SCP)" section. No external current-limiting
+circuitry is needed on the module outputs for basic overcurrent/short-circuit protection —
+this removes what was an open question, not a new requirement.
 
 ---
 
@@ -348,3 +385,36 @@ The header carrying power (3.3V-LOGIC, 3.3V-LTE, 3.3V-ANALOG-ISO, 5V, and their 
 between LTEBOARD and IOBOARD is part of the general board-to-board interconnect, addressed
 as its own milestone in roadmap step 7 (~20+ signal lines total, not just power) — not
 duplicated here. This step covers the field power INPUT connector only.
+
+---
+
+## Final recheck (2026-08-30): steps 1-6, before schematic capture
+
+Full re-audit requested and completed. Two real issues found and fixed (Zener clamp, and
+fuse temperature-derating correction above); one item flagged for step 8 simulation (inrush
+current); one open question resolved in our favor (MagI3C OCP/SCP); one new foundational gap
+found and flagged (operating temperature range was never actually decided as a requirement —
+see the Scope section at the top).
+
+### Operating temperature check (-20C to +60C ambient, assumed — see caveat above)
+| Part | Datasheet range | Fits? |
+|---|---|---|
+| MagI3C 171013801 / 171033801 | -40C to +105C ambient | Yes, wide margin |
+| Littelfuse RXEF135 (fuse) | -40C to +85C | Yes, but hold-current derating matters — see fuse sizing correction above |
+| Littelfuse SMBJ36A (TVS) | -65C to +150C junction | Yes, wide margin |
+| Toshiba SSM3J351R,LF (MOSFET) | -55C to +150C | Yes, wide margin — **sourcing caveat**: confirmed via a third-party datasheet mirror, not toshiba.com directly (that URL 404'd); worth a direct cross-check before final BOM lock |
+| Würth WCAP-CSSA Y-cap | -55C to +125C | Yes, wide margin |
+| Recom R1SX-3305 | -40C to +100C | Yes, wide margin |
+
+### Genuinely still open after this recheck
+1. **Operating temperature range itself needs a real decision from Ozcan**, not an assumed
+   default — everything above was checked against -20C/+60C because that's a reasonable
+   guess, not a confirmed requirement.
+2. Inrush current — flagged for step 8 simulation, not yet resolved.
+3. Secondary TVS + ferrite bead part numbers for the coordinated surge clamp — pending step 8.
+4. Feedback divider resistor values and recommended external caps for the MagI3C modules —
+   pending step 7 (schematic capture), where the vendor's application circuit gets pulled.
+5. Toshiba SSM3J351R,LF datasheet sourced from a mirror, not toshiba.com — low risk, worth a
+   quick direct cross-check before BOM lock.
+
+No further architectural gaps found on this pass. Steps 1-6 are otherwise considered solid.
