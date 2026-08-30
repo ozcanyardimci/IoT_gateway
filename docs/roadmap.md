@@ -25,9 +25,25 @@ Full detail in `architecture.md` under "Fixed MCU constraints."
 Mermaid diagram + bus assignment table + board-to-board header signal count, in
 `architecture.md`.
 
-## 4. Isolated subsystem prototyping — NOT STARTED
-Simulation only (KiCad ngspice for power/analog, Wokwi for firmware/driver logic). No
-breadboard, no real hardware at this stage.
+## 4. Isolated subsystem prototyping — IN PROGRESS
+Simulation only (KiCad ngspice for power/analog). Wokwi is not being used for this project
+going forward — most real subsystems here (LTE, Ethernet, RS485, RS232) can't be simulated
+in it anyway; that firmware gets written against datasheets and validated at Rev-A instead.
+
+Each subsystem gets its own build plan before work starts on it, kept under
+`docs/subsystems/`. Order:
+
+1. Power — `docs/subsystems/power.md` (in progress)
+2. Core compute (ESP32-S3 bring-up)
+3. Digital inputs (8x, opto-isolated)
+4. Relay outputs (4x)
+5. Status indication (I2C GPIO expander + LEDs)
+6. Analog I/O (input + output)
+7. RS485 (isolated)
+8. RS232
+9. Ethernet (W5500)
+10. WiFi
+11. LTE (Quectel EG915U-EU) — most complex, done last
 
 ## 5. Per-subsystem acceptance criteria — NOT STARTED
 Define what "this subsystem works" means for each block before building it.
