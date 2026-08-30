@@ -276,3 +276,30 @@ own estimation uncertainty, while still tripping meaningfully below a real fault
 The 3.3V-LTE sustained-current assumption (500mA) above is an estimate, not a verified
 figure. **Commissioning test item**: measure actual sustained input current under a real
 LTE data session at Rev-A bring-up; confirm the fuse choice still holds with adequate margin.
+
+### Correction (2026-08-30): single-TVS surge stage was not adequate — fixed
+On re-check, the SMBJ36A's own clamping voltage (58.1V, at its rated surge current) exceeds
+the MagI3C modules' absolute maximum input rating of **42V**. A surge event could expose the
+modules to a voltage above what they're rated to survive, even with the TVS present.
+
+This isn't a simple part swap — verified that every silicon TVS diode in the 33-36V standoff
+class clamps at roughly **1.6x its standoff voltage**, regardless of package or power rating
+(checked Littelfuse's 600W/SMBJ, 1500W/SMCJ, and 5000W/5KP families — all three hit the same
+clamp voltage for a given standoff; a bigger die doesn't lower the ratio enough at this
+voltage class). So a bigger or different single TVS does not fix this.
+
+**Fix: coordinated two-stage clamp** (standard practice for exactly this mismatch, same
+principle as cascaded surge-protective-device coordination):
+1. **SMBJ36A stays** as the primary energy-absorbing diverter, right after the connector
+   (unchanged from above).
+2. **Add a small ferrite bead** between that node and each DC-DC module's input — negligible
+   DC resistance (no meaningful voltage drop on the sustained 10-30V line), but enough
+   high-frequency impedance to slow the surge edge and limit the current reaching stage 3.
+3. **A second, smaller-Ipp TVS at each module's input pins** — seeing much less current than
+   the primary diode already absorbed, it clamps much closer to its own breakdown voltage
+   (not its full-current rating), bringing the actual module input excursion down under 42V.
+
+Exact secondary TVS and ferrite bead part numbers are **not finalized yet** — the real
+current apportionment between the two stages depends on impedances and timing that should be
+verified in ngspice (step 8's surge simulation), not calculated by hand with false
+confidence. Tracked as an open item for step 8, not a part-number gap to fill blindly now.
