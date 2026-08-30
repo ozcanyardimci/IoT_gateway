@@ -56,3 +56,52 @@ Reverse-polarity protection, overcurrent/surge protection, and 3.3V/5V regulatio
   standard practice for a field-powered device (see step 5).
 - Relay coil-driver stage between MCU GPIO and relay coil is still unresolved — tracked
   separately under the relay-outputs subsystem, not this one.
+
+---
+
+## Step 1-2 results: requirements & load budget (2026-08-30)
+
+Verified against manufacturer datasheets (not resold/repeated figures). Sources noted per
+part; a few gaps are flagged explicitly rather than guessed.
+
+| Part | Rail | Supply range | Typical current | Peak/max current | Source confidence |
+|---|---|---|---|---|---|
+| ESP32-S3-WROOM-1U | 3.3V | 3.0-3.6V | ~95-100 mA (WiFi RX) | **355 mA** (WiFi TX burst, 802.11b) | High — Espressif official datasheet, cross-verified across 2 copies |
+| Quectel EG915U-EU | needs its own rail (see below) | VBAT 3.3-4.3V, never below 3.3V | ~30 mA idle (approximate, table extraction was incomplete) | Supply must be able to **source up to 2A (LTE-only) / 3A (GSM+LTE)** during TX burst | High for the voltage range and 2A/3A supply-capability spec (directly quoted from Quectel hardware design guide); idle/typical mode currents are approximate only |
+| WIZnet W5500 | 3.3V | 3.3V (no min/max range published) | 132 mA | **No max current published by WIZnet** — budgeting at 1.3-1.5x typical (~200 mA) since no manufacturer worst-case figure exists | Medium — typical figure is solid, margin above it is our own choice, not a datasheet number |
+| NXP PCA9535PW | 3.3V | 2.3-5.5V | ~0.03-0.1 mA | 0.2 mA max | High — NXP datasheet |
+| MAX3232E | 3.3V | 3.0-5.5V | 0.3 mA | 1 mA max | High — Analog Devices/Maxim datasheet |
+| Mornsun TD321S485H-A (RS485) | 3.3V | 3.15-3.45V | 37 mA | 90 mA max | High — exact part match, Mornsun datasheet |
+| AME8808 LDO (analog stage) | 3.3V | not directly verified | ~30 µA (placeholder, from same-family sibling AME8805/8813 — AME8808's own datasheet wasn't found in an extractable form) | negligible either way | Low — flagged, needs the real AME8808 sheet before this is treated as fact, though the current draw is small enough not to matter for rail sizing |
+| LM2904 op-amp (analog stage) | 3.3V | 3-26V (single supply) | 0.35 mA/amp | 0.6-1.0 mA/amp max | High — Diodes Inc. datasheet |
+| Panasonic ALDP105 relay coil | 5V | 5V nominal | 40 mA each | 40 mA each (resistive coil, no inrush beyond nominal) | High — Panasonic's own page; one reseller listing disagreed (145Ω vs Panasonic's 125Ω) and was discarded in favor of the manufacturer's own figure |
+| LTV-247 optocoupler (x2, 8 channels) | **not on our internal rails** | — | — | — | The LED side is driven by the external field digital-input signal through its own series resistor — it draws from the field wiring, not our 3.3V/5V supply. Only the phototransistor output side touches our logic rail, as a passive pull-up — negligible current. |
+
+### Rail architecture conclusion (feeds into step 3 and step 4)
+The Quectel modem's 2-3A transient requirement changes the plan from a simple "one 3.3V rail"
+design. Sharing a single 3.3V regulator between the modem and the rest of the logic (ESP32-S3,
+W5500, PCA9535PW, MAX3232E, RS485 module) risks that regulator's output sagging during every
+LTE TX burst, right when the other chips need clean power most. **Decision: three effective
+rails**, not two:
+
+- **5V** — relay coils only. Light load (~160 mA worst case, all 4 relays energized).
+- **3.3V-LOGIC** — ESP32-S3, W5500, PCA9535PW, MAX3232E, RS485 module, analog LDO/op-amp
+  stage. Worst-case simultaneous peak ≈ 355 + 200 + 0.2 + 1 + 90 + ~1 ≈ **~650 mA**; with
+  20-30% margin, size this rail's module for **≥ 850 mA-1A**.
+- **3.3V-LTE** — dedicated regulator output for the Quectel modem only, sized for **2-3A
+  transient capability** with large local bulk capacitance close to the module (matches what
+  we saw on the real board's teardown — bulk caps placed right at the modem). Same nominal
+  voltage as 3.3V-LOGIC, but electrically a separate output so the LTE transient doesn't
+  couple onto the other chips through shared regulator output impedance.
+
+This means step 4 (module selection) is now sizing 3 outputs, not 2, and step 3 (grounding
+architecture) needs to account for the LTE rail's return path separately as well.
+
+### Open items carried forward
+- Quectel EG915U-EU per-mode current table (idle/talk/data) wasn't fully extracted from the
+  hardware design guide — the 2A/3A supply-capability spec is solid and is what's used for
+  sizing, but the idle-current figure above is approximate.
+- AME8808's own datasheet wasn't found in extractable form; current draw used is a same-family
+  placeholder, not a verified AME8808 number. Low risk given how small the value is either way,
+  but should be corrected if the exact datasheet turns up later.
+- W5500 has no manufacturer-published max current; the 200 mA figure is our own margin choice.
