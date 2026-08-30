@@ -184,3 +184,40 @@ revisit when subsystem #6 is actually designed.
 - **3.3V-ANALOG-ISO (new)** — small isolated supply for the analog input's field side.
   Load is light (a single isolation amp/ADC, low tens of mA) but must be electrically
   isolated from every other rail, not just separately regulated.
+
+---
+
+## Step 4 results: module selection (2026-08-30)
+
+Real, currently-in-production parts confirmed via manufacturer datasheets — not invented
+part numbers. Margin check against the step 1-2 load budget included.
+
+| Rail | Part | Input range | Output current rating | Margin vs. budget | Notes |
+|---|---|---|---|---|---|
+| 3.3V-LOGIC | **Würth MagI3C-VDLM 171013801** (1A) | 3.5-38V (abs max 42V) — covers 10-30V with wide margin both ends | 1A continuous | ~650mA worst-case peak → ~54% headroom | Adjustable output (resistor divider), set to 3.3V |
+| 3.3V-LTE | **Würth MagI3C-VDLM 171033801** (3A) | 3.5-38V (abs max 42V) | 3A continuous | Quectel's 2-3A transient sits *inside* this part's continuous rating, not just a peak spec | This is the same part number identified on the reference board during teardown — confirms Roltek sized this correctly for the same reason we are |
+| 5V (relays) | **Würth MagI3C-VDLM 171013801** (1A) — same SKU as Logic rail, separate physical module, divider re-tapped to 5V | 3.5-38V | 1A | ~160mA worst case → ~84% headroom | Runs in efficient PFM mode at light load per datasheet, no minimum-load issue |
+| 3.3V-ANALOG-ISO | **Recom R1SX-3305** (or Mornsun B3305S-1WR3 as an alternate second-source) | 3.3V regulated input (fed from the 3.3V-LOGIC rail, not raw field voltage) | 200mA / 1W | Load is a single isolation amp/ADC, tens of mA — heavy margin | 1kVDC isolation standard, "/H" suffix option available for 3kVDC if the analog subsystem design (step 6) calls for it. **Output voltage (5V here) is provisional** — exact tap depends on which isolation amplifier/ADC gets chosen in the analog subsystem; may need the 3.3V-out sibling instead |
+
+**Result: 2 unique SKUs cover 3 of the 4 rails** (171013801 used twice, in physically separate
+module instances — once for Logic, once for 5V), plus 171033801 for LTE, plus the isolated
+module for the analog rail. Efficient BOM, not over-fragmented.
+
+### SPICE/simulation availability (relevant to step 8's known limitation)
+Würth doesn't publish a strict downloadable SPICE model for MagI3C parts — they provide
+**REDEXPERT**, a proprietary browser-based simulator (efficiency, ripple, thermal, transient),
+confirmed live for both 171013801 and 171033801. This is usable for step 8's ngspice work only
+indirectly — REDEXPERT itself isn't ngspice, so our simulation there will still use an
+idealized behavioral model for the module (as already noted in step 6 of this plan), with
+REDEXPERT used as a separate cross-check outside of ngspice.
+
+### Thermal derating
+Both MagI3C parts publish Iout-vs-ambient-temperature derating curves at Vin=12V and 24V —
+directly usable for the enclosure ambient check flagged back in the original roadmap.
+
+### Action item carried into step 5/7 (not a part-number issue)
+171033801's own transient-response graph is labeled for a 10%→100% load step, not a sharp
+RF PA current burst specifically. Recommend sizing extra output bulk capacitance on the
+3.3V-LTE rail (near the Quectel module, matching what the real board's teardown showed —
+bulk caps placed right at the modem) rather than relying on the regulator's transient
+response alone. This is a schematic/BOM addition at step 7, not a different part choice.
