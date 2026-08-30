@@ -22,6 +22,14 @@ as each subsystem is worked through, not filled in all at once.
 | AME8805/8813 | Same-family reference for AME8808 (analog LDO) — **AME8808's own datasheet not found in extractable form, treat as unverified substitute, not confirmed** | [AME official datasheet](https://www.ame.com.tw/datasheet/11-AME8805%208813_061313_R.13.pdf) |
 | LM2904 | Analog stage op-amp | [Diodes Inc. LM2902/LM2904 datasheet](https://www.diodes.com/assets/Datasheets/LM2902-04.pdf) |
 
+## Application notes (distinct from plain datasheets — layout/decoupling guidance)
+
+| Document | Covers | Source |
+|---|---|---|
+| ESP32-S3 Hardware Design Guidelines | Power-supply decoupling: 3.3V/>=500mA supply, 0.1uF caps near digital power pins, 0.1uF+1uF near VDD_SPI, 10uF on VDD3P3 (analog), >=10uF + ESD diode at main power entrance | [Espressif docs](https://docs.espressif.com/projects/esp-hardware-design-guidelines/en/latest/esp32s3/index.html) ([PDF](https://docs.espressif.com/projects/esp-hardware-design-guidelines/en/latest/esp32s3/esp-hardware-design-guidelines-en-master-esp32s3.pdf)) |
+| WIZnet hardware design guide | Generic decoupling (0.1uF bypass, 10uF/4.7uF bulk, 3.3V regulator >=300mA) | [WIZnet Design Guide](https://docs.wiznet.io/Design-Guide/hardware_design_guide) |
+| WIZnet W5500 reference schematic | Transformer/RJ45 config, isolation capacitors — W5500-specific detail lives in the linked schematic PDFs, not a single unified app note | [WIZnet W5500 ref-schematic](https://docs.wiznet.io/Product/Chip/Ethernet/W5500/ref-schematic) |
+
 ## Reference open-hardware projects (not copied — used as cross-checks / patterns only)
 
 | Project | Use |
@@ -36,3 +44,12 @@ as each subsystem is worked through, not filled in all at once.
 - Würth Elektronik 7499010441 — Ethernet magjack
 - Bencent B3D090L-C — gas discharge tube, RS485/RS232 surge protection
 - Toshiba SSM3J307T family — P-channel MOSFET behind the "PJ307U" marking, reverse-polarity protection
+
+## Deliberately not here yet (sequencing, not an oversight)
+- **DC-DC module datasheets** (the actual 3.3V/5V/LTE-rail regulator parts) — not added yet
+  because module selection (power roadmap step 4) hasn't happened. Will be added once chosen.
+- **Protection component datasheets** (fuse/PTC, TVS, Y-cap part numbers) — not added yet
+  because protection design (power roadmap step 5) hasn't happened.
+- This file grows per subsystem as work reaches each one — it will not be "complete" until
+  the whole project is. Treat gaps above this note as pending, and anything silently missing
+  as worth flagging.
