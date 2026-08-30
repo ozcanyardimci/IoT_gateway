@@ -303,3 +303,48 @@ Exact secondary TVS and ferrite bead part numbers are **not finalized yet** — 
 current apportionment between the two stages depends on impedances and timing that should be
 verified in ngspice (step 8's surge simulation), not calculated by hand with false
 confidence. Tracked as an open item for step 8, not a part-number gap to fill blindly now.
+
+---
+
+## Step 6 results: connector & wiring selection (2026-08-30)
+
+### Wire gauge
+Sizing rule: wire must comfortably carry more than the fuse's trip current (2.70A,
+RXEF135) — the fuse protects the wire, which only works if the wire's ampacity exceeds the
+fuse rating, not the other way around.
+
+- **NFPA 70 (NEC) Table 310.15(B)(16)**: even its smallest tabulated gauge, 18 AWG, is rated
+  14A at 90°C insulation — over 5x margin above 2.7A.
+- **Engineering ToolBox AWG current-rating table** (PVC-insulated, single-core, 30°C ambient,
+  a more conservative near-enclosure reference than the NEC bulk-cable table): 20 AWG = 6.0A,
+  22 AWG = 5.0A.
+
+**Chosen: 20 AWG stranded copper, 80-105°C insulation** for the terminal-block-to-PCB power
+pair. ~2.2x margin over the fuse's trip current even by the more conservative table, and a
+comfortable, standard gauge for a small DIN-rail device — not oversized to the point of being
+impractical to terminate.
+
+### Terminal block
+**Phoenix Contact MC 1,5/2-ST-3,5** — PCB-mount pluggable terminal block, COMBICON MC series.
+- 2-position (V+, V-) — sufficient, since chassis/frame ground is bonded mechanically through
+  the DIN-rail mounting clip itself, not through a third wire on this connector (matches the
+  single-point chassis bonding decided in step 3).
+- 8A nominal current rating, 160V rating — both far above our 2.7A/30V requirement, standard
+  practice to not run a connector near its rated limit.
+- 3.5mm pin pitch, accepts 28-16 AWG wire (our chosen 20 AWG is within range).
+- [Datasheet](https://www.mouser.com/datasheet/3/507/5/phoenix_contact_1840366_en.pdf)
+
+### Creepage/clearance
+30V is low voltage — PCB trace spacing and connector pitch requirements at this level are
+governed by standards like IPC-2221, and are comfortably satisfied by both a 3.5mm terminal
+pitch and normal PCB design-rule spacing at low pollution degree (an enclosed industrial
+device). Not treating this as a driving constraint at this voltage — flagging it as checked,
+not as something requiring special layout accommodation, unlike the higher-voltage isolation
+barriers (optocouplers, RS485 module) which do need specific clearance attention at layout
+time (step 9).
+
+### Note: board-to-board header power pins — deferred, not skipped
+The header carrying power (3.3V-LOGIC, 3.3V-LTE, 3.3V-ANALOG-ISO, 5V, and their returns)
+between LTEBOARD and IOBOARD is part of the general board-to-board interconnect, addressed
+as its own milestone in roadmap step 7 (~20+ signal lines total, not just power) — not
+duplicated here. This step covers the field power INPUT connector only.
