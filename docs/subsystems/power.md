@@ -97,6 +97,10 @@ rails**, not two:
 This means step 4 (module selection) is now sizing 3 outputs, not 2, and step 3 (grounding
 architecture) needs to account for the LTE rail's return path separately as well.
 
+**Superseded by step 3 below: this is now 4 rails, not 3** — adding isolation to the analog
+input (a deliberate improvement over the reference board, decided in step 3) requires its own
+small isolated supply. See the step 3 section for the finalized rail count.
+
 ### Open items carried forward
 - Quectel EG915U-EU per-mode current table (idle/talk/data) wasn't fully extracted from the
   hardware design guide — the 2A/3A supply-capability spec is solid and is what's used for
@@ -135,12 +139,14 @@ datasheet max gets closed out — margin at design time, measurement at hardware
 | Ethernet | **Yes** | Magjack's integrated transformer (Würth 7499010441) |
 | Relay outputs (4x) | **Yes, on the switched-load side only** | Mechanical relay contacts (ALDP105) — the coil/control side is NOT isolated from logic ground |
 | Power input | **No** | P-MOSFET reverse-polarity protection is not galvanic isolation — field power return is directly connected to system ground |
-| Analog input/output | **No** (as built on the reference board) | LDO + op-amp stage shares ground with logic; ESP32-S3's own ADC does the conversion — no isolation barrier present |
+| Analog input | **Yes (added, improvement over reference)** | Reference board has none; we're adding an isolation amplifier/isolated ADC — decision finalized below |
+| Analog output | **No (unchanged for now)** | Same non-isolation as the reference board; same reasoning as the input arguably applies here too — revisit when the analog subsystem (#6) is actually designed, not decided now |
 | RS232 | **No** | MAX3232E has no isolation |
 | LTE / WiFi | N/A | No field-wiring connection, no isolation barrier needed |
 
 ### Ground domains defined
-- **GND_LOGIC** — ESP32-S3, W5500, PCA9535PW, MAX3232E, relay coil-driver control side (transistor + flyback diode reference), regulator returns, and the analog LDO/op-amp local ground (tied to GND_LOGIC at one point — see open item below).
+- **GND_LOGIC** — ESP32-S3, W5500, PCA9535PW, MAX3232E, relay coil-driver control side (transistor + flyback diode reference), regulator returns. The analog stage's ESP32-S3-facing side (digital/logic side of the isolation barrier) also lives here — see GND_ANALOG_ISO below for the field-facing side.
+- **GND_ANALOG_ISO** — isolated field-side ground for the analog input, added as a deliberate improvement over the reference board (decided below). Powered by its own small isolated DC-DC supply, never joined to GND_LOGIC. Analog output stays non-isolated for now and shares GND_LOGIC, pending the step-6 analog subsystem design.
 - **GND_FIELD_DI** — isolated field-side return for the 8 digital inputs, common across all 8 channels, isolated from GND_LOGIC by the optocouplers.
 - **GND_RS485_ISO** — isolated bus-side ground, provided internally by the Mornsun module. Never joined to GND_LOGIC.
 - **Chassis/frame ground** — bonded to the metal DIN-rail enclosure. Tied to GND_LOGIC (via the field power return) at a **single point** near the power entry, so surge/TVS protection has a low-impedance path to dump transients into the chassis without creating a ground loop elsewhere on the board.
@@ -152,14 +158,29 @@ module's isolated-UART-facing side, relay coil driver). GND_FIELD_DI and GND_RS4
 local to IOBOARD and never cross the header. This also means the header needs enough GND_LOGIC
 pins for return-current capacity on the digital signals, not just one.
 
-### Open decision — analog input isolation (need your call)
-The reference board does **not** isolate the analog input (0-10V / 4-20mA), and we're
-otherwise following its architecture. But an unisolated 4-20mA loop input is a common real
-source of ground-loop and noise problems in actual industrial deployments — a professional
-building this today, for an industrial product rather than a like-for-like clone, would
-often add isolation here (e.g. an isolated ADC front-end or isolation amplifier). Two
-options: (a) replicate as-is (non-isolated, matches the reference, simpler/cheaper), or
-(b) add isolation on the analog input as a deliberate improvement over the reference design.
-Your call — this affects the analog I/O subsystem's design later, but the ground architecture
-above already accounts for either choice (GND_LOGIC assumption holds for (a); (b) would add
-a fourth isolated domain, GND_ANALOG_ISO).
+### Decision — analog input isolation: ADDED (2026-08-30)
+The reference board does not isolate the analog input (0-10V / 4-20mA) — confirmed with
+medium-high, not absolute, confidence: this is based on photo teardown identifying only an
+LDO (AME8808) and op-amp (LM2904) on that daughterboard, with no isolation component visible,
+not on a traced schematic. Decision: **deviate from the reference here and add isolation**,
+since an unisolated 4-20mA loop input is a real, common source of ground-loop and noise
+problems in industrial deployments, and this project isn't bound to a like-for-like clone.
+
+Cost of this decision, assessed before committing to it: one additional isolation
+amplifier/isolated-ADC part (small BOM impact), one additional small isolated DC-DC supply
+(new 4th rail, below), a firmware driver change later (external isolated ADC instead of the
+ESP32-S3's built-in `analogRead()`), and a PCB clearance/slot at layout time (step 9) — same
+class of layout requirement as the optocouplers and RS485 module already need. Contained
+mostly to the analog subsystem (#6 on the build list), not a project-wide redesign.
+
+**Analog output stays non-isolated for now** — not part of this decision, flagged for
+revisit when subsystem #6 is actually designed.
+
+### Rail count, finalized: 4, not 3
+- **5V** — relay coils (~160 mA worst case)
+- **3.3V-LOGIC** — ESP32-S3, W5500, PCA9535PW, MAX3232E, RS485 module, analog stage's
+  logic-side (~650 mA worst-case peak, size module for ≥850 mA-1A)
+- **3.3V-LTE** — dedicated, sized for Quectel's 2-3A transient spec
+- **3.3V-ANALOG-ISO (new)** — small isolated supply for the analog input's field side.
+  Load is light (a single isolation amp/ADC, low tens of mA) but must be electrically
+  isolated from every other rail, not just separately regulated.
