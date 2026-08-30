@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "author": "Ozcan",
+  "editor": "wokwi",
+  "title": "IoT_gateway toolchain sanity check",
+  "parts": [
+    {
+      "type": "board-esp32-s3-devkitc-1",
+      "id": "esp32",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led1",
+      "top": 200,
+      "left": 100,
+      "attrs": { "color": "red" }
+    }
+  ],
+  "connections": [
+    [ "esp32:21", "led1:A", "green", [] ],
+    [ "esp32:GND.1", "led1:C", "black", [] ]
+  ],
+  "dependencies": {}
+}

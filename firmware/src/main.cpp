@@ -1,23 +1,24 @@
 #include <Arduino.h>
 
 // Toolchain sanity check.
-// Purpose: confirm the PlatformIO + pioarduino + ESP32-S3 build/upload/monitor
-// pipeline actually works before any real subsystem firmware is written.
-// Not part of the gateway's real functionality.
+// Purpose: confirm the PlatformIO + pioarduino + ESP32-S3 build pipeline works,
+// end to end, before any real subsystem firmware is written.
+//
+// No physical ESP32-S3 devkit is owned yet, so this runs in the Wokwi simulator
+// (see wokwi.toml + diagram.json in this folder) instead of real hardware.
+// GPIO21 drives a simulated LED wired in diagram.json.
 
-#ifndef LED_BUILTIN
-#define LED_BUILTIN 2  // adjust to your devkit's actual onboard LED pin if different
-#endif
+#define SANITY_LED_PIN 21
 
 void setup() {
   Serial.begin(115200);
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(SANITY_LED_PIN, OUTPUT);
 }
 
 void loop() {
-  digitalWrite(LED_BUILTIN, HIGH);
+  digitalWrite(SANITY_LED_PIN, HIGH);
   Serial.println("IoT_gateway toolchain check: alive");
   delay(500);
-  digitalWrite(LED_BUILTIN, LOW);
+  digitalWrite(SANITY_LED_PIN, LOW);
   delay(500);
 }

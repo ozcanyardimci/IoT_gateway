@@ -16,3 +16,6 @@ fp-info-cache
 !.vscode/extensions.json
 .DS_Store
 Thumbs.db
+
+# Claude Code CLI project state (local only)
+.claude/
