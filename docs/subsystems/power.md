@@ -250,15 +250,20 @@ to be wrong on closer verification — corrected here rather than carried forwar
 ### Sequencing (fixed order from the input connector)
 1. **Terminal block** (input connector, sized per step 6 wiring selection — not yet done)
 2. **PTC resettable fuse — Littelfuse RXEF135**: 1.35A hold / 2.70A trip / 72V max.
-3. **Reverse-polarity protection — Toshiba SSM3J351R,LF** (P-channel MOSFET, "ideal diode"
-   configuration): -60V rating, low Rds(on). **Correction (2026-08-30, final recheck): this
-   part's own datasheet VGSS rating is only -20V/+10V.** In the standard ideal-diode
-   topology (source on the input rail, gate pulled toward the negative rail through a
-   resistor), Vgs magnitude approaches the full input voltage — up to 30V here — which
-   exceeds the part's rating and risks gate damage in normal operation, not just a fault
-   condition. **Fix, approved 2026-08-30: add a ~15-18V Zener diode across gate-source** to
-   clamp Vgs within the safe -20V/+10V range regardless of input voltage. Standard,
-   well-known fix for this exact problem — added to the circuit now, not deferred.
+3. **Reverse-polarity protection — SWITCHED (2026-08-30) to TI LM74610-Q1 ideal diode
+   controller + CSD18531Q5A N-channel MOSFET (60V NexFET)**, replacing the earlier discrete
+   Toshiba SSM3J351R,LF P-MOSFET + Zener approach. Reasoning: the discrete approach's
+   Vgs-overvoltage problem (found in the last recheck) was fixed with a Zener clamp, but
+   that's a workaround for a failure mode this IC doesn't have in the first place — LM74610-Q1
+   drives an N-MOSFET with its own internally-regulated gate drive, independent of input
+   voltage, so there's no Vgs-overvoltage vulnerability to guard against at all. Follows TI's
+   own reference design **TIDUBP3A ("Reverse Battery Protection LM74610-Q1")**, which uses
+   this exact IC + a similar-class N-MOSFET and is rated for automotive 12/24V systems with
+   load-dump survival well past 30V — comfortably covers our 10-30V range.
+   Sourcing checked before switching (per project decision: only switch if realistically
+   sourceable) — both parts are active production, in stock at DigiKey and Mouser (which has
+   a dedicated Turkey storefront), a realistic path even without confirmed local Turkish
+   distributor stock.
 4. **Surge/EMI — Littelfuse SMBJ36A TVS diode** (36V standoff, 58.1V clamp, 600W peak pulse
    10/1000µs) + **Würth WCAP-CSSA 8853522140011 Y-cap** (4.7nF, X1/Y2, 250VAC).
 5. Into the four DC-DC modules from step 4.

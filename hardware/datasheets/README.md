@@ -30,7 +30,9 @@ as each subsystem is worked through, not filled in all at once.
 | Würth MagI3C-VDLM 171033801 | 3.3V-LTE rail buck module (3A) | [Datasheet](https://www.we-online.com/components/products/datasheet/171033801.pdf) |
 | Recom R1SX-3305 (alt: Mornsun B3305S-1WR3) | Isolated supply for the analog input's field side | [Recom datasheet](https://recom-power.com/pdf/Econoline/R1SX.pdf) · [Mornsun datasheet](https://www.mornsun-power.com/public/uploads/pdf/B_S-1WR3.pdf) |
 | Littelfuse RXEF135 | Input PTC resettable fuse | [Datasheet](https://www.littelfuse.com/assetdocs/resettable-ptc-rxef-datasheet?assetguid=e9a7b6b3-79ce-478c-a39a-0a70ee48ccec) |
-| Toshiba SSM3J351R,LF | Reverse-polarity P-MOSFET (replaces an earlier, incorrect teardown guess — see power.md) | [Product page](https://toshiba.semicon-storage.com/us/semiconductor/product/mosfets/detail.SSM3J351R.html) |
+| ~~Toshiba SSM3J351R,LF~~ | Superseded 2026-08-30 — replaced by LM74610-Q1 + CSD18531Q5A below (Vgs-overvoltage issue found, purpose-built IC chosen instead) | [Product page](https://toshiba.semicon-storage.com/us/semiconductor/product/mosfets/detail.SSM3J351R.html) |
+| TI LM74610-Q1 | Ideal diode controller — reverse-polarity protection | [Datasheet](https://www.ti.com/lit/ds/symlink/lm74610-q1.pdf) |
+| TI CSD18531Q5A | 60V N-channel MOSFET, driven by LM74610-Q1 | [Product page](https://www.ti.com/product/CSD18531Q5A) |
 | Littelfuse SMBJ36A | Input surge TVS diode | [Datasheet](https://www.littelfuse.com/assetdocs/tvs-diodes-smbj-series-datasheet?assetguid=ba555e99-a12d-4f72-a0b6-86b06c67171e) |
 | Würth WCAP-CSSA 8853522140011 | Input EMI/safety Y-cap (replaces an earlier, unresolvable teardown marking — see power.md) | [Datasheet](https://www.we-online.com/components/products/datasheet/8853522140011.pdf) |
 
@@ -41,6 +43,21 @@ as each subsystem is worked through, not filled in all at once.
 | Phoenix Contact MC 1,5/2-ST-3,5 | Power input terminal block | [Datasheet](https://www.mouser.com/datasheet/3/507/5/phoenix_contact_1840366_en.pdf) |
 | NFPA 70 (NEC) Table 310.15(B)(16) | Wire ampacity reference | Standard reference, not freely hosted — consult a current NEC copy |
 | Engineering ToolBox AWG current-rating table | Wire ampacity cross-check (enclosure, non-bundled) | https://www.engineeringtoolbox.com/wire-gauges-d_419.html |
+
+## Power subsystem application notes / reference designs (added 2026-08-30)
+
+| Document | Covers | Source |
+|---|---|---|
+| TI TIDUBP3A — "Reverse Battery Protection LM74610-Q1" | Full reference design for the ideal-diode reverse-polarity stage we adopted — schematic, part selection, sourced/rated for 12/24V systems with load-dump survival past 30V | [PDF](https://www.ti.com/lit/ug/tidubp3a/tidubp3a.pdf) |
+| TI SLVA862 — "Basics of eFuses" | General inrush-current/reverse-polarity/overvoltage concepts — relevant to our still-open inrush-current item (flagged for step 8 simulation) | ti.com application report SLVA862 |
+| TI SLVAE83 — PLC output-port protection reference | Shows a series-diode/PTC/reverse-diode/TVS protection chain (24V-class, output-port context, not identical to our input stage) — useful cross-check for protection-chain sequencing even though it's not a perfect match | ti.com application report SLVAE83 |
+
+No single vendor app note was found covering the exact combination we're building (wide
+10-30V input protection + multiple Würth MagI3C modules) — Würth's own MagI3C reference
+designs page covers only current-sharing and a "Power FeatherWing" board, not industrial
+input protection. Our own sequencing (fuse -> reverse-polarity -> surge/TVS -> regulation)
+is reasonable standard practice but isn't cross-checked against one single authoritative
+document — noted honestly rather than implying more validation than exists.
 
 ## Application notes (distinct from plain datasheets — layout/decoupling guidance)
 
