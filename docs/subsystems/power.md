@@ -264,8 +264,9 @@ to be wrong on closer verification — corrected here rather than carried forwar
    sourceable) — both parts are active production, in stock at DigiKey and Mouser (which has
    a dedicated Turkey storefront), a realistic path even without confirmed local Turkish
    distributor stock.
-4. **Surge/EMI — Littelfuse SMBJ36A TVS diode** (36V standoff, 58.1V clamp, 600W peak pulse
-   10/1000µs) + **Würth WCAP-CSSA 8853522140011 Y-cap** (4.7nF, X1/Y2, 250VAC).
+4. **Surge/EMI — TI TVS3300 Flat-Clamp surge protection device** (33V standoff, 40V max
+   clamp at 35A/8-20µs — see correction below for why this replaced the earlier two-stage
+   SMBJ36A design) + **Würth WCAP-CSSA 8853522140011 Y-cap** (4.7nF, X1/Y2, 250VAC).
 5. Into the four DC-DC modules from step 4.
 
 Fuse-then-MOSFET-then-TVS (not TVS first) is a deliberate choice: if the TVS eventually
@@ -329,6 +330,49 @@ Exact secondary TVS and ferrite bead part numbers are **not finalized yet** — 
 current apportionment between the two stages depends on impedances and timing that should be
 verified in ngspice (step 8's surge simulation), not calculated by hand with false
 confidence. Tracked as an open item for step 8, not a part-number gap to fill blindly now.
+
+### Correction (2026-08-31): two-stage clamp replaced — TI TVS3300 (Flat-Clamp technology)
+Found a better solution while sourcing an application note for the surge stage: TI makes a
+family of active-feedback "Flat-Clamp" surge protection devices (TVS0500 through TVS5800,
+one device per standoff-voltage class) that clamp far closer to their standoff voltage than
+a conventional silicon avalanche TVS does — a fundamentally different clamping mechanism
+(internal feedback holds the voltage flat right above breakdown; dynamic resistance
+30-50mΩ), not just a bigger/different part in the same class SMBJ36A belongs to.
+
+Checked every family member for a fit:
+- **TVS4000** (40V standoff — the closest match to SMBJ36A's old 36V margin) clamps at
+  **50.3V**, still above the MagI3C modules' 42V absolute max. Doesn't solve the problem
+  despite better standoff margin.
+- **TVS3300** (33V standoff) clamps at **40V max** at its full 35A/8-20µs rating — under the
+  42V limit, with 2V to spare. This is the only Flat-Clamp family member that satisfies our
+  actual constraint (module input voltage < 42V during a surge event).
+
+**Decision: replace the entire two-stage clamp (SMBJ36A + ferrite bead + secondary TVS) with
+a single TVS3300**, placed at the same point in the sequence (after the reverse-polarity
+stage, before the four DC-DC modules). This removes the two still-open, unfinalized parts
+(ferrite bead and secondary TVS) from the step-8 simulation backlog entirely — one real,
+fully-specified part instead of two unknowns.
+
+Trade-off, stated honestly: TVS3300's 33V standoff gives ≈10% margin over our 30V max
+continuous input, versus SMBJ36A's 36V standoff giving ≈20% margin. Clamp voltage under 42V
+is the harder constraint (protects the modules from actual damage), so this trade is
+accepted, but it's a real trade, not a free upgrade — worth reconfirming against the
+project's actual max continuous input voltage requirement when that's finalized.
+
+Sourcing checked before switching (same policy as the LM74610-Q1 switch): TVS3300DRVR is
+active production, in stock at both DigiKey and Mouser, both of which ship to Turkey
+(DigiKey has an authorized Turkish reseller, EKOM; Mouser ships internationally).
+
+Package: SON-6 (DRV), same footprint style already used for other SON parts in this design.
+Pinout: pins 4/5/6 = IN (tie together, to the protected-rail node), pins 1/2/3 + exposed
+thermal pad = GND (tie together, to GND_LOGIC). No series/parallel components needed — it's
+a direct two-node shunt device, per TI's own typical application circuit.
+
+Temperature range: TVS3300's absolute max ratings were not independently re-pulled from its
+own datasheet at this-writing — assumed consistent with the -40C to +125C operating /
+-65C to +150C storage range documented for TVS0500 (same family, same datasheet
+document/package), which comfortably covers our -20C to +60C assumed environment, but this
+assumption should be confirmed against TVS3300's own datasheet page before layout freeze.
 
 ### New item (2026-08-30, final recheck): inrush current at power-up — flagged, not fixed yet
 Never previously addressed: when the device is first connected to a live 10-30V supply, all
@@ -406,7 +450,7 @@ see the Scope section at the top).
 |---|---|---|
 | MagI3C 171013801 / 171033801 | -40C to +105C ambient | Yes, wide margin |
 | Littelfuse RXEF135 (fuse) | -40C to +85C | Yes, but hold-current derating matters — see fuse sizing correction above |
-| Littelfuse SMBJ36A (TVS) | -65C to +150C junction | Yes, wide margin |
+| TI TVS3300 (TVS, replaces SMBJ36A — see 2026-08-31 correction) | -65C to +150C storage (family datasheet, not independently re-pulled for TVS3300 specifically) | Yes, wide margin |
 | Toshiba SSM3J351R,LF (MOSFET) | -55C to +150C | Yes, wide margin — **sourcing caveat**: confirmed via a third-party datasheet mirror, not toshiba.com directly (that URL 404'd); worth a direct cross-check before final BOM lock |
 | Würth WCAP-CSSA Y-cap | -55C to +125C | Yes, wide margin |
 | Recom R1SX-3305 | -40C to +100C | Yes, wide margin |
@@ -416,7 +460,7 @@ see the Scope section at the top).
    default — everything above was checked against -20C/+60C because that's a reasonable
    guess, not a confirmed requirement.
 2. Inrush current — flagged for step 8 simulation, not yet resolved.
-3. Secondary TVS + ferrite bead part numbers for the coordinated surge clamp — pending step 8.
+3. ~~Secondary TVS + ferrite bead part numbers for the coordinated surge clamp~~ — resolved 2026-08-31, replaced by a single TVS3300 (see correction).
 4. Feedback divider resistor values and recommended external caps for the MagI3C modules —
    pending step 7 (schematic capture), where the vendor's application circuit gets pulled.
 5. Toshiba SSM3J351R,LF datasheet sourced from a mirror, not toshiba.com — low risk, worth a

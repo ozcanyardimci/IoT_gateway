@@ -33,7 +33,8 @@ as each subsystem is worked through, not filled in all at once.
 | ~~Toshiba SSM3J351R,LF~~ | Superseded 2026-08-30 — replaced by LM74610-Q1 + CSD18531Q5A below (Vgs-overvoltage issue found, purpose-built IC chosen instead) | [Product page](https://toshiba.semicon-storage.com/us/semiconductor/product/mosfets/detail.SSM3J351R.html) |
 | TI LM74610-Q1 | Ideal diode controller — reverse-polarity protection | [Datasheet](https://www.ti.com/lit/ds/symlink/lm74610-q1.pdf) |
 | TI CSD18531Q5A | 60V N-channel MOSFET, driven by LM74610-Q1 | [Product page](https://www.ti.com/product/CSD18531Q5A) |
-| Littelfuse SMBJ36A | Input surge TVS diode | [Datasheet](https://www.littelfuse.com/assetdocs/tvs-diodes-smbj-series-datasheet?assetguid=ba555e99-a12d-4f72-a0b6-86b06c67171e) |
+| ~~Littelfuse SMBJ36A~~ | Superseded 2026-08-31 — replaced by TI TVS3300 below (58.1V clamp exceeded the MagI3C's 42V absolute max; single-part fix wasn't possible with any conventional avalanche TVS, see power.md) | [Datasheet](https://www.littelfuse.com/assetdocs/tvs-diodes-smbj-series-datasheet?assetguid=ba555e99-a12d-4f72-a0b6-86b06c67171e) |
+| TI TVS3300 | Input surge TVS — Flat-Clamp technology, 33V standoff, 40V max clamp at 35A | [Datasheet](https://www.ti.com/lit/ds/symlink/tvs3300.pdf) · [Product page](https://www.ti.com/product/TVS3300) |
 | Würth WCAP-CSSA 8853522140011 | Input EMI/safety Y-cap (replaces an earlier, unresolvable teardown marking — see power.md) | [Datasheet](https://www.we-online.com/components/products/datasheet/8853522140011.pdf) |
 
 ## Connectors & wiring standards (step 6)
@@ -51,6 +52,9 @@ as each subsystem is worked through, not filled in all at once.
 | TI TIDUBP3A — "Reverse Battery Protection LM74610-Q1" | Full reference design for the ideal-diode reverse-polarity stage we adopted — schematic, part selection, sourced/rated for 12/24V systems with load-dump survival past 30V | [PDF](https://www.ti.com/lit/ug/tidubp3a/tidubp3a.pdf) |
 | TI SLVA862 — "Basics of eFuses" | General inrush-current/reverse-polarity/overvoltage concepts — relevant to our still-open inrush-current item (flagged for step 8 simulation) | ti.com application report SLVA862 |
 | TI SLVAE83 — PLC output-port protection reference | Shows a series-diode/PTC/reverse-diode/TVS protection chain (24V-class, output-port context, not identical to our input stage) — useful cross-check for protection-chain sequencing even though it's not a perfect match | ti.com application report SLVAE83 |
+
+| TI SLYY127 — "Flat-Clamp surge protection technology for efficient system protection" | Explains the Flat-Clamp active-feedback clamping mechanism behind TVS3300 (why it clamps far closer to standoff voltage than a conventional TVS) | [PDF](https://www.ti.com/lit/slyy127) |
+| TVS3300 datasheet, Section 9 "Application and Implementation" | TVS3300's own typical application circuit (direct 2-node shunt: IN tied to signal, GND pins tied to ground) and connector-placement/layout guidance | [PDF](https://www.ti.com/lit/ds/symlink/tvs3300.pdf) |
 
 No single vendor app note was found covering the exact combination we're building (wide
 10-30V input protection + multiple Würth MagI3C modules) — Würth's own MagI3C reference
