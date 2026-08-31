@@ -28,7 +28,7 @@ as each subsystem is worked through, not filled in all at once.
 |---|---|---|
 | Würth MagI3C-VDLM 171013801 | 3.3V-LOGIC and 5V rail buck module (used twice, retapped) | [Datasheet](https://www.we-online.com/en/components/products/datasheet/171013801.pdf) |
 | Würth MagI3C-VDLM 171033801 | 3.3V-LTE rail buck module (3A) | [Datasheet](https://www.we-online.com/components/products/datasheet/171033801.pdf) |
-| Recom R1SX-3305 (alt: Mornsun B3305S-1WR3) | Isolated supply for the analog input's field side | [Recom datasheet](https://recom-power.com/pdf/Econoline/R1SX.pdf) · [Mornsun datasheet](https://www.mornsun-power.com/public/uploads/pdf/B_S-1WR3.pdf) |
+| Recom R1SX-3.33.3-R (corrected 2026-08-31 from R1SX-3305, which was 3.3V-in/5V-out, not matching this 3.3V-ANALOG-ISO rail; alt Mornsun part has the same naming issue, not yet corrected since unused) | Isolated supply for the analog input's field side, 3.3V-in/3.3V-out | [Recom datasheet](https://recom-power.com/pdf/Econoline/R1SX.pdf) · [DigiKey product page](https://www.digikey.com/en/products/detail/recom-power/R1SX-3.33.3-R/6708875) |
 | Littelfuse RXEF135 | Input PTC resettable fuse | [Datasheet](https://www.littelfuse.com/assetdocs/resettable-ptc-rxef-datasheet?assetguid=e9a7b6b3-79ce-478c-a39a-0a70ee48ccec) |
 | ~~Toshiba SSM3J351R,LF~~ | Superseded 2026-08-30 — replaced by LM74610-Q1 + CSD18531Q5A below (Vgs-overvoltage issue found, purpose-built IC chosen instead) | [Product page](https://toshiba.semicon-storage.com/us/semiconductor/product/mosfets/detail.SSM3J351R.html) |
 | TI LM74610-Q1 | Ideal diode controller — reverse-polarity protection | [Datasheet](https://www.ti.com/lit/ds/symlink/lm74610-q1.pdf) |

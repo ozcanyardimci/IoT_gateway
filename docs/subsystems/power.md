@@ -204,7 +204,7 @@ part numbers. Margin check against the step 1-2 load budget included.
 | 3.3V-LOGIC | **Würth MagI3C-VDLM 171013801** (1A) | 3.5-38V (abs max 42V) — covers 10-30V with wide margin both ends | 1A continuous | ~650mA worst-case peak → ~54% headroom | Adjustable output (resistor divider), set to 3.3V |
 | 3.3V-LTE | **Würth MagI3C-VDLM 171033801** (3A) | 3.5-38V (abs max 42V) | 3A continuous | Quectel's 2-3A transient sits *inside* this part's continuous rating, not just a peak spec | This is the same part number identified on the reference board during teardown — confirms Roltek sized this correctly for the same reason we are |
 | 5V (relays) | **Würth MagI3C-VDLM 171013801** (1A) — same SKU as Logic rail, separate physical module, divider re-tapped to 5V | 3.5-38V | 1A | ~160mA worst case → ~84% headroom | Runs in efficient PFM mode at light load per datasheet, no minimum-load issue |
-| 3.3V-ANALOG-ISO | **Recom R1SX-3305** (or Mornsun B3305S-1WR3 as an alternate second-source) | 3.3V regulated input (fed from the 3.3V-LOGIC rail, not raw field voltage) | 200mA / 1W | Load is a single isolation amp/ADC, tens of mA — heavy margin | 1kVDC isolation standard, "/H" suffix option available for 3kVDC if the analog subsystem design (step 6) calls for it. **Output voltage (5V here) is provisional** — exact tap depends on which isolation amplifier/ADC gets chosen in the analog subsystem; may need the 3.3V-out sibling instead |
+| 3.3V-ANALOG-ISO | **Recom R1SX-3.33.3-R** (3.3Vin/3.3Vout — corrected 2026-08-31, see note) | 3.3V regulated input (fed from the 3.3V-LOGIC rail, not raw field voltage) | ~300mA / 1W | Load is a single isolation amp/ADC, tens of mA — heavy margin | 1kVDC isolation standard, "/H" suffix option available for 3kVDC if the analog subsystem design (step 6) calls for it |
 
 **Result: 2 unique SKUs cover 3 of the 4 rails** (171013801 used twice, in physically separate
 module instances — once for Logic, once for 5V), plus 171033801 for LTE, plus the isolated
@@ -331,6 +331,18 @@ current apportionment between the two stages depends on impedances and timing th
 verified in ngspice (step 8's surge simulation), not calculated by hand with false
 confidence. Tracked as an open item for step 8, not a part-number gap to fill blindly now.
 
+### Correction (2026-08-31): 3.3V-ANALOG-ISO module part number corrected
+When this rail was originally specced (step 4), the part number was recorded as
+Recom R1SX-3305, with an explicit open item noting "output voltage (5V here) is
+provisional... may need the 3.3V-out sibling instead" — this was flagged honestly at
+the time, not missed. Now wiring this rail in schematic capture: R1SX-3305 is
+**3.3V-in, 5.0V-out** (Recom's R1SX naming encodes input then output voltage), which
+doesn't match a rail named 3.3V-ANALOG-ISO. The correct part is **Recom
+R1SX-3.33.3-R** — 3.3V-in, 3.3V-out, ~300mA, same 1kVDC isolation, same package/pinout
+family. Mornsun B3305S-1WR3 (the alternate second-source) has the identical naming
+mismatch and needs the same correction if it's ever actually used — not fixed here
+since the primary part is what's going in the schematic.
+
 ### Correction (2026-08-31): two-stage clamp replaced — TI TVS3300 (Flat-Clamp technology)
 Found a better solution while sourcing an application note for the surge stage: TI makes a
 family of active-feedback "Flat-Clamp" surge protection devices (TVS0500 through TVS5800,
@@ -453,7 +465,7 @@ see the Scope section at the top).
 | TI TVS3300 (TVS, replaces SMBJ36A — see 2026-08-31 correction) | -65C to +150C storage (family datasheet, not independently re-pulled for TVS3300 specifically) | Yes, wide margin |
 | Toshiba SSM3J351R,LF (MOSFET) | -55C to +150C | Yes, wide margin — **sourcing caveat**: confirmed via a third-party datasheet mirror, not toshiba.com directly (that URL 404'd); worth a direct cross-check before final BOM lock |
 | Würth WCAP-CSSA Y-cap | -55C to +125C | Yes, wide margin |
-| Recom R1SX-3305 | -40C to +100C | Yes, wide margin |
+| Recom R1SX-3.33.3-R | -40C to +100C | Yes, wide margin |
 
 ### Genuinely still open after this recheck
 1. **Operating temperature range itself needs a real decision from Ozcan**, not an assumed
