@@ -386,14 +386,41 @@ own datasheet at this-writing — assumed consistent with the -40C to +125C oper
 document/package), which comfortably covers our -20C to +60C assumed environment, but this
 assumption should be confirmed against TVS3300's own datasheet page before layout freeze.
 
-### New item (2026-08-30, final recheck): inrush current at power-up — flagged, not fixed yet
-Never previously addressed: when the device is first connected to a live 10-30V supply, all
-four DC-DC modules' input capacitance charges simultaneously, causing a current spike whose
-size depends on the source's own impedance/current limiting — not something to guess by hand.
-**Approved fix, deferred to step 8**: simulate this in ngspice; if the spike is large enough
-to risk nuisance-tripping the fuse or stressing the MOSFET, add an NTC thermistor in series
-at the input as the standard fix. Same pattern as the TVS/ferrite item above — flagged now,
-resolved with simulation data, not assumed either way.
+### Step 8 (2026-08-31): inrush current at power-up — simulated, resolved, no NTC needed
+Simulated in ngspice rather than hand-waved. Circuit: source stepped 0V->30V (max design
+input, worst-case hot-plug connection) through Rsrc (source/wiring impedance) + Rfuse (F1,
+RXEF135's datasheet Rmin = 0.12ohm cold resistance -- the conservative lower bound, since a
+lower fuse resistance gives a higher, more conservative inrush estimate) + Rq1 (Q1,
+CSD18531Q5A's typical RDS(on) = 3.5mohm) + an assumed 0.05ohm PCB trace/connector parasitic,
+into the input capacitor bank: 8x 4.7uF (2 per module x4 modules = 37.6uF total), each with a
+representative 20mohm ceramic MLCC ESR.
+
+Two cases run:
+- **Worst case** (Rsrc = 10mohm, near-zero source impedance -- a very pessimistic assumption
+  since the actual field supply's impedance is unknown): peak inrush **161A**, decaying with
+  time constant tau ~= 6.9us (matches hand-calc RC = R_total x C_total, cross-checked).
+- **More realistic case** (Rsrc = 0.5ohm, typical of a real supply/cable/screw-terminal
+  contact resistance): peak inrush **44A**, tau ~= 25.3us.
+
+Checked against real limits, not just eyeballed:
+- Q1's datasheet gives IDM (pulsed drain current) = **400A for pulse width <=100us, duty
+  cycle <=1%**. Worst-case 161A peak, ~35us total decay (5x tau), single non-repetitive
+  event -- well within rating, ~2.5x margin even in the pessimistic case.
+- F1 is a PTC (resettable) fuse -- its trip mechanism is thermal, with a datasheet-quoted
+  9.6s time-to-trip at rated fault current. A ~35us current pulse carries far too little
+  I^2t energy (~161^2 x 35e-6 ~= 0.9 A^2s) to meaningfully heat the PTC's thermal mass --
+  no nuisance-trip risk. Not independently cross-checked against a surge-current
+  rating specific to RXEF135 (not published/found), but the physics (thermal time constant
+  in the seconds range vs. a microsecond-scale event) makes this a low-risk conclusion, not
+  a hand-wave.
+
+**Decision: no NTC thermistor needed.** The fuse's own cold resistance already provides
+enough current-limiting that the MOSFET and fuse both have solid margin under the
+worst-case assumption. Adding an NTC would only be justified if either limit were being
+approached, which they aren't. One caveat carried forward, not fully closed: 161A even for
+~35us is worth a sanity check against PCB trace/connector current-carrying capacity at
+layout time (not a schematic-level concern, standard copper generally handles microsecond
+pulses like this without issue, but flagging so it isn't silently assumed).
 
 ### Confirmed (2026-08-30, final recheck): MagI3C modules have built-in overcurrent/short-circuit protection
 Checked directly against both 171013801 and 171033801 datasheets — both explicitly state
@@ -471,11 +498,12 @@ see the Scope section at the top).
 1. **Operating temperature range itself needs a real decision from Ozcan**, not an assumed
    default — everything above was checked against -20C/+60C because that's a reasonable
    guess, not a confirmed requirement.
-2. Inrush current — flagged for step 8 simulation, not yet resolved.
+2. ~~Inrush current~~ — resolved 2026-08-31, simulated in ngspice: 161A worst-case peak,
+   comfortably within Q1's 400A pulsed rating; no NTC needed (see step 8 section).
 3. ~~Secondary TVS + ferrite bead part numbers for the coordinated surge clamp~~ — resolved 2026-08-31, replaced by a single TVS3300 (see correction).
-4. Feedback divider resistor values and recommended external caps for the MagI3C modules —
-   pending step 7 (schematic capture), where the vendor's application circuit gets pulled.
-5. Toshiba SSM3J351R,LF datasheet sourced from a mirror, not toshiba.com — low risk, worth a
-   quick direct cross-check before BOM lock.
+4. ~~Feedback divider resistor values and recommended external caps for the MagI3C modules~~ —
+   resolved during step 7 schematic capture, pulled from each module's own datasheet.
+5. ~~Toshiba SSM3J351R,LF datasheet sourcing caveat~~ — moot, this part was superseded
+   entirely by LM74610-Q1 + CSD18531Q5A (2026-08-30 correction), no longer in the design.
 
 No further architectural gaps found on this pass. Steps 1-6 are otherwise considered solid.
