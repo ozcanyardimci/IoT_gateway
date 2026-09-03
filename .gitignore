@@ -21,3 +21,4 @@ Thumbs.db
 
 # Claude Code CLI project state (local only)
 .claude/
+CLAUDE.md
