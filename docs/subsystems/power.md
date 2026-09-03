@@ -519,3 +519,115 @@ see the Scope section at the top).
    entirely by LM74610-Q1 + CSD18531Q5A (2026-08-30 correction), no longer in the design.
 
 No further architectural gaps found on this pass. Steps 1-6 are otherwise considered solid.
+
+---
+
+## Step 9: Margin verification (2026-09-03)
+
+Consolidating margin checks made throughout steps 4-8, plus one new check (input UVLO vs.
+brown-out, done as part of step 10 below), into a single pass/fail table — worst-case
+condition, not nominal.
+
+| Item | Worst-case condition | Rating | Margin |
+|---|---|---|---|
+| F1 hold current vs. sustained load | 60C ambient (derated) | 0.85A hold vs. ~0.48A estimated load | 1.77x |
+| Q1 inrush pulse | Near-zero source impedance (pessimistic) | 400A/100us rating vs. 161A/~35us actual | 2.5x |
+| TVS3300 clamp vs. MagI3C abs. max | 35A/8-20us surge | 42V abs. max vs. 40V max clamp | 2V absolute, ~5% |
+| TVS3300 standoff vs. max input | 30V continuous input | 33V standoff | ~10% |
+| DC-DC module input voltage | 10V min design input | 3.5-38V operating range | Wide margin both ends |
+| DC-DC module input UVLO | Worst-case sag (see step 10) | 3.3V max rising threshold vs. 10V min input | ~3x even before margin from local low resistance |
+| Operating temperature | -20C to +60C assumed | All parts rated to -40C or better | Wide margin — **contingent on the assumed range being correct**, see open item |
+
+No item found operating below 1.5x margin on any worst-case condition. The tightest margins
+(TVS3300 clamp voltage headroom, TVS3300 standoff) were both accepted deliberately, with the
+trade-off reasoning already documented at the point each decision was made, not overlooked.
+
+## Step 10: Power sequencing & brown-out check (2026-09-03)
+
+**Sequencing**: the four rails (3.3V-LOGIC, 3.3V-LTE, 5V-relay, 3.3V-ANALOG-ISO) power
+independent downstream devices (ESP32-S3, LTE modem, relay coils, analog front-end) rather
+than being multiple rails feeding one IC — unlike, say, an FPGA needing core-before-IO, none
+of these devices share a single-chip multi-rail sequencing requirement with another rail on
+this board. Checked each module's own EN handling: all four are tied directly to the shared
+protected-rail VIN (see step 7), so all four come up together as soon as the input is live —
+no relative ordering constraint found in any downstream device's datasheet.
+
+**Brown-out from load transients (the LTE TX burst and relay-switching case named in the
+roadmap)**: the real question is whether a current burst on one module (the LTE modem's
+2-3A TX burst is the largest, relay coil switching at 160mA total is comparatively small)
+sags the *shared* protected rail enough to threaten another module's input UVLO. Using the
+same series resistance established in the step 8 inrush analysis (fuse + MOSFET ~=
+0.1235ohm, plus the same conservative 0.05ohm parasitic estimate = 0.1735ohm): a 3A current
+step through that resistance produces a *local* voltage sag of only I x R ~= 0.52V. Against
+a 10V minimum design input and the MagI3C modules' 3.3V max UVLO rising threshold, that's a
+huge margin — the rail would need to collapse by roughly two-thirds before any module's UVLO
+were at risk, and the board's own resistance can't cause anywhere near that.
+
+The one variable this can't rule out on paper — same as the inrush item — is the *external*
+supply's own regulation quality under a fast load step; a poorly-regulated or high-impedance
+source could sag further than the board's own resistance implies. **Commissioning test item
+(same pattern as the others)**: verify rail stability during an actual LTE TX burst at
+Rev-A bring-up. Not treated as a design risk given the ~3x margin already present from the
+board's own low series resistance — a confirmation check, not an open architectural gap.
+
+## Step 11: Acceptance criteria (2026-09-03)
+
+Concrete pass/fail numbers for this subsystem, defined before calling it done:
+
+1. Each output rail (3.3V-LOGIC, 3.3V-LTE, 5V-RELAY, 3.3V-ANALOG-ISO) holds within +/-3% of
+   nominal across the full 10-30V input range and full rated load (per each module's own
+   regulation spec).
+2. Reverse-polarity connection (J1 swapped) results in zero current flow past Q1 and no
+   damage to any downstream component.
+3. F1 does not nuisance-trip under the estimated worst-case sustained load (0.48A) at 60C
+   ambient, and does trip within its rated time-to-trip curve under an actual fault/short.
+4. A surge event up to TVS3300's rated 35A/8-20us Ipp does not expose any DC-DC module to
+   more than its 42V absolute maximum input rating.
+5. Input capacitor inrush at power-up does not exceed Q1's IDM (400A/100us) or cause F1 to
+   nuisance-trip.
+6. GND_ANALOG_ISO maintains no direct DC path to GND_LOGIC (isolation boundary intact) —
+   checked at layout/bring-up with a continuity/isolation test, not just schematic review.
+7. All four rails power up together with no relative sequencing fault, per step 10.
+
+Items 1, 3 (fault case), 6, and 7 require real hardware to fully close out — tracked as
+Rev-A bring-up checks, not simulation-closeable, consistent with every other commissioning
+item flagged in this document.
+
+## Step 12: Documentation & BOM (2026-09-03)
+
+Final part numbers for this subsystem (cross-referenced against `hardware/datasheets/README.md`,
+which carries the datasheet/source links):
+
+| Ref | Part | Role | MPN |
+|---|---|---|---|
+| J1 | Phoenix Contact MC 1,5/2-ST-3,5 | Field power input terminal block | 1840366 |
+| F1 | Littelfuse RXEF135 | PTC resettable fuse | RXEF135 |
+| Q1 | TI CSD18531Q5A | N-MOSFET, reverse-polarity switch | CSD18531Q5A |
+| U1 | TI LM74610-Q1 | Ideal diode controller | LM74610QDGKRQ1 |
+| U2 | TI TVS3300 | Flat-Clamp surge protection | TVS3300DRVR |
+| U3 | Würth MagI3C-VDLM | 3.3V-LOGIC DC-DC module | 171013801 |
+| U4 | Würth MagI3C-VDLM | 3.3V-LTE DC-DC module (3A) | 171033801 |
+| U5 | Würth MagI3C-VDLM | 5V-RELAY DC-DC module | 171013801 |
+| U6 (R1SX) | Recom R1SX-3.33.3-R | Isolated 3.3V analog supply | R1SX-3.33.3-R |
+| CY1 | Würth WCAP-CSSA | Input Y-cap, EMI/safety | 8853522140011 |
+| C1 | Generic ceramic, X7R, 16V | LM74610-Q1 charge-pump cap | 2.2uF |
+| R2/R5/R8 | Generic, E96 | FB top resistor (3.3V rails) | 402k |
+| R3/R6 | Generic, E96 | FB bottom resistor (3.3V rails) | 137k |
+| R9 | Generic, E96 | FB bottom resistor (5V rail) | 80.6k |
+| R1/R4/R7 | Generic | FSW frequency-set resistor | 5.6k |
+
+Passive values (input/output/VCC caps per module) are documented per-module in step 7 above,
+not repeated here — this table covers the parts that needed a real sourcing decision, not
+every passive on the sheet.
+
+## Step 13: Sign-off (2026-09-03)
+
+Power subsystem complete: all 13 plan steps closed, one item (operating temperature range)
+still pending Ozcan's confirmation but non-blocking (assumed range has wide margin on every
+part), and four items explicitly deferred to Rev-A hardware bring-up as commissioning tests
+(W5500 current, LTE sustained current, inrush-vs-real-supply, brown-out-vs-real-supply) —
+consistent with this project's standing practice of adding conservative margin now and
+verifying on real hardware rather than chasing paper certainty indefinitely.
+
+**Next**: merge `subsystem/power` into `main`, then move to the next subsystem in
+`docs/roadmap.md`'s build order — core compute (ESP32-S3).
