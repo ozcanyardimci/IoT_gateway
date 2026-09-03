@@ -3019,12 +3019,6 @@
 		(uuid "b965e8f7-e97b-485b-b19d-2a887d14706e")
 	)
 	(junction
-		(at 195.58 120.65)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "ba324a81-b726-4886-bbd5-735a974cd3d4")
-	)
-	(junction
 		(at 185.42 120.65)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3073,6 +3067,12 @@
 		(uuid "d33f6fb6-af72-4bba-b038-661cf2a3b4cb")
 	)
 	(junction
+		(at 200.66 66.04)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "da41699a-309c-4e7a-a06c-cec18ac7b91b")
+	)
+	(junction
 		(at 113.03 45.72)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3089,12 +3089,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "e34571f8-37af-446d-89f3-f720370acea0")
-	)
-	(junction
-		(at 194.31 156.21)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "e66b8759-2bb1-409a-bfc2-5f1274239038")
 	)
 	(no_connect
 		(at 157.48 105.41)
@@ -3140,7 +3134,7 @@
 	)
 	(wire
 		(pts
-			(xy 195.58 100.33) (xy 200.66 100.33)
+			(xy 195.58 100.33) (xy 199.39 100.33)
 		)
 		(stroke
 			(width 0)
@@ -3157,26 +3151,6 @@
 			(type default)
 		)
 		(uuid "08b890c6-c844-4d2a-a001-9e0ea0eee564")
-	)
-	(wire
-		(pts
-			(xy 195.58 120.65) (xy 199.39 120.65)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "08e5d3c2-bc10-494e-93bd-0f2605782ebb")
-	)
-	(wire
-		(pts
-			(xy 241.3 66.04) (xy 256.54 66.04)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "09d16452-9538-4997-a9f6-42a5017087e0")
 	)
 	(wire
 		(pts
@@ -3207,16 +3181,6 @@
 			(type default)
 		)
 		(uuid "0c83342b-3532-4e27-ad66-b570dbc689ed")
-	)
-	(wire
-		(pts
-			(xy 241.3 76.2) (xy 256.54 76.2)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0d06ff62-8e70-429d-86e0-dc5bedbf64e1")
 	)
 	(wire
 		(pts
@@ -3500,16 +3464,6 @@
 	)
 	(wire
 		(pts
-			(xy 194.31 156.21) (xy 198.12 156.21)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4ca56701-73f6-4feb-b1bc-63ee7dade87e")
-	)
-	(wire
-		(pts
 			(xy 157.48 86.36) (xy 166.37 86.36)
 		)
 		(stroke
@@ -3750,6 +3704,26 @@
 	)
 	(wire
 		(pts
+			(xy 200.66 66.04) (xy 210.82 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7fcea578-408d-4eb8-9350-32dc65525223")
+	)
+	(wire
+		(pts
+			(xy 242.57 76.2) (xy 241.3 76.2)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "808a94ad-4d51-4a90-9a77-127490a36f6e")
+	)
+	(wire
+		(pts
 			(xy 138.43 139.7) (xy 138.43 135.89)
 		)
 		(stroke
@@ -3837,6 +3811,16 @@
 			(type default)
 		)
 		(uuid "909b4d23-b74f-48c9-b3ca-e5746b58f9eb")
+	)
+	(wire
+		(pts
+			(xy 200.66 63.5) (xy 200.66 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "90a23700-4eaa-44ee-961c-966cae99f6c2")
 	)
 	(wire
 		(pts
@@ -4020,7 +4004,7 @@
 	)
 	(wire
 		(pts
-			(xy 196.85 66.04) (xy 210.82 66.04)
+			(xy 196.85 66.04) (xy 200.66 66.04)
 		)
 		(stroke
 			(width 0)
@@ -4230,7 +4214,7 @@
 	)
 	(wire
 		(pts
-			(xy 194.31 135.89) (xy 199.39 135.89)
+			(xy 194.31 135.89) (xy 198.12 135.89)
 		)
 		(stroke
 			(width 0)
@@ -4257,6 +4241,16 @@
 			(type default)
 		)
 		(uuid "dc5aad95-41e5-4f6c-9826-d2b136d574e3")
+	)
+	(wire
+		(pts
+			(xy 242.57 66.04) (xy 241.3 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e2ca8e33-e040-4661-8349-fa4e964e5b25")
 	)
 	(wire
 		(pts
@@ -4408,26 +4402,6 @@
 		)
 		(uuid "fdd50946-af9b-4517-a16f-7348c8093b3b")
 	)
-	(label "3V3_LOGIC"
-		(at 198.12 66.04 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "2591c515-a4da-4eef-856d-4b9236137751")
-	)
-	(label "5V_RELAY"
-		(at 195.58 135.89 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "35793c88-8d1b-47d8-9682-f18778f1ef5a")
-	)
 	(label "GND_LOGIC"
 		(at 138.43 45.72 0)
 		(effects
@@ -4468,36 +4442,6 @@
 		)
 		(uuid "aef7000c-08cc-4b28-af51-7618a831c466")
 	)
-	(label "GND_ANALOG_ISO"
-		(at 241.3 76.2 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "b6095480-2601-48d6-bb43-57d206a92a88")
-	)
-	(label "3V3_ANALOG_ISO"
-		(at 241.3 66.04 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "c61ddf33-1898-41eb-8d0c-e05a5e0cf952")
-	)
-	(label "3V3_LTE"
-		(at 196.85 100.33 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "ed85e70f-3987-43e7-9f2d-2044ac644a20")
-	)
 	(global_label "GND_LOGIC"
 		(shape input)
 		(at 38.1 41.91 0)
@@ -4519,6 +4463,61 @@
 				(hide yes)
 			)
 		)
+	)
+	(hierarchical_label "GND_ANALOG_ISO"
+		(shape output)
+		(at 242.57 76.2 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "07237fd1-de67-4543-be6f-f457768f1dc9")
+	)
+	(hierarchical_label "5V_RELAY"
+		(shape output)
+		(at 198.12 135.89 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "7303d617-82e9-420a-9a84-806cc21dc76c")
+	)
+	(hierarchical_label "3V3_ANALOG_ISO"
+		(shape output)
+		(at 242.57 66.04 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "b60680d9-8716-46cc-a794-42b9b9be3787")
+	)
+	(hierarchical_label "3V3_LOGIC"
+		(shape output)
+		(at 200.66 63.5 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "ceb0ceea-944b-4270-984c-c07ea97ed87e")
+	)
+	(hierarchical_label "3V3_LTE"
+		(shape output)
+		(at 199.39 100.33 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "d3f69511-1ecf-43d5-9517-3c5b2395750b")
 	)
 	(symbol
 		(lib_id "Device:R")
@@ -7248,7 +7247,7 @@
 				)
 			)
 		)
-		(property "Value" "C"
+		(property "Value" "2.2uF"
 			(at 104.394 115.316 90)
 			(effects
 				(font

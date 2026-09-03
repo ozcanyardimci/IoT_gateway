@@ -39,6 +39,56 @@
 				(justify left top)
 			)
 		)
+		(pin "3V3_ANALOG_ISO" output
+			(at 64.77 39.37 0)
+			(uuid "b4c3d33f-1096-4024-a80a-0df41ef826e7")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "3V3_LOGIC" output
+			(at 64.77 45.72 0)
+			(uuid "62354f1c-0d61-426f-966e-2bbc3dea7d7c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "3V3_LTE" output
+			(at 64.77 52.07 0)
+			(uuid "648ec840-15be-4a9e-ac35-43f6a770f20a")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "5V_RELAY" output
+			(at 64.77 58.42 0)
+			(uuid "fceaa158-0d97-4543-a085-c6b65a79438a")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "GND_ANALOG_ISO" output
+			(at 64.77 64.77 0)
+			(uuid "6519f60f-1616-4472-969f-f7d4c8e30157")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
 		(instances
 			(project "ioboard"
 				(path "/a0fa9f92-ef51-408b-9617-1545f9e9dad8"
