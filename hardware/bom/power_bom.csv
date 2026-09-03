@@ -1,0 +1,16 @@
+Ref,Part,Role,MPN,Manufacturer,Distributor link
+J1,"Phoenix Contact MC 1,5/2-ST-3,5",Field power input terminal block,1840366,Phoenix Contact,https://www.mouser.com/datasheet/3/507/5/phoenix_contact_1840366_en.pdf
+F1,Littelfuse RXEF135,PTC resettable fuse,RXEF135,Littelfuse,https://www.littelfuse.com/assetdocs/resettable-ptc-rxef-datasheet?assetguid=e9a7b6b3-79ce-478c-a39a-0a70ee48ccec
+Q1,TI CSD18531Q5A,N-MOSFET reverse-polarity switch,CSD18531Q5A,Texas Instruments,https://www.ti.com/product/CSD18531Q5A
+U1,TI LM74610-Q1,Ideal diode controller,LM74610QDGKRQ1,Texas Instruments,https://www.ti.com/lit/ds/symlink/lm74610-q1.pdf
+U2,TI TVS3300,Flat-Clamp surge protection,TVS3300DRVR,Texas Instruments,https://www.ti.com/product/TVS3300
+U3,Wurth MagI3C-VDLM,3.3V-LOGIC DC-DC module,171013801,Wurth Elektronik,https://www.we-online.com/en/components/products/datasheet/171013801.pdf
+U4,Wurth MagI3C-VDLM,3.3V-LTE DC-DC module (3A),171033801,Wurth Elektronik,https://www.we-online.com/components/products/datasheet/171033801.pdf
+U5,Wurth MagI3C-VDLM,5V-RELAY DC-DC module,171013801,Wurth Elektronik,https://www.we-online.com/en/components/products/datasheet/171013801.pdf
+U6,Recom R1SX-3.33.3-R,Isolated 3.3V analog supply,R1SX-3.33.3-R,Recom Power,https://www.digikey.com/en/products/detail/recom-power/R1SX-3.33.3-R/6708875
+CY1,Wurth WCAP-CSSA,Input Y-cap EMI/safety,8853522140011,Wurth Elektronik,https://www.we-online.com/components/products/datasheet/8853522140011.pdf
+C1,"Generic ceramic X7R 16V, 2.2uF",LM74610-Q1 charge-pump cap,generic,generic,
+R2/R5/R8,Generic E96 402k,FB top resistor (3.3V rails),generic,generic,
+R3/R6,Generic E96 137k,FB bottom resistor (3.3V rails),generic,generic,
+R9,Generic E96 80.6k,FB bottom resistor (5V rail),generic,generic,
+R1/R4/R7,Generic 5.6k,FSW frequency-set resistor,generic,generic,
