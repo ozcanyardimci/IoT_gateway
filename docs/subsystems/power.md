@@ -422,6 +422,8 @@ approached, which they aren't. One caveat carried forward, not fully closed: 161
 layout time (not a schematic-level concern, standard copper generally handles microsecond
 pulses like this without issue, but flagging so it isn't silently assumed).
 
+**Commissioning test item (tracked for Rev-A bring-up, same pattern as the W5500/LTE items):** the field supply's real output impedance is unknowable until actual hardware/actual field supplies exist -- verify measured inrush stays consistent with the simulated worst case once Rev-A boards exist. Not blocking: even the pessimistic zero-impedance assumption leaves ~2.5x margin on Q1's pulsed rating, so this is a confirmation check, not an open risk.
+
 ### Confirmed (2026-08-30, final recheck): MagI3C modules have built-in overcurrent/short-circuit protection
 Checked directly against both 171013801 and 171033801 datasheets — both explicitly state
 cycle-by-cycle current limiting via peak-current-mode control, with a dedicated "Overcurrent
