@@ -414,6 +414,16 @@ Checked against real limits, not just eyeballed:
   in the seconds range vs. a microsecond-scale event) makes this a low-risk conclusion, not
   a hand-wave.
 
+**Simulation cross-checked two independent ways, not taken on faith:**
+1. Decay time constant: hand-calc tau = R_total x C_total = 0.186ohm x 37.6uF ~= 6.99us vs.
+   simulated 6.897us -- agrees within 1.5%.
+2. Peak current: basic Ohm's law at t=0+ (before any capacitor has charged), I = V/R =
+   30V / 0.186ohm ~= 161.3A, vs. simulated 161.28A -- agrees almost exactly.
+
+This level of agreement between hand-calculation and the ngspice result is what actually
+establishes confidence in the simulation (a netlist wiring/unit error would not produce
+this precise an agreement) -- not just "the simulator ran without an error message."
+
 **Decision: no NTC thermistor needed.** The fuse's own cold resistance already provides
 enough current-limiting that the MOSFET and fuse both have solid margin under the
 worst-case assumption. Adding an NTC would only be justified if either limit were being
