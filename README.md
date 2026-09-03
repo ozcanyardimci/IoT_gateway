@@ -15,17 +15,14 @@ learning project spanning electronics, PCB design (KiCad), and embedded firmware
 
 ## Architecture
 
-The design is split across two physically separate PCBs connected by a board-to-board
-header:
+Two physically separate PCBs connected by a board-to-board header, split for noise
+isolation — RF/clock-sensitive circuitry stays off the same board as switching-noisy
+circuitry:
 
 - **Communications board** — ESP32-S3 (main MCU + WiFi), LTE modem, Ethernet controller,
-  I2C GPIO expander for status indication. Kept isolated from switching noise.
+  I2C GPIO expander for status indication.
 - **I/O board** — power regulation, relay outputs, RS485/RS232 transceivers, analog
-  input/output signal conditioning. Kept isolated from RF/clock-sensitive circuitry.
-
-Separating the two is a deliberate noise-isolation decision, not just a physical split for
-its own sake: RF and clock-sensitive circuitry (LTE/WiFi/Ethernet) is kept away from
-switching-noisy circuitry (relay coils, analog front-end).
+  input/output signal conditioning.
 
 ## Repository structure
 
@@ -46,19 +43,18 @@ docs/
 
 ## Build methodology
 
-This project is built subsystem-first: each subsystem (power, core compute, WiFi, LTE,
-Ethernet, digital I/O, relay outputs, analog I/O, RS485, RS232, status indication) is
-validated in isolation (simulation-first: KiCad/ngspice for power and analog circuits,
-Wokwi for ESP32-S3 firmware/driver logic) before being consolidated into the final
-two-board design. A small Rev-A prototype PCB is planned as the first real hardware
+Built subsystem-first: each subsystem (power, core compute, WiFi, LTE, Ethernet, digital
+I/O, relay outputs, analog I/O, RS485, RS232, status indication) is validated in isolation
+before being consolidated into the final two-board design — simulation-first (KiCad/ngspice
+for power and analog circuits), then a Rev-A prototype PCB as the first real hardware
 checkpoint, ahead of committing to the full two-board fabrication run.
 
 See `docs/architecture.md` and `docs/build-log.md` for details as the project progresses.
 
 ## Status
 
-Early stage — hardware/firmware toolchain set up, component selection and protection
-design in progress. Not yet built or tested on real hardware.
+Power subsystem design complete (protection, regulation, schematic capture, simulation).
+Core compute (ESP32-S3 bring-up) is next. Not yet built or tested on real hardware.
 
 ## License
 
