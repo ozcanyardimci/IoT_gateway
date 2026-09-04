@@ -2620,7 +2620,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "ESP32-S3-WROOM-1"
+		(property "Value" "ESP32-S3-WROOM-1U"
 			(at 126.6033 43.18 0)
 			(effects
 				(font
@@ -2629,7 +2629,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "RF_Module:ESP32-S3-WROOM-1"
+		(property "Footprint" "PCM_Espressif:ESP32-S3-WROOM-1U"
 			(at 124.46 68.58 0)
 			(effects
 				(font
