@@ -43,6 +43,7 @@ for the rail).
 |---|---|---|
 | Espressif ESP32-S3-WROOM-1U-N16R8 | Main MCU module | [Datasheet](https://documentation.espressif.com/api/resource/doc/file/3yD6w5Y5/FILE/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf) |
 | Molex 216989-0001 | USB-C receptacle, USB2.0-only, 14-pin | [DigiKey product page](https://www.digikey.com/en/products/detail/molex/2169890001/13913746) |
+| E-Switch TL1150AF070Q | Manual reset/boot push buttons (SW1, SW2) | [DigiKey product page](https://www.digikey.com/en/products/detail/e-switch/TL1150AF070Q/1556582) |
 
 | Document | Covers | Source |
 |---|---|---|

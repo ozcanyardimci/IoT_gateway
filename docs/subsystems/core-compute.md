@@ -145,12 +145,11 @@ power subsystem.
 | R2 | E24 | GPIO0 pull-down | 10k |
 | R3, R4 | E24 | USB D+/D- series resistors | 22 |
 | R5, R6 | E24 | USB-C CC1/CC2 pull-downs | 5.1k |
-| SW1 | Generic momentary push button | Manual reset (EN) | generic |
-| SW2 | Generic momentary push button | Manual boot-mode entry (GPIO0) | generic |
+| SW1, SW2 | E-Switch TL1150AF070Q | Manual reset (EN) / boot-mode entry (GPIO0) | TL1150AF070Q |
 
-All passives are standard E24 decade values -- generic, no sourcing risk. U1 and J1 are the
-only parts needing a specific manufacturer/part-number match; both confirmed in stock at
-DigiKey.
+All passives are standard E24 decade values -- generic, no sourcing risk. U1, J1, and
+SW1/SW2 are the parts needing a specific manufacturer/part-number match; all confirmed in
+stock at DigiKey.
 
 ## Commissioning test items (Rev-A bring-up)
 

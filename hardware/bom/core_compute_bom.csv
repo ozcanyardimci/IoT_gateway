@@ -10,5 +10,5 @@ R3,Generic E24 22,USB D+ series resistor,generic,generic,
 R4,Generic E24 22,USB D- series resistor,generic,generic,
 R5,Generic E24 5.1k,USB-C CC1 pull-down,generic,generic,
 R6,Generic E24 5.1k,USB-C CC2 pull-down,generic,generic,
-SW1,Generic momentary push button,Manual reset (EN),generic,generic,
-SW2,Generic momentary push button,Manual boot-mode entry (GPIO0),generic,generic,
+SW1,E-Switch TL1150AF070Q,Manual reset (EN),TL1150AF070Q,E-Switch,https://www.digikey.com/en/products/detail/e-switch/TL1150AF070Q/1556582
+SW2,E-Switch TL1150AF070Q,Manual boot-mode entry (GPIO0),TL1150AF070Q,E-Switch,https://www.digikey.com/en/products/detail/e-switch/TL1150AF070Q/1556582
