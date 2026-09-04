@@ -4917,7 +4917,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "2f443309-8f8a-4806-a5b7-226c4dfd83fb")
-		(property "Reference" "PS1"
+		(property "Reference" "U6"
 			(at 226.06 58.42 0)
 			(effects
 				(font
@@ -5109,7 +5109,7 @@
 		(instances
 			(project ""
 				(path "/a0fa9f92-ef51-408b-9617-1545f9e9dad8/9bc843cc-645c-4034-a877-ed0cc8bfa13d"
-					(reference "PS1")
+					(reference "U6")
 					(unit 1)
 				)
 			)
