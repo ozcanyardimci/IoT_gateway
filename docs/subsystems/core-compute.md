@@ -30,7 +30,7 @@ subsystem work). Verification here is a datasheet-compliance checklist, not ngsp
    series resistors.
 6. **Antenna** — WROOM-1U variant uses an external antenna via U.FL connector, not a
    built-in PCB antenna — needs its own connector + RF trace note.
-7. **Schematic capture (KiCad)** — new `lteboard` project, `core_compute.kicad_sch`.
+7. **Schematic capture (KiCad)** — new `lteboard` project, `core-compute.kicad_sch`.
 8. **Verification checklist** — every value above checked against the datasheet, not
    simulated.
 9. **Acceptance criteria.**
@@ -61,7 +61,7 @@ rather than left as a guessed reference-design value.
 
 ## Step 7 results: schematic capture (2026-09-04)
 
-Wired in `hardware/kicad/lteboard/lteboard/core_compute.kicad_sch`. Full pin-by-pin
+Wired in `hardware/kicad/lteboard/lteboard/core-compute.kicad_sch`. Full pin-by-pin
 verification against Espressif's own module datasheet and hardware design guidelines:
 
 | Pin(s) | Net / circuit | Confirms |

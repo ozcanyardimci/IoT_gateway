@@ -53,8 +53,10 @@ See `docs/architecture.md` and `docs/build-log.md` for details as the project pr
 
 ## Status
 
-Power subsystem design complete (protection, regulation, schematic capture, simulation).
-Core compute (ESP32-S3 bring-up) is next. Not yet built or tested on real hardware.
+Power and core compute (ESP32-S3 bring-up) subsystems design complete — protection,
+regulation, and schematic capture done for both, verified pin-by-pin against manufacturer
+documentation. Digital inputs (8x, opto-isolated) is next. Not yet built or tested on real
+hardware.
 
 ## License
 
