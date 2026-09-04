@@ -1,0 +1,14 @@
+Ref,Part,Role,MPN,Manufacturer,Distributor link
+U1,Espressif ESP32-S3-WROOM-1U-N16R8,Main MCU module,ESP32-S3-WROOM-1U-N16R8,Espressif Systems,https://documentation.espressif.com/api/resource/doc/file/3yD6w5Y5/FILE/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf
+J1,Molex 216989-0001,"USB-C receptacle, USB2.0-only, 14-pin",216989-0001,Molex,https://www.digikey.com/en/products/detail/molex/2169890001/13913746
+C1,"Generic ceramic X7R, 10uF",3V3 bulk reservoir cap,generic,generic,
+C2,"Generic ceramic X7R, 0.1uF",3V3 bypass cap,generic,generic,
+C3,"Generic ceramic X7R, 1uF",EN RC delay cap,generic,generic,
+R1,Generic E24 10k,EN pull-up,generic,generic,
+R2,Generic E24 10k,GPIO0 pull-down,generic,generic,
+R3,Generic E24 22,USB D+ series resistor,generic,generic,
+R4,Generic E24 22,USB D- series resistor,generic,generic,
+R5,Generic E24 5.1k,USB-C CC1 pull-down,generic,generic,
+R6,Generic E24 5.1k,USB-C CC2 pull-down,generic,generic,
+SW1,Generic momentary push button,Manual reset (EN),generic,generic,
+SW2,Generic momentary push button,Manual boot-mode entry (GPIO0),generic,generic,

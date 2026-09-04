@@ -37,6 +37,18 @@ for why): Toshiba SSM3J351R,LF (replaced by LM74610-Q1 + CSD18531Q5A), Littelfus
 (replaced by TVS3300), Recom R1SX-3305 (replaced by R1SX-3.33.3-R — wrong output voltage
 for the rail).
 
+## Core compute subsystem
+
+| Part | Role | Datasheet / source |
+|---|---|---|
+| Espressif ESP32-S3-WROOM-1U-N16R8 | Main MCU module | [Datasheet](https://documentation.espressif.com/api/resource/doc/file/3yD6w5Y5/FILE/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf) |
+| Molex 216989-0001 | USB-C receptacle, USB2.0-only, 14-pin | [DigiKey product page](https://www.digikey.com/en/products/detail/molex/2169890001/13913746) |
+
+| Document | Covers | Source |
+|---|---|---|
+| Espressif ESP32-S3 Hardware Design Guidelines — Schematic Checklist | EN RC delay (10k+1uF), GPIO0 pull-up guidance, decoupling values/placement, USB D+/D- series resistor guidance | [Page](https://docs.espressif.com/projects/esp-hardware-design-guidelines/en/latest/esp32s3/schematic-checklist.html) |
+| esptool documentation — Boot Mode Selection (ESP32-S3) | GPIO0's internal 45k pull-up and the need for an external 10k pull-down (not pull-up) to reliably enter download mode | [Page](https://docs.espressif.com/projects/esptool/en/latest/esp32s3/advanced-topics/boot-mode-selection.html) |
+
 ## Connectors & wiring standards
 
 | Item | Role | Source |
@@ -53,7 +65,6 @@ for the rail).
 | TI SLYY127 — Flat-Clamp surge protection technology | Active-feedback clamping mechanism behind TVS3300 | [PDF](https://www.ti.com/lit/slyy127) |
 | TVS3300 datasheet, Section 9 | TVS3300's own typical application circuit and layout guidance | [PDF](https://www.ti.com/lit/ds/symlink/tvs3300.pdf) |
 | TI SLVA862 — Basics of eFuses | Background on inrush/reverse-polarity/overvoltage protection concepts | ti.com application report SLVA862 |
-| ESP32-S3 Hardware Design Guidelines | Power-supply decoupling: 0.1uF near digital power pins, 0.1uF+1uF near VDD_SPI, 10uF on VDD3P3, >=10uF + ESD diode at power entrance | [Espressif docs](https://docs.espressif.com/projects/esp-hardware-design-guidelines/en/latest/esp32s3/index.html) |
 | WIZnet hardware design guide | Generic decoupling (0.1uF bypass, 10uF/4.7uF bulk, 3.3V regulator >=300mA) | [WIZnet Design Guide](https://docs.wiznet.io/Design-Guide/hardware_design_guide) |
 | WIZnet W5500 reference schematic | Transformer/RJ45 config, isolation capacitors | [WIZnet W5500 ref-schematic](https://docs.wiznet.io/Product/Chip/Ethernet/W5500/ref-schematic) |
 
