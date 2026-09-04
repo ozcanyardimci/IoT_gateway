@@ -50,6 +50,12 @@ for the rail).
 | Espressif ESP32-S3 Hardware Design Guidelines — Schematic Checklist | EN RC delay (10k+1uF), GPIO0 pull-up guidance, decoupling values/placement, USB D+/D- series resistor guidance | [Page](https://docs.espressif.com/projects/esp-hardware-design-guidelines/en/latest/esp32s3/schematic-checklist.html) |
 | esptool documentation — Boot Mode Selection (ESP32-S3) | GPIO0's internal 45k pull-up and the need for an external 10k pull-down (not pull-up) to reliably enter download mode | [Page](https://docs.espressif.com/projects/esptool/en/latest/esp32s3/advanced-topics/boot-mode-selection.html) |
 
+## Digital inputs subsystem
+
+| Part | Role | Datasheet / source |
+|---|---|---|
+| Lite-On LTV-247 | 4-channel opto-isolator, digital inputs (x2 for 8ch) | [DigiKey product page](https://www.digikey.com/en/products/detail/liteon/LTV-247/4307982) - [LCSC product page](https://www.lcsc.com/product-detail/SMD-Optocouplers_LTV-247_C115451.html) - [Lite-On LTV-2X7 family datasheet](https://datasheet.lcsc.com/datasheet/pdf/6ec3b014c2c1b1e2589a5b88a431fe52.pdf?productCode=C115451) |
+
 ## Connectors & wiring standards
 
 | Item | Role | Source |
