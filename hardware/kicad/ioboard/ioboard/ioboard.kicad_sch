@@ -16,6 +16,48 @@
 		(uuid "b1b4a55f-879a-4306-a3bf-c4bdd5cb118d")
 	)
 	(sheet
+		(at 153.035 31.75)
+		(size 27.94 41.275)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "55642ed9-1d66-4d12-aa63-2236b7e87efe")
+		(property "Sheetname" "relay_outputs"
+			(at 153.035 31.0384 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "relay_outputs.kicad_sch"
+			(at 153.035 73.6096 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "ioboard"
+				(path "/a0fa9f92-ef51-408b-9617-1545f9e9dad8"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
 		(at 31.75 33.02)
 		(size 33.02 38.1)
 		(exclude_from_sim no)

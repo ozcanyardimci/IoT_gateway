@@ -57,6 +57,14 @@ for the rail).
 | Lite-On LTV-247 | 4-channel opto-isolator, digital inputs (x2 for 8ch) | [DigiKey product page](https://www.digikey.com/en/products/detail/liteon/LTV-247/4307982) - [LCSC product page](https://www.lcsc.com/product-detail/SMD-Optocouplers_LTV-247_C115451.html) - [Lite-On LTV-2X7 family datasheet](https://datasheet.lcsc.com/datasheet/pdf/6ec3b014c2c1b1e2589a5b88a431fe52.pdf?productCode=C115451) |
 | Phoenix Contact MC 1,5/9-ST-3,5 | 8-channel + common field connector (J2) | [Newark product page](https://www.newark.com/phoenix-contact/mc-1-5-9-st-3-5/plug-free-3-5mm-9way/dp/14J3299) |
 
+## Relay outputs subsystem
+
+| Part | Role | Datasheet / source |
+|---|---|---|
+| Panasonic ALDP105 | SPST-NO relay (x4) | [Panasonic product page](https://na.industrial.panasonic.com/products/relays-contactors/mechanical-power-relays/lineup/general/series/1988/model/136824) · [Future Electronics PDF](https://www1.futureelectronics.com/doc/Panasonic/ALDP105.pdf) |
+| Nexperia MMBT3904 | NPN driver transistor (one per relay channel) | [Nexperia datasheet](https://assets.nexperia.com/documents/data-sheet/MMBT3904.pdf) |
+| Phoenix Contact MC 1,5/8-ST-3,5 | 8-position (4x COM+NO independent) field connector | [Newark product page](https://www.newark.com/phoenix-contact/mc-1-5-8-st-3-5/pluggable-terminal-block-8-position/dp/14J3298) · [Farnell product page](https://ie.farnell.com/phoenix-contact/mc-1-5-8-st-3-5/terminal-block-pluggable-8pos/dp/5089013) |
+
 ## Connectors & wiring standards
 
 | Item | Role | Source |

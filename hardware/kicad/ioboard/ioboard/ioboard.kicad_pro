@@ -420,6 +420,10 @@
     [
       "e9785409-3f19-46aa-ac08-cdd108590a81",
       "digital_inputs"
+    ],
+    [
+      "55642ed9-1d66-4d12-aa63-2236b7e87efe",
+      "relay_outputs"
     ]
   ],
   "text_variables": {}
