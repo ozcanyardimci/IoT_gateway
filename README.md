@@ -53,10 +53,10 @@ See `docs/architecture.md` and `docs/build-log.md` for details as the project pr
 
 ## Status
 
-Power and core compute (ESP32-S3 bring-up) subsystems design complete — protection,
-regulation, and schematic capture done for both, verified pin-by-pin against manufacturer
-documentation. Digital inputs (8x, opto-isolated) is next. Not yet built or tested on real
-hardware.
+Power, core compute (ESP32-S3 bring-up), and digital inputs (8x, opto-isolated) subsystems
+design complete — protection, regulation, and schematic capture done for all three, verified
+pin-by-pin against manufacturer documentation. Relay outputs (4x) is next. Not yet built or
+tested on real hardware.
 
 ## License
 

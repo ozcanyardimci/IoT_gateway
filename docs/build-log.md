@@ -28,3 +28,19 @@
   properly saved and the real 3444-line schematic was verified against the documented
   values before committing.
 - See `docs/subsystems/core-compute.md` for the full writeup.
+
+## 2026-09-05 — Digital inputs subsystem complete
+- 8 opto-isolated digital inputs across two LTV-247 ICs: field input -> current-limiting
+  resistor (2.4k) -> LED -> reverse-protection diode (1N4148) -> GND_FIELD_DI, output side
+  -> pull-up (10k) to 3V3_LOGIC + filter cap (100nF) to GND_LOGIC. Field connector (Phoenix
+  Contact MC 1,5/9-ST-3,5) terminates all 8 channels plus the shared common return.
+- Schematic captured in `hardware/kicad/ioboard/ioboard/digital_inputs.kicad_sch`. Every
+  channel's pin numbers, label spelling, and diode orientation verified against the actual
+  placed KiCad symbols (not assumed from a datasheet pinout diagram, which couldn't be
+  reliably sourced for this part) before moving to the next channel.
+- Established a clearer project-wide label-scoping convention: local labels for anything
+  that never leaves one sheet, hierarchical labels plus an explicit wire on the parent sheet
+  for anything shared between a specific set of subsystems, global labels reserved for
+  GND_LOGIC only. Retroactively wired 3V3_LOGIC between power and digital_inputs through
+  ioboard.kicad_sch's root sheet using this convention.
+- See `docs/subsystems/digital-inputs.md` for the full writeup.

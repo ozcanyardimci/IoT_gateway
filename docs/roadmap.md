@@ -36,7 +36,7 @@ Order:
 
 1. Power — `docs/subsystems/power.md` — **DONE**
 2. Core compute (ESP32-S3 bring-up) — `docs/subsystems/core-compute.md` — **DONE**
-3. Digital inputs (8x, opto-isolated)
+3. Digital inputs (8x, opto-isolated) — `docs/subsystems/digital-inputs.md` — **DONE**
 4. Relay outputs (4x)
 5. Status indication (I2C GPIO expander + LEDs)
 6. Analog I/O (input + output)
