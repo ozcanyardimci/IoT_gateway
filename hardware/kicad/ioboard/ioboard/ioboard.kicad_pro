@@ -416,6 +416,10 @@
     [
       "9bc843cc-645c-4034-a877-ed0cc8bfa13d",
       "power"
+    ],
+    [
+      "e9785409-3f19-46aa-ac08-cdd108590a81",
+      "digital_inputs"
     ]
   ],
   "text_variables": {}

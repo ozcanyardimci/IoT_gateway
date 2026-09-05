@@ -5,6 +5,16 @@
 	(uuid "a0fa9f92-ef51-408b-9617-1545f9e9dad8")
 	(paper "A4")
 	(lib_symbols)
+	(wire
+		(pts
+			(xy 64.77 45.72) (xy 102.87 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b1b4a55f-879a-4306-a3bf-c4bdd5cb118d")
+	)
 	(sheet
 		(at 31.75 33.02)
 		(size 33.02 38.1)
@@ -22,10 +32,10 @@
 		)
 		(uuid "9bc843cc-645c-4034-a877-ed0cc8bfa13d")
 		(property "Sheetname" "power"
-			(at 31.75 31.4434 0)
+			(at 31.75 31.9434 0)
 			(effects
 				(font
-					(size 3 3)
+					(size 2 2)
 				)
 				(justify left bottom)
 			)
@@ -93,6 +103,58 @@
 			(project "ioboard"
 				(path "/a0fa9f92-ef51-408b-9617-1545f9e9dad8"
 					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 102.87 33.02)
+		(size 31.75 40.64)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "e9785409-3f19-46aa-ac08-cdd108590a81")
+		(property "Sheetname" "digital_inputs"
+			(at 102.87 31.9434 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "digital_inputs.kicad_sch"
+			(at 102.87 74.5366 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left top)
+			)
+		)
+		(pin "3V3_LOGIC" input
+			(at 102.87 45.72 180)
+			(uuid "3915913d-2073-4ad4-a9a0-809e56c33103")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "ioboard"
+				(path "/a0fa9f92-ef51-408b-9617-1545f9e9dad8"
+					(page "3")
 				)
 			)
 		)
