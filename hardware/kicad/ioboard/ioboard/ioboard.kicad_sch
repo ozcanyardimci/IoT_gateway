@@ -7,6 +7,16 @@
 	(lib_symbols)
 	(wire
 		(pts
+			(xy 102.87 88.9) (xy 86.36 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1806655c-5169-4584-b5b9-fc36857cd099")
+	)
+	(wire
+		(pts
 			(xy 64.77 45.72) (xy 102.87 45.72)
 		)
 		(stroke
@@ -15,9 +25,29 @@
 		)
 		(uuid "b1b4a55f-879a-4306-a3bf-c4bdd5cb118d")
 	)
+	(wire
+		(pts
+			(xy 86.36 58.42) (xy 86.36 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b3cd201b-c1c2-43db-9f02-1e5c0830d917")
+	)
+	(wire
+		(pts
+			(xy 64.77 58.42) (xy 86.36 58.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e0dd4625-e411-4bf9-bdf1-97ab7b8061e2")
+	)
 	(sheet
-		(at 153.035 31.75)
-		(size 27.94 41.275)
+		(at 102.87 82.55)
+		(size 31.115 41.275)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -32,7 +62,7 @@
 		)
 		(uuid "55642ed9-1d66-4d12-aa63-2236b7e87efe")
 		(property "Sheetname" "relay_outputs"
-			(at 153.035 31.0384 0)
+			(at 102.87 81.8384 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -41,12 +71,22 @@
 			)
 		)
 		(property "Sheetfile" "relay_outputs.kicad_sch"
-			(at 153.035 73.6096 0)
+			(at 102.87 124.4096 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left top)
+			)
+		)
+		(pin "5V_RELAY" input
+			(at 102.87 88.9 180)
+			(uuid "0841bc89-7212-4d76-b72b-f0c7d85053ff")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 			)
 		)
 		(instances

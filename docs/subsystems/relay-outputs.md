@@ -1,6 +1,7 @@
 # Relay Outputs Subsystem — Build Plan
 
-**Status:** in progress. Requirements locked, schematic capture not started.
+**Status:** schematic capture complete. ERC and footprint verification (including the
+imported ALDP105 footprint) deferred to the same pre-merge pass as digital-inputs.
 
 ## Scope
 
@@ -43,6 +44,17 @@ the same as every other decision in this project:
    installation. Snubbing/protection for that load is standard practice to document as a
    usage note, not to speculatively build onto the board. Same reasoning as core-compute's
    USB VBUS decision: don't add scope for a requirement that doesn't exist yet.
+5. **Local bulk + bypass capacitors at the `5V_RELAY` entry point.** Not because the
+   regulator can't keep up with the coil current -- it can; a relay coil's own inductance
+   rate-limits its current rise to a millisecond-scale ramp, well within any reasonable
+   buck regulator's control loop bandwidth, so the "fast transient" reasoning used for
+   core-compute's WiFi-burst caps doesn't actually apply here. The real reason is EMI/noise:
+   switching an inductive coil (even with the flyback diode handling the big kickback)
+   still couples some high-frequency content back onto the shared rail, and for a product
+   that has to pass EMC/EMI compliance, keeping that noise local rather than letting it
+   ride down the trace into other subsystems sharing `5V_RELAY` is standard practice. C21
+   (10uF, bulk) + C22 (100nF, bypass), same bulk+bypass pairing already used for the ESP32's
+   3V3 pin in core-compute.
 
 **Known limitation, flagged rather than silently absorbed:** the field connector selected in
 Step 2 is rated 160V, while the ALDP105's contacts are themselves rated up to 277VAC/30VDC.
@@ -168,8 +180,120 @@ channel yet, so there is nothing yet to check for conflicts against the reserved
 (GPIO26-32 flash, GPIO33-37 PSRAM, GPIO0/45/46/3 strapping, GPIO39/42/47/21 nonstandard
 reset). Carried forward as a real step, done once step 6 happens.
 
+
+## Step 4 results: schematic capture (2026-09-06)
+
+Wired in `hardware/kicad/ioboard/ioboard/relay_outputs.kicad_sch`, 4 identical channels.
+Channel 1 shown -- channels 2-4 (K2/Q2, K3/Q3, K4/Q4, R28-33, D10-D12) repeat the exact
+same pattern with sequential reference numbers.
+
+| Pin(s) | Net / circuit | Confirms |
+|---|---|---|
+| K1 pin 1 (coil) | `5V_RELAY` (hierarchical) | coil supply |
+| K1 pin 2 (coil) | Q1 pin 3 (collector), D9 anode | coil low side / switched node |
+| K1 pins 3, 4 (contacts) | J3 pins 1, 2 | field-side output, fully independent per channel |
+| D9 cathode | K1 pin 1 / `5V_RELAY` node | reverse-biased in normal operation |
+| D9 anode | K1 pin 2 / Q1 collector node | clamps the coil's turn-off kickback |
+| Q1 pin 1 (base) | R26 (510) -> `RELAY1_CTRL` (local placeholder) | GPIO drive, exact GPIO assigned at roadmap step 6 |
+| Q1 pin 1 (base) | R27 (10k) -> `GND_LOGIC` | defined-off state if GPIO floats at boot |
+| Q1 pin 2 (emitter) | `GND_LOGIC` | return path |
+| C21 (10uF), C22 (100nF) | `5V_RELAY` / `GND_LOGIC`, once per sheet (all 4 `5V_RELAY` label instances are one net) | local bulk + bypass, EMI/noise reasoning above |
+| J3 (Conn_01x08) | K1-K4 contact pins, 2 positions each, no shared common | field connector |
+
+**K1's pin mapping** (ALDP105, no numbered pinout in any datasheet found -- same situation
+as the LTV-247): pins 1/2 are the coil, pins 3/4 are the SPST-NO contact, confirmed live
+from Symbol Properties -> Pin Functions on the placed symbol before any wiring was done.
+
+**Q1's pin mapping** (MMBT3904, SOT-23): pin 1 = base, pin 2 = emitter, pin 3 = collector,
+also confirmed live from the placed symbol rather than assumed from the package outline.
+
+**Root sheet:** `relay_outputs` sheet symbol added to `ioboard.kicad_sch` with a `5V_RELAY`
+input pin, wired to the power sheet symbol's `5V_RELAY` output pin -- same pattern as
+`3V3_LOGIC` for digital-inputs. Verified programmatically (not just visually) that the wire
+path actually joins both pin coordinates, not just two labels that happen to look aligned.
+
+**Caught and corrected during capture:** D9 was initially wired with reversed polarity
+(cathode toward the collector node instead of toward `5V_RELAY`) -- would have put a
+forward-biased diode across the coil for the entire time each transistor is on, well past
+the diode's ~300mA rating. Caught before any commit, fixed by mirroring the symbol.
+
+## Step 5 results: verification checklist (2026-09-06)
+
+- ALDP105 coil/contact specs: Panasonic's own industry product page, re-checked fresh this
+  subsystem rather than trusted from the earlier power-subsystem note.
+- MMBT3904 specs: Nexperia's own datasheet, fetched fresh this subsystem.
+- Base resistor sizing (510 ohm, ~3.8x saturation margin): worked from the transistor's
+  datasheet hFE figures, conservative (lower) test-point value used since actual coil
+  current falls between the two guaranteed points.
+- Flyback diode orientation: verified against actual circuit behavior (forward path only
+  during turn-off kickback), not just copied from a generic reference -- this is exactly
+  what caught the reversed D9 above.
+- Reference designators: programmatically checked, no duplicates, no gaps, no misspelled
+  labels (`5V_RELAY`, `GND_LOGIC`, `RELAY1_CTRL`-`RELAY4_CTRL` all grep-verified clean).
+- Connector: Phoenix Contact MC 1,5/8-ST-3,5 (1840421) confirmed in stock via Newark and
+  Farnell listings; K1-K4's contact pins independently verified wired to distinct J3
+  positions (no shared/bussed pins).
+- **Not yet verified, flagged rather than assumed correct:** K1-K4's footprint
+  (`ALDP105:RELAY_ALDP105`) came bundled with the imported third-party symbol library. Unlike
+  the other parts on this sheet (which have no footprint yet, a deliberate deferral), this
+  one already has a footprint assigned that has not been independently checked against the
+  ALDP105's real mechanical/pin-spacing drawing. Tracked as a commissioning/footprint-review
+  item below, not assumed correct just because it came from an imported library. Q1-Q4's
+  footprint (`Package_TO_SOT_SMD:SOT-23`) is a standard KiCad library footprint matching the
+  datasheet's stated SOT-23 package -- lower risk, but still covered by the general
+  ERC/footprint-assignment pass deferred for the whole subsystem (see below).
+
+No simulation performed -- same as every other subsystem, this is a datasheet-compliance +
+resistor-math design, not a circuit needing a control-loop simulation.
+
+## Step 6: Acceptance criteria
+
+1. Each channel's relay coil energizes reliably when its GPIO drives `RELAY#_CTRL` high, and
+   stays off when the GPIO is low or floating (pull-down holds it off at boot). Confirmable
+   only at bring-up.
+2. No flyback-related damage to Q1-Q4 or D9-D12 across repeated switching cycles --
+   confirmable only at bring-up with real coils.
+3. Contact side switches its connected load reliably, within the connector's 160V/8A rating
+   (documented limitation, not a defect -- see Design approach).
+4. No strapping pin conflict once roadmap step 6 assigns real GPIOs to `RELAY1_CTRL`
+   through `RELAY4_CTRL` -- re-checked at that point, not yet actionable.
+5. ERC clean and real footprints assigned (including independently verifying the imported
+   ALDP105 footprint) before this subsystem merges to main -- same deferred-but-tracked
+   policy as digital-inputs, not blocking further roadmap progress now.
+
+Items 1-2 need real hardware -- tracked below as commissioning items, same pattern as every
+other subsystem.
+
+## Step 7: Bill of materials
+
+See `hardware/bom/relay_outputs_bom.csv`. 23 parts: K1-K4 (ALDP105), Q1-Q4 (MMBT3904), R26-R33
+(8x E24 resistors, 510/10k alternating), D9-D12 (1N4148), J3 (Phoenix Contact MC 1,5/8-ST-3,5),
+C21-C22 (10uF/100nF bulk+bypass). All passives are generic E24/standard values except K1-K4,
+Q1-Q4, and J3, which need the specific manufacturer/part-number match already locked above.
+
+## Commissioning test items (Rev-A bring-up)
+
+| Item | What to check | Why not closed now |
+|---|---|---|
+| ALDP105 footprint accuracy | Confirm the imported `ALDP105:RELAY_ALDP105` footprint actually matches the real part's pin spacing/pattern before board fab | No independent mechanical drawing was found to cross-check the imported library against |
+| Coil switching reliability | Confirm all 4 channels switch cleanly across repeated cycles with real coils and real loads | Real inductive switching behavior isn't fully modeled on paper |
+| Connector voltage margin | Confirm actual connected loads stay within the connector's 160V/8A rating | Depends entirely on what the user wires to each channel, unknown at design time |
+
+## Step 8: Sign-off
+
+Relay-outputs subsystem schematic capture complete. All 4 channels wired identically and
+verified pin-by-pin against the live placed symbols (not assumed from datasheets, since
+neither the ALDP105 nor its transistor driver had a fully trustworthy pinout diagram
+available). One real wiring error (reversed flyback diode) was caught and corrected before
+commit. ERC and footprint verification (including the imported ALDP105 footprint) deferred
+to the same pre-merge pass as digital-inputs, tracked in `CLAUDE.md`.
+
+**Next:** roadmap step continues to analog I/O (input + output) as the next IOBOARD
+subsystem.
+
 ## Revision history
 
 | Date | Change |
 |---|---|
 | 2026-09-05 | Scope, design approach, driver-stage math, and connector selection locked |
+| 2026-09-06 | Bulk/bypass capacitor decision added; schematic capture, verification checklist, acceptance criteria, BOM, and sign-off completed |

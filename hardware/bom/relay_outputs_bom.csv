@@ -1,0 +1,24 @@
+Ref,Part,Role,MPN,Manufacturer,Distributor link
+K1,Panasonic ALDP105,Relay channel 1,ALDP105,Panasonic,https://na.industrial.panasonic.com/products/relays-contactors/mechanical-power-relays/lineup/general/series/1988/model/136824
+K2,Panasonic ALDP105,Relay channel 2,ALDP105,Panasonic,https://na.industrial.panasonic.com/products/relays-contactors/mechanical-power-relays/lineup/general/series/1988/model/136824
+K3,Panasonic ALDP105,Relay channel 3,ALDP105,Panasonic,https://na.industrial.panasonic.com/products/relays-contactors/mechanical-power-relays/lineup/general/series/1988/model/136824
+K4,Panasonic ALDP105,Relay channel 4,ALDP105,Panasonic,https://na.industrial.panasonic.com/products/relays-contactors/mechanical-power-relays/lineup/general/series/1988/model/136824
+Q1,Nexperia MMBT3904,NPN driver transistor channel 1,MMBT3904,Nexperia,https://assets.nexperia.com/documents/data-sheet/MMBT3904.pdf
+Q2,Nexperia MMBT3904,NPN driver transistor channel 2,MMBT3904,Nexperia,https://assets.nexperia.com/documents/data-sheet/MMBT3904.pdf
+Q3,Nexperia MMBT3904,NPN driver transistor channel 3,MMBT3904,Nexperia,https://assets.nexperia.com/documents/data-sheet/MMBT3904.pdf
+Q4,Nexperia MMBT3904,NPN driver transistor channel 4,MMBT3904,Nexperia,https://assets.nexperia.com/documents/data-sheet/MMBT3904.pdf
+R26,Generic E24 resistor,Base resistor ch1,510,generic,
+R27,Generic E24 resistor,Base pull-down ch1,10k,generic,
+R28,Generic E24 resistor,Base resistor ch2,510,generic,
+R29,Generic E24 resistor,Base pull-down ch2,10k,generic,
+R30,Generic E24 resistor,Base resistor ch3,510,generic,
+R31,Generic E24 resistor,Base pull-down ch3,10k,generic,
+R32,Generic E24 resistor,Base resistor ch4,510,generic,
+R33,Generic E24 resistor,Base pull-down ch4,10k,generic,
+D9,Generic small-signal diode,Flyback diode ch1,1N4148,generic,
+D10,Generic small-signal diode,Flyback diode ch2,1N4148,generic,
+D11,Generic small-signal diode,Flyback diode ch3,1N4148,generic,
+D12,Generic small-signal diode,Flyback diode ch4,1N4148,generic,
+J3,"Phoenix Contact MC 1,5/8-ST-3,5",8-position field connector (4x COM+NO independent),1840421,Phoenix Contact,https://www.newark.com/phoenix-contact/mc-1-5-8-st-3-5/pluggable-terminal-block-8-position/dp/14J3298
+C21,"Generic ceramic X7R, 10uF",Bulk cap at 5V_RELAY entry,generic,generic,
+C22,"Generic ceramic X7R, 100nF",Bypass cap at 5V_RELAY entry,generic,generic,
