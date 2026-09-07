@@ -424,6 +424,10 @@
     [
       "55642ed9-1d66-4d12-aa63-2236b7e87efe",
       "relay_outputs"
+    ],
+    [
+      "ce521ae5-fae5-4047-a79f-945e6fee8e92",
+      "analog_io"
     ]
   ],
   "text_variables": {}

@@ -5,9 +5,25 @@
 	(uuid "a0fa9f92-ef51-408b-9617-1545f9e9dad8")
 	(paper "A4")
 	(lib_symbols)
+	(junction
+		(at 83.82 38.1)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b5762d23-c612-42df-ada6-3365938891c8")
+	)
 	(wire
 		(pts
-			(xy 102.87 88.9) (xy 86.36 88.9)
+			(xy 88.9 64.77) (xy 88.9 149.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0b51c162-320b-435d-83ff-c4ab414fda1e")
+	)
+	(wire
+		(pts
+			(xy 102.87 88.9) (xy 93.98 88.9)
 		)
 		(stroke
 			(width 0)
@@ -17,33 +33,133 @@
 	)
 	(wire
 		(pts
-			(xy 64.77 45.72) (xy 102.87 45.72)
+			(xy 64.77 58.42) (xy 91.44 58.42)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "b1b4a55f-879a-4306-a3bf-c4bdd5cb118d")
+		(uuid "18570449-ed59-4fba-8b71-5646a06f6aec")
 	)
 	(wire
 		(pts
-			(xy 86.36 58.42) (xy 86.36 88.9)
+			(xy 64.77 52.07) (xy 93.98 52.07)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "b3cd201b-c1c2-43db-9f02-1e5c0830d917")
+		(uuid "2a284041-5336-4ce1-83a3-107e3895a59d")
 	)
 	(wire
 		(pts
-			(xy 64.77 58.42) (xy 86.36 58.42)
+			(xy 96.52 45.72) (xy 102.87 45.72)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "e0dd4625-e411-4bf9-bdf1-97ab7b8061e2")
+		(uuid "2d3a5550-416e-4ad1-a852-de2625db1788")
+	)
+	(wire
+		(pts
+			(xy 93.98 52.07) (xy 93.98 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "36412d7b-4a36-4b8b-bb20-d312efb44c38")
+	)
+	(wire
+		(pts
+			(xy 88.9 149.86) (xy 107.95 149.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6349788c-52d5-4fae-ab51-2949c1e62caa")
+	)
+	(wire
+		(pts
+			(xy 64.77 38.1) (xy 83.82 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7fc69c42-4102-45ed-b0e3-4adaf6c7b40a")
+	)
+	(wire
+		(pts
+			(xy 83.82 154.94) (xy 83.82 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8f1c1668-3747-4c8e-85f7-8521dc3addf9")
+	)
+	(wire
+		(pts
+			(xy 64.77 64.77) (xy 88.9 64.77)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9cbe9496-1b89-4aa1-a874-60218c6f3f57")
+	)
+	(wire
+		(pts
+			(xy 91.44 58.42) (xy 91.44 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9d4c6810-b9aa-4a55-ab29-cb7b71c92e38")
+	)
+	(wire
+		(pts
+			(xy 91.44 144.78) (xy 107.95 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c9b4acb2-f99c-4418-a01a-80cbf75eea2a")
+	)
+	(wire
+		(pts
+			(xy 107.95 154.94) (xy 83.82 154.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e955cb43-b6e2-44ce-a45c-a0b26c1b70a8")
+	)
+	(wire
+		(pts
+			(xy 96.52 38.1) (xy 96.52 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "eaf90f2d-955b-46e4-9052-747a8299734a")
+	)
+	(wire
+		(pts
+			(xy 83.82 38.1) (xy 96.52 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ef31c855-9195-4281-916a-0dc6160c76e8")
 	)
 	(sheet
 		(at 102.87 82.55)
@@ -132,7 +248,7 @@
 			)
 		)
 		(pin "3V3_ANALOG_ISO" output
-			(at 64.77 39.37 0)
+			(at 64.77 58.42 0)
 			(uuid "b4c3d33f-1096-4024-a80a-0df41ef826e7")
 			(effects
 				(font
@@ -142,7 +258,7 @@
 			)
 		)
 		(pin "3V3_LOGIC" output
-			(at 64.77 45.72 0)
+			(at 64.77 38.1 0)
 			(uuid "62354f1c-0d61-426f-966e-2bbc3dea7d7c")
 			(effects
 				(font
@@ -152,7 +268,7 @@
 			)
 		)
 		(pin "3V3_LTE" output
-			(at 64.77 52.07 0)
+			(at 64.77 44.45 0)
 			(uuid "648ec840-15be-4a9e-ac35-43f6a770f20a")
 			(effects
 				(font
@@ -162,7 +278,7 @@
 			)
 		)
 		(pin "5V_RELAY" output
-			(at 64.77 58.42 0)
+			(at 64.77 52.07 0)
 			(uuid "fceaa158-0d97-4543-a085-c6b65a79438a")
 			(effects
 				(font
@@ -185,6 +301,88 @@
 			(project "ioboard"
 				(path "/a0fa9f92-ef51-408b-9617-1545f9e9dad8"
 					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 107.95 140.97)
+		(size 32.385 33.655)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "ce521ae5-fae5-4047-a79f-945e6fee8e92")
+		(property "Sheetname" "analog_io"
+			(at 107.95 140.2584 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "analog_io.kicad_sch"
+			(at 107.95 175.2096 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "3V3_ANALOG_ISO" input
+			(at 107.95 144.78 180)
+			(uuid "1893d406-911a-4adb-b2d0-bebd2e55b05c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "15V_ANALOG_ISO" input
+			(at 107.95 165.1 180)
+			(uuid "8ee07615-0b1f-451d-b747-0b79206b3c3c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "GND_ANALOG_ISO" input
+			(at 107.95 149.86 180)
+			(uuid "e1d49cbb-b281-4559-935a-300e7a145ac5")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "3V3_LOGIC" input
+			(at 107.95 154.94 180)
+			(uuid "86ede379-8f95-4a98-a548-84143d36e934")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "ioboard"
+				(path "/a0fa9f92-ef51-408b-9617-1545f9e9dad8"
+					(page "5")
 				)
 			)
 		)

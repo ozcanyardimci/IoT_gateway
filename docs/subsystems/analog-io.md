@@ -1,7 +1,8 @@
 # Analog I/O Subsystem — Build Plan
 
-**Status:** Steps 1 (front-end + isolation-crossing design) and 3 (connector) locked and
-verified against real datasheets. Schematic capture not yet started.
+**Status:** Steps 1 (front-end + isolation-crossing design), 3 (connector), and 5 (schematic
+capture) locked and verified — schematic capture verified pin-by-pin against the saved
+`analog_io.kicad_sch` file, not by self-report. Step 6 (verification checklist) is next.
 
 ## Scope
 
@@ -190,8 +191,8 @@ introduced.
   pre-merge policy as every other subsystem.
 - New 15V rail's addition to `power.md` (module selection table, load budget, fuse-budget
   check) — written up separately once this doc is locked, per "Power subsystem impact"
-  above.
-- Schematic capture (Step 2 onward).
+  above. `15V_ANALOG_ISO` is already brought out as a dangling root-sheet pin on the
+  `analog_io` sheet symbol, ready to be wired once that rail exists.
 
 ### Known headroom (not a defect)
 
@@ -221,6 +222,85 @@ GND_ANALOG_ISO return** rather than a dedicated return per channel.
   BOM/part-family consistency with J1/J2/J3, same reasoning already used project-wide for
   reusing one connector family across subsystems.
 
+## Step 5 results: schematic capture (2026-09-07)
+
+`ioboard/analog_io.kicad_sch` built and verified pin-by-pin against the saved file content
+(not by self-report) across every component, wire, and label on the sheet.
+
+**Components placed:**
+
+- **U9** ADS1115IDGSR (ADC) — AIN0/AIN1 from the two input buffers, VDD/GND on the
+  isolated 3.3V/GND rails, ADDR strapped to GND_ANALOG_ISO (address 0x48), SDA/SCL on the
+  isolated I2C bus. AIN2/AIN3 and ALERT/RDY left unconnected (spare/deferred).
+- **U10** ISO1540 (I2C isolator) — VCC1/GND1 on the isolated rails, SDA1/SCL1 on the
+  isolated bus shared with U9/U11; VCC2 on 3V3_LOGIC, GND2 on the global GND_LOGIC net;
+  SDA2/SCL2 given local labels `SDA_ISO`/`SCL_ISO` (plain local labels, matching the
+  RELAY#_CTRL convention already established in `relay_outputs.kicad_sch` — not
+  hierarchical labels, since these don't need a root-sheet pin).
+- **U11** MCP4725A0T-E/CH (DAC) — A0 strapped to GND_ANALOG_ISO (address 0x60, no
+  collision with the ADC's 0x48), VDD/VSS on the isolated rails, SCL/SDA on the isolated
+  bus, VOUT into the output gain stage.
+- **U12** — physical LM2904 package #1: both amp units used as unity-gain input buffers
+  (channel 1 -> U9 AIN0, channel 2 -> U9 AIN1), powered from 3V3_ANALOG_ISO / GND_ANALOG_ISO.
+- **U13** — physical LM2904 package #2: one amp unit used as the output non-inverting gain
+  stage (gain 3.004, per Step 1 math), powered from 15V_ANALOG_ISO / GND_ANALOG_ISO. Second
+  unit intentionally left unplaced — the spare headroom flagged in Step 1.
+- **D13, D14** — SMBJ15CA TVS, one per input channel, across each channel's signal node to
+  GND_ANALOG_ISO, ahead of the divider.
+- **R_top1/R_bottom1** (channel 1, AI1) and **R_top2/R_bottom2** (channel 2, AI2) — the
+  100k/11.0k stuffing-option dividers from Step 1, reference designators confirmed unique
+  and channel-matched (no naming collision) via direct grep of the saved file.
+- **R_in (49.9k) / R_f (100k)** — output-stage feedback network. Verified the "-" pin,
+  R_in's GND-side leg, and R_f's output-side leg all meet at one shared node (the actual
+  feedback-loop requirement for a non-inverting stage) — an earlier wiring pass had this
+  wrong (R_f tied to GND instead of to the "-"/R_in node, which breaks feedback entirely)
+  and was caught and corrected during capture.
+- **J4** — Phoenix Contact MC 1,5/4-ST-3,5 (Step 3's connector): pin 1 = AI1, pin 2 = AI2,
+  pin 3 = AO, pin 4 = GND_ANALOG_ISO.
+
+**Nets/labels confirmed:** `AI1`, `AI2`, `AO` (local labels tying each front-end node to its
+connector pin), `SDA_ISO`/`SCL_ISO` (local labels, logic-side I2C), multiple
+`GND_ANALOG_ISO` and `3V3_ANALOG_ISO` hierarchical-label instances, one `15V_ANALOG_ISO`
+hierarchical label (intentionally left dangling — no rail exists yet, see below), one
+`3V3_LOGIC` hierarchical label, one `GND_LOGIC` global label. No accidental bridging found
+between the GND_ANALOG_ISO and GND_LOGIC domains anywhere on the sheet — the isolation
+barrier (U10) is the only crossing point, as designed.
+
+**Root-sheet integration:** the `analog_io` sheet symbol's 4 pins (`3V3_ANALOG_ISO`,
+`GND_ANALOG_ISO`, `15V_ANALOG_ISO`, `3V3_LOGIC`) confirmed present and correctly wired on
+`ioboard.kicad_sch`; `15V_ANALOG_ISO` is deliberately left unwired at the root level until
+the power subsystem adds that rail (Step 2 of this doc's own plan, still deferred).
+
+## Step 6 results: verification checklist (2026-09-07, schematic-level; in progress)
+
+Schematic-level checks completed as part of capture, before any physical hardware exists:
+
+- Every IC pin (power, signal, address-strap) traced to its correct net — done manually,
+  pin-by-pin, verified against the saved file rather than the KiCad canvas view.
+- I2C addresses confirmed distinct: ADS1115 = 0x48 (ADDR->GND), MCP4725 = 0x60 (A0->GND) —
+  no collision on the shared isolated bus.
+- Ground-domain isolation confirmed: GND_ANALOG_ISO and GND_LOGIC never share a net anywhere
+  on the sheet except through U10 (ISO1540) — the isolation barrier is intact in the
+  schematic, not just intended.
+- Feedback-loop topology on the output gain stage confirmed correct (see Step 5 above) —
+  this is the one point on the sheet where a wiring mistake would have been electrically
+  silent until power-up, so it got the closest look.
+- Resistor reference designators confirmed unique and unambiguous (R_top1/R_bottom1 = AI1,
+  R_top2/R_bottom2 = AI2) after a rename caught during the sheet-wide audit.
+
+Still open (needs either KiCad's own tooling or physical hardware):
+
+- **Run KiCad's ERC (Electrical Rules Check)** on `analog_io.kicad_sch` — an independent,
+  tool-based cross-check on top of the manual pin tracing above (catches things like
+  unpowered pins, conflicting driver pins, or unrouted labels that manual review can miss).
+  Not yet run.
+- Physical checks deferred to Rev-A hardware bring-up: rail presence and isolation
+  (megohmmeter check between GND_ANALOG_ISO and GND_LOGIC), I2C bus scan confirming both
+  devices ACK at their expected addresses, AI1/AI2 functional test against a known input
+  voltage, AO functional test against a commanded DAC code. None of this is possible before
+  PCB fabrication; listed here so it isn't lost before Step 7 (acceptance criteria) formalizes
+  pass/fail thresholds for each.
+
 ## Steps
 
 1. **Front-end + isolation-crossing design** — real part selection, front-end math,
@@ -230,8 +310,9 @@ GND_ANALOG_ISO return** rather than a dedicated return per channel.
 3. **Connector selection** — **DONE (this doc)**.
 4. **Strapping/reserved pin cross-check** — deferred to roadmap step 6, same as every other
    subsystem.
-5. **Schematic capture (KiCad)** — new sheet, `ioboard/analog_io.kicad_sch`.
-6. **Verification checklist.**
+5. **Schematic capture (KiCad)** — new sheet, `ioboard/analog_io.kicad_sch` — **DONE (this
+   doc)**.
+6. **Verification checklist** — in progress (this doc); ERC pending.
 7. **Acceptance criteria.**
 8. **Documentation & BOM.**
 9. **Sign-off** — move to the next IOBOARD subsystem (RS485).
@@ -247,3 +328,11 @@ GND_ANALOG_ISO return** rather than a dedicated return per channel.
   — to be added to `power.md`. |
 | 2026-09-07 | Step 3 connector locked: Phoenix Contact MC 1,5/4-ST-3,5, 4 positions
   (AI1/AI2/AO + shared GND_ANALOG_ISO return), same family as J1/J2/J3. |
+| 2026-09-07 | Step 5 schematic capture done: `analog_io.kicad_sch` built and verified
+  pin-by-pin (U9 ADS1115, U10 ISO1540, U11 MCP4725, U12/U13 LM2904 x2 packages, D13/D14
+  SMBJ15CA, front-end dividers, output gain stage, J4). One real wiring bug caught and fixed
+  (output-stage feedback network wired to break the loop) and one naming ambiguity caught and
+  fixed (channel-1/channel-2 resistor reference designators swapped). Root-sheet integration
+  confirmed on `ioboard.kicad_sch`. Step 6 verification checklist started: schematic-level
+  checks (address collisions, ground-domain isolation, feedback topology) done; ERC and
+  physical bring-up checks still open. |
