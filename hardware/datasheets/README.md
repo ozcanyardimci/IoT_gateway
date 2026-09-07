@@ -74,6 +74,7 @@ for the rail).
 | Microchip MCP4725 | 12-bit I2C DAC, isolated side (analog output) | [Microchip datasheet](https://ww1.microchip.com/downloads/en/devicedoc/22039d.pdf) |
 | Littelfuse SMBJ15CA | Bidirectional TVS, analog input overvoltage protection (x2) | [Littelfuse datasheet](https://www.littelfuse.com/assetdocs/tvs-diodes-smbj-series-datasheet) |
 | Recom R05P215S | Isolated 5V-in/15V-out DC-DC, analog output gain-stage supply | [DigiKey product page](https://www.digikey.com/en/products/detail/recom-power/R05P215S-P/2301265) — isolation-voltage figure for this specific part not independently re-verified this session, see "Not yet re-verified" below |
+| Phoenix Contact MC 1,5/4-ST-3,5 | 4-position field connector (AI1/AI2/AO + shared return) | [Newark product page](https://www.newark.com/phoenix-contact/mc-1-5-4-st-3-5/pluggable-terminal-block-4-position/dp/14J3294) |
 
 LM2904 (input buffers + output gain stage, 2 physical instances) reuses the part already
 listed under "Power subsystem" above — no separate entry needed.

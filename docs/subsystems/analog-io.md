@@ -1,7 +1,7 @@
 # Analog I/O Subsystem — Build Plan
 
-**Status:** Step 1 (front-end + isolation-crossing design) locked and verified against real
-datasheets. Schematic capture not yet started.
+**Status:** Steps 1 (front-end + isolation-crossing design) and 3 (connector) locked and
+verified against real datasheets. Schematic capture not yet started.
 
 ## Scope
 
@@ -199,12 +199,35 @@ Two LM2904 chips (4 amps total) are needed for 3 amp-slots (2 input buffers + 1 
 stage) — one half-amp is spare. Flagged as available headroom for a future channel or
 diagnostic use, not wasted design.
 
+## Step 3 results: connector (2026-09-07)
+
+**Phoenix Contact MC 1,5/4-ST-3,5** (MPN 1840382) — same family already used for J1 (power
+input), J2 (digital inputs), and J3 (relay outputs): 3.5mm pitch, 8A/160V, 28-16AWG (1.5mm²)
+screw terminals, through-hole pluggable, 4 positions. Confirmed in stock via Newark/TME
+listings.
+
+4 positions, not 6: AI1, AI2, and AO each get one signal pin, sharing **one common
+GND_ANALOG_ISO return** rather than a dedicated return per channel.
+
+- This is a deliberate difference from the relay-outputs connector, which gave every
+  channel a fully independent COM+NO pair specifically because relay contacts have no
+  shared reference and could be switching unrelated circuits.
+- The analog channels don't have that problem — all three already share one physical
+  isolated ground plane (GND_ANALOG_ISO) by design (see the isolation-crossing decision
+  above). Giving each channel its own return terminal would still land on the same net on
+  the PCB; it would add connector pins and cost without adding isolation or noise
+  rejection that a shared return doesn't already provide.
+- 8A/160V is heavy overkill for signal-level current (tens of mA at most) — kept anyway for
+  BOM/part-family consistency with J1/J2/J3, same reasoning already used project-wide for
+  reusing one connector family across subsystems.
+
 ## Steps
 
 1. **Front-end + isolation-crossing design** — real part selection, front-end math,
    isolation-crossing decision — **DONE (this doc)**.
-2. **New rail spec** — written into `power.md`, not duplicated here.
-3. **Connector selection** — real sourced field connector, TBD.
+2. **New rail spec** — written into `power.md`, not duplicated here — deferred until this
+   subsystem is otherwise closed out, per the user's own sequencing call.
+3. **Connector selection** — **DONE (this doc)**.
 4. **Strapping/reserved pin cross-check** — deferred to roadmap step 6, same as every other
    subsystem.
 5. **Schematic capture (KiCad)** — new sheet, `ioboard/analog_io.kicad_sch`.
@@ -222,3 +245,5 @@ diagnostic use, not wasted design.
   isolation-crossing design done: ADS1115, ISO1540, MCP4725, LM2904 (x2 instances),
   SMBJ15CA selected with real datasheet math. New isolated 15V rail requirement identified
   — to be added to `power.md`. |
+| 2026-09-07 | Step 3 connector locked: Phoenix Contact MC 1,5/4-ST-3,5, 4 positions
+  (AI1/AI2/AO + shared GND_ANALOG_ISO return), same family as J1/J2/J3. |
