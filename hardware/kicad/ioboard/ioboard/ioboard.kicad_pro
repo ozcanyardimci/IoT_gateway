@@ -25,7 +25,68 @@
     "equivalence_files": []
   },
   "erc": {
-    "erc_exclusions": [],
+    "erc_exclusions": [
+      [
+        "label_dangling|1498600|292100|26798474-426d-431c-bb89-7bdddac0d9db|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92||",
+        "Isolated I2C bus master pin (MCU-side GPIO assignment deferred), same pattern as relay-outputs' RELAYx_CTRL labels — see docs/roadmap.md Step 6 (MCU GPIO mapping)."
+      ],
+      [
+        "label_dangling|1498600|317500|c66abb9e-58c2-4c05-9dd6-b25a9b66188b|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92||",
+        "Isolated I2C bus master pin (MCU-side GPIO assignment deferred), same pattern as relay-outputs' RELAYx_CTRL labels — see docs/roadmap.md Step 6 (MCU GPIO mapping)."
+      ],
+      [
+        "label_dangling|1676400|1270000|b714f5e8-caf3-4286-bac0-c3719225ef16|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92||",
+        "15V_ANALOG_ISO rail does not exist yet — deferred to power.md rail-addition work (to be done on main after this subsystem closes). U13C V+ is intentionally unpowered until then."
+      ],
+      [
+        "missing_input_pin|1790700|762000|a85dba45-4652-435e-aec7-a450562b62f9|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|",
+        "U13 unit B (LM2904 dual comparator, 2nd op-amp) intentionally left unplaced — spare headroom for future expansion per analog-io.md Step 1, same pattern as ADC spare channels AIN2/AIN3."
+      ],
+      [
+        "missing_unit|1790700|762000|a85dba45-4652-435e-aec7-a450562b62f9|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|",
+        "U13 unit B (LM2904 dual comparator, 2nd op-amp) intentionally left unplaced — spare headroom for future expansion per analog-io.md Step 1, same pattern as ADC spare channels AIN2/AIN3."
+      ],
+      [
+        "pin_not_connected|1066800|660400|c7919e42-f91f-45a9-b0d5-0e6ca63e2004|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|",
+        "ALERT/RDY comparator output left unconnected; not used by this design (polling-based ADC readout per analog-io.md). Spare output pin."
+      ],
+      [
+        "pin_not_connected|1079500|1651000|8ee07615-0b1f-451d-b747-0b79206b3c3c|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8|/a0fa9f92-ef51-408b-9617-1545f9e9dad8|",
+        "15V_ANALOG_ISO rail does not exist yet — deferred to power.md rail-addition work (to be done on main after this subsystem closes). Root sheet-boundary counterpart of the same deferred pin inside analog_io.kicad_sch."
+      ],
+      [
+        "pin_not_connected|863600|736600|1967a6ac-c8e3-4c01-b3b9-66c0efecfc7c|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|",
+        "Spare ADC input, intentionally unconnected per analog-io.md Step 1 (2 of 4 channels used, headroom for future expansion)."
+      ],
+      [
+        "pin_not_connected|863600|762000|d9049c9b-f474-4c19-8078-9db1d75adb7b|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|",
+        "Spare ADC input, intentionally unconnected per analog-io.md Step 1 (2 of 4 channels used, headroom for future expansion)."
+      ],
+      [
+        "pin_not_driven|863600|736600|1967a6ac-c8e3-4c01-b3b9-66c0efecfc7c|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|",
+        "Spare ADC input, intentionally unconnected per analog-io.md Step 1 (2 of 4 channels used, headroom for future expansion)."
+      ],
+      [
+        "pin_not_driven|863600|762000|d9049c9b-f474-4c19-8078-9db1d75adb7b|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|",
+        "Spare ADC input, intentionally unconnected per analog-io.md Step 1 (2 of 4 channels used, headroom for future expansion)."
+      ],
+      [
+        "power_pin_not_driven|1473200|266700|fb48cfda-1052-419d-a09e-b1f681a09f30|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|",
+        "Rail is driven from power.kicad_sch via a hierarchical sheet pin (U6 +VOUT / 3V3_ANALOG_ISO). ERC does not trace power drivers across sheet hierarchy for this check; net has a real source."
+      ],
+      [
+        "power_pin_not_driven|1727200|1270000|b62b7feb-69bf-4a9f-8fb0-5c48858d2674|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|",
+        "15V_ANALOG_ISO rail does not exist yet — deferred to power.md rail-addition work (to be done on main after this subsystem closes). U13C is intentionally unpowered until then."
+      ],
+      [
+        "power_pin_not_driven|965200|584200|0d277307-8d02-474b-959b-cc75cabe73b6|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|",
+        "Rail is driven from power.kicad_sch via a hierarchical sheet pin (U6 +VOUT). ERC does not trace power drivers across sheet hierarchy for this check; net has a real source."
+      ],
+      [
+        "power_pin_not_driven|965200|812800|3b598949-27a0-4e97-b100-af977319ab9d|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|",
+        "Rail is driven from power.kicad_sch via a hierarchical sheet pin (U6 -VOUT / GND_ANALOG_ISO). ERC does not trace power drivers across sheet hierarchy for this check; net has a real source."
+      ]
+    ],
     "meta": {
       "version": 0
     },

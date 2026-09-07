@@ -1,8 +1,10 @@
 # Analog I/O Subsystem — Build Plan
 
-**Status:** Steps 1 (front-end + isolation-crossing design), 3 (connector), and 5 (schematic
-capture) locked and verified — schematic capture verified pin-by-pin against the saved
-`analog_io.kicad_sch` file, not by self-report. Step 6 (verification checklist) is next.
+**Status:** Steps 1 (front-end + isolation-crossing design), 3 (connector), 5 (schematic
+capture), and 6 (verification checklist, including KiCad ERC) locked and verified —
+schematic capture verified pin-by-pin against the saved `analog_io.kicad_sch` file, and ERC
+run to a fully-explained clean state (0 unexplained violations; 15 documented exclusions),
+not by self-report. Steps 7-9 (acceptance criteria, documentation & BOM, sign-off) are next.
 
 ## Scope
 
@@ -250,11 +252,13 @@ GND_ANALOG_ISO return** rather than a dedicated return per channel.
 - **R_top1/R_bottom1** (channel 1, AI1) and **R_top2/R_bottom2** (channel 2, AI2) — the
   100k/11.0k stuffing-option dividers from Step 1, reference designators confirmed unique
   and channel-matched (no naming collision) via direct grep of the saved file.
-- **R_in (49.9k) / R_f (100k)** — output-stage feedback network. Verified the "-" pin,
-  R_in's GND-side leg, and R_f's output-side leg all meet at one shared node (the actual
+- **R_in1 (49.9k) / R_f1 (100k)** — output-stage feedback network. Verified the "-" pin,
+  R_in1's GND-side leg, and R_f1's output-side leg all meet at one shared node (the actual
   feedback-loop requirement for a non-inverting stage) — an earlier wiring pass had this
   wrong (R_f tied to GND instead of to the "-"/R_in node, which breaks feedback entirely)
-  and was caught and corrected during capture.
+  and was caught and corrected during capture. Renamed from bare `R_in`/`R_f` to `R_in1`/
+  `R_f1` by KiCad's own Annotate tool during the Step 6 ERC pass (bare reference designators
+  without a numeric suffix are not valid final references) — value and topology unchanged.
 - **J4** — Phoenix Contact MC 1,5/4-ST-3,5 (Step 3's connector): pin 1 = AI1, pin 2 = AI2,
   pin 3 = AO, pin 4 = GND_ANALOG_ISO.
 
@@ -271,7 +275,7 @@ barrier (U10) is the only crossing point, as designed.
 `ioboard.kicad_sch`; `15V_ANALOG_ISO` is deliberately left unwired at the root level until
 the power subsystem adds that rail (Step 2 of this doc's own plan, still deferred).
 
-## Step 6 results: verification checklist (2026-09-07, schematic-level; in progress)
+## Step 6 results: verification checklist (2026-09-07, done)
 
 Schematic-level checks completed as part of capture, before any physical hardware exists:
 
@@ -288,18 +292,127 @@ Schematic-level checks completed as part of capture, before any physical hardwar
 - Resistor reference designators confirmed unique and unambiguous (R_top1/R_bottom1 = AI1,
   R_top2/R_bottom2 = AI2) after a rename caught during the sheet-wide audit.
 
-Still open (needs either KiCad's own tooling or physical hardware):
+**KiCad ERC (Electrical Rules Check) — run to completion, on `analog_io.kicad_sch` plus the
+directly-tied root-sheet pin.** Final state: 0 unexplained violations; 15 findings reviewed
+and excluded with a written, per-violation comment (stored in `ioboard.kicad_pro`'s
+`erc_exclusions`, not silently suppressed). Final `ERC.rpt` saved alongside the project files.
 
-- **Run KiCad's ERC (Electrical Rules Check)** on `analog_io.kicad_sch` — an independent,
-  tool-based cross-check on top of the manual pin tracing above (catches things like
-  unpowered pins, conflicting driver pins, or unrouted labels that manual review can miss).
-  Not yet run.
-- Physical checks deferred to Rev-A hardware bring-up: rail presence and isolation
-  (megohmmeter check between GND_ANALOG_ISO and GND_LOGIC), I2C bus scan confirming both
-  devices ACK at their expected addresses, AI1/AI2 functional test against a known input
-  voltage, AO functional test against a commanded DAC code. None of this is possible before
-  PCB fabrication; listed here so it isn't lost before Step 7 (acceptance criteria) formalizes
-  pass/fail thresholds for each.
+Two real, cross-sheet issues were caught by this ERC pass and fixed directly (not excluded —
+these were genuine bugs, in files outside this sheet):
+
+- **Duplicate reference collision:** `power.kicad_sch`'s reverse-polarity-protection FET was
+  also `Q1` — colliding with `relay_outputs.kicad_sch`'s own Q1-Q4 relay driver transistors.
+  Renamed to `Q5` in `power.kicad_sch`. Documented here because it was this subsystem's ERC
+  run that surfaced it, even though the fix lands in a different sheet; see `power.md`'s own
+  revision history for the authoritative record of that change.
+- **Inconsistent GND_LOGIC labeling:** `power.kicad_sch` had one `global_label "GND_LOGIC"`
+  plus four separate plain `label "GND_LOGIC"` instances scattered across the sheet — a
+  `same_local_global_label` warning. All four converted to global labels (KiCad's local
+  labels only tie together same-named instances *within one sheet*; this net needs to be
+  global project-wide). Same cross-sheet note as above — recorded authoritatively in
+  `power.md`.
+- Bare `R_in`/`R_f` reference designators renamed to `R_in1`/`R_f1` by KiCad's Annotate tool
+  (see Step 5 above) — not a bug, but worth noting as part of the same ERC pass.
+
+The 15 exclusions, grouped by root cause:
+
+1. **Cross-sheet power-driver false positives (4):** U9 VDD, U9 GND, U10 VCC2 — all
+   `power_pin_not_driven`. KiCad's ERC does not trace power drivers across sheet-hierarchy
+   boundaries; each of these rails genuinely is driven, by power.kicad_sch's isolated DC-DC
+   module (`U6 +VOUT` / `-VOUT`) via a hierarchical sheet pin. Confirmed by checking that a
+   real `Output`-type pin exists upstream before excluding (see "mistake avoided" below).
+2. **Documented spare/deferred headroom (7):** U9 AIN2 + AIN3 (`pin_not_connected` and
+   `pin_not_driven` each — spare ADC channels, 2 of 4 used, per Step 1); U9 ALERT/RDY
+   (`pin_not_connected` — spare output pin, not used by this polling-based design); U13 unit
+   B (`missing_input_pin` and `missing_unit` — the spare LM2904 half flagged as headroom back
+   in Step 1's "Known headroom" note).
+3. **Deferred GPIO/MCU-pin assignment (2):** `SDA_ISO` and `SCL_ISO` local labels
+   (`label_dangling`) — same deferral pattern as relay-outputs' `RELAY#_CTRL` labels, per
+   roadmap step 6.
+4. **Deferred 15V_ANALOG_ISO rail (3):** the analog_io-sheet hierarchical label
+   (`label_dangling`), U13 Pin 8 V+ (`power_pin_not_driven`), and the root-sheet hierarchical
+   sheet pin (`pin_not_connected`) — all three tied to the same not-yet-added rail (see
+   "Power subsystem impact" above; this is `power.md`'s job, on `main`, after this subsystem
+   closes).
+
+**A mistake made and reversed during this pass, worth recording:** the first attempt at
+fixing the 4 cross-sheet power-driver false positives used `PWR_FLAG` symbols instead of ERC
+exclusions. That was wrong — `PWR_FLAG` tells ERC "trust me, nothing drives this net," which
+is only correct when a net truly has no driver anywhere in the design. These nets *do* have
+real drivers (power.kicad_sch's regulator outputs); adding `PWR_FLAG` anyway created a new,
+genuine conflict (`"Pins of type Output and Power output are connected"` against those same
+regulator pins). Caught by re-running ERC before treating the fix as final, reverted, and
+redone correctly as documented exclusions instead.
+
+Deliberately left **un-excluded** (out of scope for this subsystem — pre-existing, belonging
+to other, already-signed-off subsystems, or project-wide policy):
+
+- `3V3_LTE` hierarchical sheet pin unconnected — a power/core-compute board-boundary
+  question, not this subsystem's.
+- `RELAY1_CTRL`...`RELAY4_CTRL` dangling labels — relay-outputs' own deferred GPIO
+  assignment, same roadmap-step-6 pattern, but that subsystem's item to close, not this one's.
+- 9 `footprint_link_issues` warnings — the project-wide "footprints not yet verified before
+  PCB layout" policy already documented in `hardware/datasheets/README.md` and
+  `hardware/kicad/README.md`; not specific to analog-io.
+
+Physical checks remain deferred to Rev-A hardware bring-up (unchanged from the original plan
+below): rail presence and isolation (megohmmeter check between GND_ANALOG_ISO and GND_LOGIC),
+I2C bus scan confirming both devices ACK at their expected addresses, AI1/AI2 functional test
+against a known input voltage, AO functional test against a commanded DAC code. None of this
+is possible before PCB fabrication; Step 7 below formalizes pass/fail thresholds for each.
+
+## Step 7 results: acceptance criteria (2026-09-07)
+
+Schematic-level acceptance (all met, this doc):
+
+- ERC clean to a fully-explained state (Step 6) — met.
+- No accidental GND_ANALOG_ISO / GND_LOGIC bridging outside the ISO1540 barrier — met.
+- No I2C address collision between ADS1115 and MCP4725 — met.
+- Output gain-stage feedback topology correct (non-inverting, closed loop through R_in1/R_f1)
+  — met.
+- Every rail this sheet needs is either already routed from `power.kicad_sch`
+  (3V3_ANALOG_ISO, GND_ANALOG_ISO, 3V3_LOGIC) or explicitly tracked as a deferred, named gap
+  with an owner (15V_ANALOG_ISO -> `power.md`, on `main`) — met, nothing silently missing.
+
+Physical acceptance (Rev-A hardware bring-up, not yet possible — no PCB exists):
+
+- Isolation barrier holds: megohmmeter reading between GND_ANALOG_ISO and GND_LOGIC planes
+  exceeds manufacturer isolation spec (ISO1540: 2500 Vrms continuous) with no continuity.
+- I2C bus scan finds both devices at their designed addresses (0x48, 0x60) and no others.
+- AI1/AI2: applying a known 0-10V or 4-20mA reference signal (per populated stuffing option)
+  reads back within the ADC's specified accuracy at both ends of the input range.
+- AO: commanding a known DAC code produces the corresponding voltage at J4 pin 3, within the
+  gain stage's component-tolerance budget, across the 0-9.91V design range.
+- 15V_ANALOG_ISO rail (once `power.md` adds it): present, within regulation, and the LM2904
+  output stage does not clip across the full commanded output range.
+
+These thresholds are the pass/fail bar for Rev-A bring-up; they are not being claimed as met
+here, since no physical board exists yet.
+
+## Step 8 results: documentation & BOM (2026-09-07)
+
+- **This doc** (`docs/subsystems/analog-io.md`) — kept current through every step, including
+  this one; see revision history below.
+- **BOM:** `hardware/bom/analog_io_bom.csv` created (see repo) — every part from Step 1
+  (U9 ADS1115IDGSR, U10 ISO1540, U11 MCP4725A0T-E/CH, U12/U13 LM2904 x2, D13/D14 SMBJ15CA,
+  R_top1/R_bottom1/R_top2/R_bottom2/R_in1/R_f1) plus Step 3's connector (J4, Phoenix Contact
+  MC 1,5/4-ST-3,5), matching the reference designators actually in `analog_io.kicad_sch` —
+  cross-checked designator-by-designator against the saved schematic file, not copied from
+  this doc's prose. The 15V_ANALOG_ISO supply module (Recom R05P215S) is **not** in this BOM
+  — it's a `power.kicad_sch` part and belongs in `power_bom.csv` once `power.md` adds that
+  rail, same ownership split as the schematic itself.
+- **Datasheets:** part numbers above already appear in `hardware/datasheets/README.md`'s
+  tracking table (added/confirmed as part of the project-wide documentation pass done
+  alongside this step — see that file's own revision history). Footprint verification stays
+  flagged as deferred-to-pre-layout there, consistent with every other subsystem.
+
+## Step 9 results: sign-off (2026-09-07)
+
+All 9 steps of this subsystem's build plan are complete. Remaining before this subsystem
+branch closes: the user's own final review and push (per the agreed workflow — this session
+does not push). Next subsystem per the roadmap: RS485. The one deliberately-carried-forward
+item is the 15V_ANALOG_ISO rail addition to `power.md`, done on `main` immediately after this
+branch merges, per "Power subsystem impact" above.
 
 ## Steps
 
@@ -312,10 +425,11 @@ Still open (needs either KiCad's own tooling or physical hardware):
    subsystem.
 5. **Schematic capture (KiCad)** — new sheet, `ioboard/analog_io.kicad_sch` — **DONE (this
    doc)**.
-6. **Verification checklist** — in progress (this doc); ERC pending.
-7. **Acceptance criteria.**
-8. **Documentation & BOM.**
-9. **Sign-off** — move to the next IOBOARD subsystem (RS485).
+6. **Verification checklist** — **DONE (this doc)** — ERC run to a fully-explained clean
+   state, 15 documented exclusions.
+7. **Acceptance criteria** — **DONE (this doc)**.
+8. **Documentation & BOM** — **DONE (this doc)** — `hardware/bom/analog_io_bom.csv` created.
+9. **Sign-off** — **DONE (this doc)** — move to the next IOBOARD subsystem (RS485).
 
 ## Revision history
 
@@ -336,3 +450,13 @@ Still open (needs either KiCad's own tooling or physical hardware):
   confirmed on `ioboard.kicad_sch`. Step 6 verification checklist started: schematic-level
   checks (address collisions, ground-domain isolation, feedback topology) done; ERC and
   physical bring-up checks still open. |
+| 2026-09-07 | Step 6 (ERC) completed: ran KiCad ERC to a fully-explained clean state (15
+  documented exclusions, each with a written reason, stored in `ioboard.kicad_pro`). Two real
+  cross-sheet bugs caught and fixed along the way: a duplicate `Q1` reference collision
+  between `power.kicad_sch` and `relay_outputs.kicad_sch` (renamed to `Q5`), and an
+  inconsistent local/global `GND_LOGIC` labeling in `power.kicad_sch` (4 local instances
+  converted to global) — both recorded authoritatively in `power.md`. Bare `R_in`/`R_f`
+  renamed to `R_in1`/`R_f1` by KiCad's Annotate tool. A `PWR_FLAG` misapplication was caught
+  via ERC re-run and reverted before being treated as final. Steps 7 (acceptance criteria), 8
+  (documentation & BOM, including new `hardware/bom/analog_io_bom.csv`), and 9 (sign-off)
+  completed same day — all 9 steps of this subsystem's build plan are now done. |

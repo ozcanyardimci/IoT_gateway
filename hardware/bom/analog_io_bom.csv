@@ -1,0 +1,15 @@
+Ref,Part,Role,MPN,Manufacturer,Distributor link
+U9,TI ADS1115,16-bit isolated-side ADC (2 of 4 channels used),ADS1115IDGSR,Texas Instruments,https://www.ti.com/product/ADS1115
+U10,TI ISO1540,Bidirectional I2C isolator (SDA+SCL),ISO1540DR,Texas Instruments,https://www.ti.com/product/ISO1540
+U11,Microchip MCP4725,12-bit isolated-side DAC,MCP4725A0T-E/CH,Microchip,https://www.microchip.com/en-us/product/mcp4725
+U12,TI LM2904,Dual op-amp — input-channel unity-gain buffers (both units used),LM2904DR,Texas Instruments,https://www.ti.com/product/LM2904
+U13,TI LM2904,Dual op-amp — output gain stage (1 of 2 units used; unit B spare headroom),LM2904DR,Texas Instruments,https://www.ti.com/product/LM2904
+D13,Littelfuse SMBJ15CA,Bidirectional TVS — AI1 overvoltage protection,SMBJ15CA,Littelfuse,https://www.littelfuse.com/products/tvs-diodes/automotive-and-commercial-grade/smbj/smbj15ca
+D14,Littelfuse SMBJ15CA,Bidirectional TVS — AI2 overvoltage protection,SMBJ15CA,Littelfuse,https://www.littelfuse.com/products/tvs-diodes/automotive-and-commercial-grade/smbj/smbj15ca
+R_top1,Generic E96 resistor,AI1 0-10V divider top (0-10V stuffing option),100k,generic,
+R_bottom1,Generic E96 resistor,AI1 0-10V divider bottom (0-10V stuffing option),11.0k,generic,
+R_top2,Generic E96 resistor,AI2 0-10V divider top (0-10V stuffing option),100k,generic,
+R_bottom2,Generic E96 resistor,AI2 0-10V divider bottom (0-10V stuffing option),11.0k,generic,
+R_in1,Generic E96 resistor,Output gain-stage input resistor,49.9k,generic,
+R_f1,Generic E96 resistor,Output gain-stage feedback resistor,100k,generic,
+J4,"Phoenix Contact MC 1,5/4-ST-3,5",4-position field connector (AI1/AI2/AO + shared GND_ANALOG_ISO return),1840382,Phoenix Contact,https://www.mouser.com/datasheet/3/507/5/phoenix_contact_1840382_en.pdf

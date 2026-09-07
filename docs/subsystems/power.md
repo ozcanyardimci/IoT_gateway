@@ -108,7 +108,7 @@ of a permanent short.
 1. **J1 — Phoenix Contact MC 1,5/2-ST-3,5** terminal block.
 2. **F1 — Littelfuse RXEF135** PTC resettable fuse. 1.35A hold / 2.70A trip / 72V max at
    20C; derates to 0.85A hold at 60C ambient.
-3. **U1/Q1 — TI LM74610-Q1 ideal diode controller + CSD18531Q5A NexFET**, reverse-polarity
+3. **U1/Q5 — TI LM74610-Q1 ideal diode controller + CSD18531Q5A NexFET**, reverse-polarity
    protection. Follows TI reference design TIDUBP3A, rated for automotive 12/24V systems
    with load-dump survival past 30V. Chosen over a discrete P-MOSFET + Zener approach
    because the IC's internally-regulated gate drive has no Vgs-overvoltage failure mode to
@@ -142,7 +142,7 @@ current-limiting needed on the module outputs.
 ## 5. Inrush current (ngspice simulation)
 
 Circuit: 0V->30V step (worst-case hot-plug) through Rfuse (F1 cold resistance, 0.12 ohm) +
-Rq1 (Q1 RDS(on), 3.5 mOhm) + 0.05 ohm assumed PCB/connector parasitic, into the input
+Rq5 (Q5 RDS(on), 3.5 mOhm) + 0.05 ohm assumed PCB/connector parasitic, into the input
 capacitor bank (8x 4.7uF, 37.6uF total, 20 mOhm ESR each).
 
 | Case | Rsrc | Peak current | Time constant |
@@ -155,13 +155,13 @@ Cross-checked two ways: hand-calculated tau = R_total x C_total = 6.99us vs. sim
 This level of agreement is what establishes confidence in the netlist, not just that the
 simulator ran without error.
 
-Checked against ratings: Q1's IDM (pulsed drain current) is 400A for pulse width <=100us at
+Checked against ratings: Q5's IDM (pulsed drain current) is 400A for pulse width <=100us at
 <=1% duty — 161A peak over a ~35us decay gives 2.5x margin even in the pessimistic case. F1
 is thermally slow (9.6s time-to-trip at rated fault current); a 35us pulse carries ~0.9 A^2s
 of I^2t, far too little to heat the PTC's thermal mass.
 
 **No NTC thermistor needed** — the fuse's cold resistance already provides enough
-current-limiting margin on both Q1 and F1. One item carried to layout: 161A for ~35us
+current-limiting margin on both Q5 and F1. One item carried to layout: 161A for ~35us
 should be checked against PCB trace/connector current-carrying capacity at that stage —
 standard copper handles microsecond pulses like this without issue, but worth confirming.
 
@@ -188,7 +188,7 @@ here — this section covers the field power input connector only.
 
 ## 7. Schematic capture
 
-Full input-to-output chain wired in KiCad (`hardware/kicad/ioboard/`): J1 -> F1 -> Q1/U1 ->
+Full input-to-output chain wired in KiCad (`hardware/kicad/ioboard/`): J1 -> F1 -> Q5/U1 ->
 U2/TVS3300 -> four DC-DC modules. GND_LOGIC exposed as a project-wide Global Label; the
 other five rail/ground nets exposed via Hierarchical Label + matching Sheet Pin on the
 parent sheet (Output direction). See section 12 for the full reference/part table.
@@ -210,7 +210,7 @@ Every component checked against its worst-case condition, not nominal:
 | Item | Worst-case condition | Rating vs. actual | Margin |
 |---|---|---|---|
 | F1 hold current vs. sustained load | 60C ambient (derated) | 0.85A hold vs. ~0.48A load | 1.77x |
-| Q1 inrush pulse | Near-zero source impedance | 400A/100us vs. 161A/~35us | 2.5x |
+| Q5 inrush pulse | Near-zero source impedance | 400A/100us vs. 161A/~35us | 2.5x |
 | TVS3300 clamp vs. MagI3C abs. max | 35A/8-20us surge | 42V abs. max vs. 40V max clamp | ~5% |
 | TVS3300 standoff vs. max input | 30V continuous | 33V standoff | ~10% |
 | DC-DC module input voltage | 10V min design input | 3.5-38V operating range | Wide |
@@ -240,13 +240,13 @@ item, not a design risk, given the ~3x margin already present.
 
 1. Each output rail holds within +/-3% of nominal across the full 10-30V input range and
    full rated load.
-2. Reverse-polarity connection (J1 swapped) results in zero current flow past Q1 and no
+2. Reverse-polarity connection (J1 swapped) results in zero current flow past Q5 and no
    downstream damage.
 3. F1 does not nuisance-trip under worst-case sustained load (0.48A) at 60C ambient, and
    trips within its rated curve under an actual fault.
 4. A surge event up to TVS3300's rated 35A/8-20us Ipp does not expose any DC-DC module
    beyond its 42V absolute maximum input rating.
-5. Input capacitor inrush at power-up does not exceed Q1's IDM (400A/100us) or trip F1.
+5. Input capacitor inrush at power-up does not exceed Q5's IDM (400A/100us) or trip F1.
 6. GND_ANALOG_ISO has no direct DC path to GND_LOGIC — isolation boundary intact.
 7. All four rails power up together with no relative sequencing fault.
 
@@ -259,7 +259,7 @@ bring-up checks, listed under Commissioning below.
 |---|---|---|---|
 | J1 | Phoenix Contact MC 1,5/2-ST-3,5 | Field power input terminal block | 1840366 |
 | F1 | Littelfuse RXEF135 | PTC resettable fuse | RXEF135 |
-| Q1 | TI CSD18531Q5A | N-MOSFET, reverse-polarity switch | CSD18531Q5A |
+| Q5 | TI CSD18531Q5A | N-MOSFET, reverse-polarity switch | CSD18531Q5A |
 | U1 | TI LM74610-Q1 | Ideal diode controller | LM74610QDGKRQ1 |
 | U2 | TI TVS3300 | Flat-Clamp surge protection | TVS3300DRVR |
 | U3 | Würth MagI3C-VDLM | 3.3V-LOGIC DC-DC module | 171013801 |
@@ -301,3 +301,15 @@ paper. None block sign-off — all are backed by comfortable design margin.
 | 2026-09-03 | Margin verification, sequencing/brown-out check, acceptance criteria, BOM, sign-off |
 | 2026-09-03 | Operating temperature range (-20C/+60C) confirmed as a real requirement |
 | 2026-09-03 | U6 (analog isolated supply) reference designator corrected from P51 |
+| 2026-09-07 | Two schematic-level fixes surfaced by analog-io's ERC pass (this subsystem was
+  otherwise closed, but both issues live in `power.kicad_sch`, so recorded here as the
+  authoritative source — see `analog-io.md`'s Step 6 for how they were found): (1) the
+  reverse-polarity MOSFET's reference designator renamed from **Q1** to **Q5**, resolving a
+  duplicate-reference collision with `relay_outputs.kicad_sch`'s own Q1-Q4 relay driver
+  transistors — every Q1 reference above (protection-chain description, inrush math,
+  acceptance criteria, margin table, BOM) updated to Q5 to match; (2) four stray local
+  `label "GND_LOGIC"` instances (near U2/PWR_FLAG, U3, U5, U4) converted to global labels,
+  matching the one already-correct global instance near J1 — GND_LOGIC is a project-wide net
+  and needs to be a global label everywhere it appears, not mixed local/global. `power_bom.csv`
+  updated to match (Q1 -> Q5). No electrical or topology change from either fix — reference
+  and label-scope corrections only. |

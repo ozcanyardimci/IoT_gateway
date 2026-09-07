@@ -13,8 +13,10 @@
 - Reverse-polarity protection, surge/EMI protection, and four-rail regulation (3.3V-LOGIC,
   3.3V-LTE, 5V-RELAY, 3.3V-ANALOG-ISO) designed and simulated (ngspice inrush, margin
   verification against every part's worst-case rating).
-- Schematic captured in `hardware/kicad/ioboard/` (J1 -> F1 -> Q1/U1 -> U2 -> four DC-DC
-  modules). Full BOM sourced to real, in-stock part numbers.
+- Schematic captured in `hardware/kicad/ioboard/` (J1 -> F1 -> Q5/U1 -> U2 -> four DC-DC
+  modules; the reverse-polarity MOSFET was later renamed from Q1 to Q5 during the analog-io
+  subsystem's ERC pass, to resolve a duplicate-reference collision — see `power.md`'s
+  revision history). Full BOM sourced to real, in-stock part numbers.
 - See `docs/subsystems/power.md` for the full writeup; items needing real hardware are
   tracked there as commissioning tests for Rev-A.
 
@@ -44,3 +46,31 @@
   GND_LOGIC only. Retroactively wired 3V3_LOGIC between power and digital_inputs through
   ioboard.kicad_sch's root sheet using this convention.
 - See `docs/subsystems/digital-inputs.md` for the full writeup.
+
+## 2026-09-06 — Relay outputs subsystem complete
+- 4 relay channels: GPIO -> base resistor (510) + pull-down (10k) -> NPN driver transistor
+  (MMBT3904) -> ALDP105 relay coil, with a flyback diode (1N4148) across each coil.
+  Field-side contacts terminate on an 8-position Phoenix Contact connector giving every
+  channel a fully independent COM+NO pair (no shared return, unlike the analog subsystem).
+- Schematic captured in `hardware/kicad/ioboard/ioboard/relay_outputs.kicad_sch`.
+- See `docs/subsystems/relay-outputs.md` for the full writeup.
+
+## 2026-09-07 — Analog I/O subsystem complete
+- 2 analog inputs (0-10V / 4-20mA stuffing option) + 1 analog output (0-10V), isolated from
+  GND_LOGIC: ADS1115 (ADC) + MCP4725 (DAC) share one I2C bus on the isolated side, crossing
+  to GND_LOGIC through an ISO1540 bidirectional isolator. Output stage is a real DAC + LM2904
+  gain stage (gain 3.004), not PWM+filter — the ESP32-S3 has no internal DAC. Surfaced a real
+  gap in the existing rail budget: the 0-10V output needs a new isolated ~15V rail, sourced
+  from 5V-RELAY; that rail's addition to `power.md` is deferred to `main`, after this
+  subsystem branch merges.
+- Schematic captured in `hardware/kicad/ioboard/ioboard/analog_io.kicad_sch`. One real wiring
+  bug (output-stage feedback network wired to break the loop) and one naming ambiguity
+  (channel-1/channel-2 resistor designators swapped) caught and fixed during capture.
+- Full KiCad ERC (Electrical Rules Check) run to a fully-explained clean state: 15 findings
+  reviewed and excluded with a written, per-violation comment (cross-sheet power-driver false
+  positives, documented spare/deferred headroom, deferred GPIO assignment, the deferred 15V
+  rail) — nothing silently suppressed. This pass also surfaced and fixed two pre-existing
+  bugs outside this sheet: a duplicate `Q1` reference collision in `power.kicad_sch` (renamed
+  to `Q5`) and an inconsistent local/global `GND_LOGIC` labeling on the same sheet (both
+  recorded in `power.md`'s revision history, not just here).
+- See `docs/subsystems/analog-io.md` for the full writeup.

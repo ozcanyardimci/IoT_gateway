@@ -39,9 +39,9 @@ Order:
 3. Digital inputs (8x, opto-isolated) — `docs/subsystems/digital-inputs.md` — **DONE**
 4. Relay outputs (4x) — `docs/subsystems/relay-outputs.md` — **DONE**
 5. Status indication (I2C GPIO expander + LEDs)
-6. Analog I/O (input + output) — `docs/subsystems/analog-io.md` — **IN PROGRESS (Step 1
-   done: front-end + isolation-crossing design; new isolated 15V rail identified for
-   power.md)**
+6. Analog I/O (input + output) — `docs/subsystems/analog-io.md` — **DONE** (all 9 steps
+   closed, including ERC to a fully-explained clean state; new isolated 15V rail identified
+   for `power.md` — added on `main` once this subsystem branch merges, not duplicated here)
 7. RS485 (isolated)
 8. RS232
 9. Ethernet (W5500)
