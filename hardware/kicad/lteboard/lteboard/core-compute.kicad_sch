@@ -1911,10 +1911,10 @@
 		(uuid "29052d70-11e6-4618-be53-cb4fc3e620f3")
 	)
 	(junction
-		(at 44.45 110.49)
+		(at 48.26 110.49)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "434b214e-6091-4924-84d2-aaad9e1916e9")
+		(uuid "2f5380a2-f200-4a14-96b0-f29f3df95fc1")
 	)
 	(junction
 		(at 114.3 24.13)
@@ -1927,6 +1927,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "6c18822e-bd1e-4325-a47c-960e1abfa083")
+	)
+	(junction
+		(at 124.46 30.48)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7b8928f0-b3b0-4023-bd3a-7e7281c7f314")
 	)
 	(junction
 		(at 106.68 48.26)
@@ -1958,6 +1964,20 @@
 		(color 0 0 0 0)
 		(uuid "ea623dd4-9a61-46ea-98e2-e6c85aa64c46")
 	)
+	(no_connect
+		(at 67.31 71.12)
+		(uuid "63135c49-04d2-4fc6-be27-f48b5ca8155a")
+	)
+	(wire
+		(pts
+			(xy 48.26 110.49) (xy 44.45 110.49)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0b2634c4-f4a8-4024-b39f-f73db682343c")
+	)
 	(wire
 		(pts
 			(xy 73.66 78.74) (xy 67.31 78.74)
@@ -1980,7 +2000,7 @@
 	)
 	(wire
 		(pts
-			(xy 124.46 24.13) (xy 124.46 36.83)
+			(xy 124.46 24.13) (xy 124.46 30.48)
 		)
 		(stroke
 			(width 0)
@@ -1990,7 +2010,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 76.2) (xy 87.63 76.2)
+			(xy 81.28 76.2) (xy 82.55 76.2)
 		)
 		(stroke
 			(width 0)
@@ -2060,6 +2080,16 @@
 	)
 	(wire
 		(pts
+			(xy 125.73 30.48) (xy 124.46 30.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "431c167d-2c35-4546-9787-818ee1a126a4")
+	)
+	(wire
+		(pts
 			(xy 106.68 86.36) (xy 109.22 86.36)
 		)
 		(stroke
@@ -2097,16 +2127,6 @@
 			(type default)
 		)
 		(uuid "5b4b8a75-4561-4e2a-87d3-47ad5cdf6b86")
-	)
-	(wire
-		(pts
-			(xy 124.46 101.6) (xy 124.46 99.06)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "66a5c745-1f15-40d0-b7e0-89c4e6911913")
 	)
 	(wire
 		(pts
@@ -2160,7 +2180,7 @@
 	)
 	(wire
 		(pts
-			(xy 52.07 110.49) (xy 44.45 110.49)
+			(xy 52.07 110.49) (xy 48.26 110.49)
 		)
 		(stroke
 			(width 0)
@@ -2170,7 +2190,7 @@
 	)
 	(wire
 		(pts
-			(xy 44.45 113.03) (xy 44.45 110.49)
+			(xy 48.26 111.76) (xy 48.26 110.49)
 		)
 		(stroke
 			(width 0)
@@ -2187,6 +2207,16 @@
 			(type default)
 		)
 		(uuid "873ac8a7-8936-42bc-85f5-147eeca0ec27")
+	)
+	(wire
+		(pts
+			(xy 124.46 30.48) (xy 124.46 36.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9173c29c-0e1d-4e94-a65c-98aa3a93bc2a")
 	)
 	(wire
 		(pts
@@ -2240,7 +2270,7 @@
 	)
 	(wire
 		(pts
-			(xy 87.63 76.2) (xy 87.63 78.74)
+			(xy 82.55 76.2) (xy 82.55 78.74)
 		)
 		(stroke
 			(width 0)
@@ -2250,7 +2280,7 @@
 	)
 	(wire
 		(pts
-			(xy 87.63 78.74) (xy 81.28 78.74)
+			(xy 82.55 78.74) (xy 81.28 78.74)
 		)
 		(stroke
 			(width 0)
@@ -2350,7 +2380,7 @@
 	)
 	(global_label "GND_LOGIC"
 		(shape input)
-		(at 87.63 78.74 0)
+		(at 82.55 78.74 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -2360,7 +2390,7 @@
 		)
 		(uuid "052e52e5-9576-441e-b80a-657b3991e779")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 100.9567 78.74 0)
+			(at 95.8767 78.74 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2394,69 +2424,102 @@
 	)
 	(global_label "GND_LOGIC"
 		(shape input)
-		(at 124.46 101.6 0)
+		(at 124.46 99.06 270)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left)
+			(justify right)
 		)
 		(uuid "6cc3dfb6-3540-4e95-9513-bdca3539c0fe")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 137.7867 101.6 0)
+			(at 124.46 112.3867 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 				(hide yes)
 			)
 		)
 	)
 	(global_label "GND_LOGIC"
 		(shape input)
-		(at 96.52 73.66 0)
+		(at 96.52 73.66 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left)
+			(justify right)
 		)
 		(uuid "90d1c444-748a-4175-8497-802931fa332b")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 109.8467 73.66 0)
+			(at 83.1933 73.66 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 				(hide yes)
 			)
 		)
 	)
 	(global_label "GND_LOGIC"
 		(shape input)
-		(at 44.45 113.03 0)
+		(at 48.26 111.76 270)
 		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "f9761f8c-8f85-4639-a8d6-8bd6e3c0705b")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 48.26 125.0867 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(hierarchical_label "3V3_LOGIC"
+		(shape passive)
+		(at 125.73 30.48 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "f9761f8c-8f85-4639-a8d6-8bd6e3c0705b")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 57.7767 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
+		(uuid "10815f93-f9e5-4329-8ae9-18657db77c17")
+	)
+	(hierarchical_label "I2C_SCL"
+		(shape bidirectional)
+		(at 109.22 76.2 180)
+		(effects
+			(font
+				(size 1.27 1.27)
 			)
+			(justify right)
 		)
+		(uuid "90cd7616-d345-4fa1-9526-b571ed45ef60")
+	)
+	(hierarchical_label "I2C_SDA"
+		(shape bidirectional)
+		(at 109.22 73.66 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "b05df828-e99e-4f57-87aa-e3fcfdadb62d")
 	)
 	(symbol
 		(lib_id "Switch:SW_Push")

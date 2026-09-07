@@ -5,6 +5,36 @@
 	(uuid "e3cbe890-827c-4e3e-bf4e-d33595c4d0b3")
 	(paper "A4")
 	(lib_symbols)
+	(wire
+		(pts
+			(xy 77.47 50.8) (xy 115.824 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5e385781-1466-45b5-aab1-d06a419a6bfb")
+	)
+	(wire
+		(pts
+			(xy 77.47 64.77) (xy 115.824 64.77)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c1dfdfb7-66f5-4544-ba5d-6c148070f42a")
+	)
+	(wire
+		(pts
+			(xy 77.47 57.15) (xy 115.824 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f2eba569-e367-477f-840f-384672935f8e")
+	)
 	(sheet
 		(at 35.56 38.1)
 		(size 41.91 57.15)
@@ -37,6 +67,36 @@
 					(size 2 2)
 				)
 				(justify left top)
+			)
+		)
+		(pin "3V3_LOGIC" passive
+			(at 77.47 50.8 0)
+			(uuid "5499c424-79f3-432e-8761-a509f6f5d28f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "I2C_SCL" bidirectional
+			(at 77.47 57.15 0)
+			(uuid "ef4b2285-ce0d-403d-8ddb-bfc9cacebedf")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "I2C_SDA" bidirectional
+			(at 77.47 64.77 0)
+			(uuid "cd1b4129-445e-4681-916d-1de6da28ef4b")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
 			)
 		)
 		(instances
@@ -79,6 +139,36 @@
 					(size 2 2)
 				)
 				(justify left top)
+			)
+		)
+		(pin "3V3_LOGIC" passive
+			(at 115.824 50.8 180)
+			(uuid "b443520f-0d3f-4474-8cdf-026e92833b10")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "I2C_SCL" bidirectional
+			(at 115.824 57.15 180)
+			(uuid "a823d783-92e1-4839-a139-1cbe19937786")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "I2C_SDA" bidirectional
+			(at 115.824 64.77 180)
+			(uuid "9c321dbd-bb24-4eec-8922-11189d107466")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 			)
 		)
 		(instances

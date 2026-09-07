@@ -1,0 +1,18 @@
+Ref,Part,Role,MPN,Manufacturer,Distributor link
+U2,NXP PCA9535PW,16-bit I2C GPIO expander (6 of 16 GPIO used; 10 spare/documented),PCA9535PW,NXP,https://www.nxp.com/docs/en/data-sheet/PCA9535_PCA9535C.pdf
+D_PWR,Generic 3mm THT LED (green),PWR-OK indicator - 3.3V-LOGIC rail present,generic red/green/yellow/orange family,generic,
+D_HB,Generic 3mm THT LED (yellow),HEARTBEAT indicator - MCU running,generic red/green/yellow/orange family,generic,
+D_LTE,Generic 3mm THT LED (yellow),LTE modem status indicator,generic red/green/yellow/orange family,generic,
+D_WIFI,Generic 3mm THT LED (yellow),WiFi status indicator,generic red/green/yellow/orange family,generic,
+D_ETH,Generic 3mm THT LED (yellow),Ethernet link status indicator,generic red/green/yellow/orange family,generic,
+D_FLT,Generic 3mm THT LED (red),FAULT indicator - any subsystem error,generic red/green/yellow/orange family,generic,
+R7,Generic E24 resistor,LED current-limit (D_ETH channel),680,generic,
+R8,Generic E24 resistor,LED current-limit (D_FLT channel),680,generic,
+R9,Generic E24 resistor,LED current-limit (D_LTE channel),680,generic,
+R10,Generic E24 resistor,LED current-limit (D_WIFI channel),680,generic,
+R11,Generic E24 resistor,LED current-limit (D_HB channel),680,generic,
+R13,Generic E24 resistor,LED current-limit (D_PWR channel),680,generic,
+R12,Generic E24 resistor,I2C SCL pull-up to 3V3_LOGIC,4.7k,generic,
+R14,Generic E24 resistor,I2C SDA pull-up to 3V3_LOGIC,4.7k,generic,
+R15,Generic E24 resistor,INT pull-up to 3V3_LOGIC (documented spare - INT unused),10k,generic,
+C4,Generic ceramic capacitor,U2 VDD-VSS decoupling,100nF,generic,

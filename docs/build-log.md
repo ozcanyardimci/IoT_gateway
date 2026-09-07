@@ -44,3 +44,41 @@
   GND_LOGIC only. Retroactively wired 3V3_LOGIC between power and digital_inputs through
   ioboard.kicad_sch's root sheet using this convention.
 - See `docs/subsystems/digital-inputs.md` for the full writeup.
+
+## 2026-09-06 — Relay outputs subsystem complete
+- 4 relay channels: GPIO -> 510Ω base resistor + 10kΩ pull-down -> MMBT3904 NPN driver ->
+  Panasonic ALDP105 relay coil (`5V_RELAY` rail), with a 1N4148 flyback diode across each
+  coil. Local 10uF/100nF bulk+bypass caps at the `5V_RELAY` entry point, for EMI/noise
+  containment rather than current capability.
+- Field-side contacts terminate on an 8-position Phoenix Contact MC 1,5/8-ST-3,5 connector,
+  giving every channel a fully independent COM+NO pair (no shared common return, unlike
+  digital-inputs).
+- Schematic captured in `hardware/kicad/ioboard/ioboard/relay_outputs.kicad_sch`. One real
+  wiring bug caught and fixed before commit: the flyback diode was initially wired with
+  reversed polarity, which would have put a forward-biased diode across the coil for the
+  entire on-time of each transistor.
+- Known limitation, documented rather than silently absorbed: the field connector is rated
+  160V while the relay's own contacts are rated to 277VAC/30VDC — the connector, not the
+  relay, is the practical ceiling on what this board can switch.
+- See `docs/subsystems/relay-outputs.md` for the full writeup.
+
+## 2026-09-07 — Status indication subsystem complete
+- I2C GPIO expander (NXP PCA9535PW, already budgeted in `power.md`) driving 6 status LEDs
+  (PWR-OK, HEARTBEAT, LTE, WIFI, ETH, FAULT), active-low sink drive. Address strapped to 0x20
+  (A0/A1/A2 to `GND_LOGIC`); 4.7kΩ pull-ups on SDA/SCL; 10kΩ pull-up on the unused INT pin;
+  10 spare GPIOs marked with No-Connect flags. LED colors deliberately limited to the
+  red/green/yellow/orange family — blue/white were ruled out because their higher forward
+  voltage leaves too little headroom on the 3.3V rail for reliable current control.
+- New second hierarchical sheet on LTEBOARD (`status_indication.kicad_sch`), wired directly
+  to the ESP32-S3 (GPIO8/GPIO9 for I2C, exposed as new sheet pins on `core-compute.kicad_sch`)
+  — no board-to-board header involved, since both sheets live on the same physical board.
+- Caught and fixed two real bugs before commit, both via full programmatic connectivity
+  verification (every pin and net reconstructed from the actual file content, not just
+  visual inspection): all 6 LEDs were initially wired with reversed polarity (would never
+  have lit, since the cathode side had no path to a potential low enough for forward bias);
+  and `core-compute.kicad_sch`'s existing `GND_LOGIC` labels were local instead of global —
+  same class of bug found and fixed in `power.kicad_sch` during analog-io's ERC pass, which
+  would have left this new sheet's ground electrically isolated from the MCU's.
+- ERC deferred to a single project-wide pass once every subsystem is built, a project-wide
+  decision replacing the per-subsystem ERC pass used for analog-io.
+- See `docs/subsystems/status-indication.md` for the full writeup.
