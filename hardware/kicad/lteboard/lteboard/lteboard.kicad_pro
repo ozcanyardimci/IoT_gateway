@@ -617,6 +617,10 @@
     [
       "c927d60d-8176-4f24-a893-82b8dcb11c1f",
       "core-compute"
+    ],
+    [
+      "ec8569af-218c-4aac-87d3-711148df7d45",
+      "status_indication"
     ]
   ],
   "text_variables": {}

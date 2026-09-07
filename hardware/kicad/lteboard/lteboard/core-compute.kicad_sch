@@ -2348,55 +2348,115 @@
 		)
 		(uuid "03d12c73-4692-4138-b5f2-d7bc96c16e83")
 	)
-	(label "GND_LOGIC"
-		(at 124.46 101.6 0)
+	(global_label "GND_LOGIC"
+		(shape input)
+		(at 87.63 78.74 0)
+		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify left)
 		)
-		(uuid "5947e905-84e5-4f70-86a8-dfc085a34e04")
-	)
-	(label "GND_LOGIC"
-		(at 96.52 73.66 0)
-		(effects
-			(font
-				(size 1.27 1.27)
+		(uuid "052e52e5-9576-441e-b80a-657b3991e779")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 100.9567 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
 			)
-			(justify left bottom)
 		)
-		(uuid "6aa3b2d5-dbb8-41b0-b8df-024affd398dd")
 	)
-	(label "GND_LOGIC"
-		(at 82.55 76.2 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "b5a2d6b9-829c-4325-ade4-24007c2c0068")
-	)
-	(label "GND_LOGIC"
-		(at 44.45 113.03 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "facdd984-50bf-4b05-87d9-1b400ac961df")
-	)
-	(label "GND_LOGIC"
+	(global_label "GND_LOGIC"
+		(shape input)
 		(at 105.41 34.29 0)
+		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify left)
 		)
-		(uuid "fd36a418-a82f-4f08-adaf-5d43b4c058d0")
+		(uuid "351fa5b2-155a-43ba-acc2-f5399e468fb4")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 118.7367 34.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "GND_LOGIC"
+		(shape input)
+		(at 124.46 101.6 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "6cc3dfb6-3540-4e95-9513-bdca3539c0fe")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 137.7867 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "GND_LOGIC"
+		(shape input)
+		(at 96.52 73.66 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "90d1c444-748a-4175-8497-802931fa332b")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 109.8467 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "GND_LOGIC"
+		(shape input)
+		(at 44.45 113.03 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "f9761f8c-8f85-4639-a8d6-8bd6e3c0705b")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 57.7767 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
 	)
 	(symbol
 		(lib_id "Switch:SW_Push")

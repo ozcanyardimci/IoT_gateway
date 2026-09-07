@@ -22,10 +22,10 @@
 		)
 		(uuid "c927d60d-8176-4f24-a893-82b8dcb11c1f")
 		(property "Sheetname" "core-compute"
-			(at 35.56 36.7734 0)
+			(at 35.56 37.0234 0)
 			(effects
 				(font
-					(size 2.5 2.5)
+					(size 2 2)
 				)
 				(justify left bottom)
 			)
@@ -43,6 +43,48 @@
 			(project "lteboard"
 				(path "/e3cbe890-827c-4e3e-bf4e-d33595c4d0b3"
 					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 115.824 39.116)
+		(size 39.624 57.15)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "ec8569af-218c-4aac-87d3-711148df7d45")
+		(property "Sheetname" "status_indication"
+			(at 115.824 38.0394 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "status_indication.kicad_sch"
+			(at 115.824 97.1426 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "lteboard"
+				(path "/e3cbe890-827c-4e3e-bf4e-d33595c4d0b3"
+					(page "3")
 				)
 			)
 		)
