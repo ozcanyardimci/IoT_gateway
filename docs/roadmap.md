@@ -37,9 +37,11 @@ Order:
 1. Power — `docs/subsystems/power.md` — **DONE**
 2. Core compute (ESP32-S3 bring-up) — `docs/subsystems/core-compute.md` — **DONE**
 3. Digital inputs (8x, opto-isolated) — `docs/subsystems/digital-inputs.md` — **DONE**
-4. Relay outputs (4x)
+4. Relay outputs (4x) — `docs/subsystems/relay-outputs.md` — **DONE**
 5. Status indication (I2C GPIO expander + LEDs)
-6. Analog I/O (input + output)
+6. Analog I/O (input + output) — `docs/subsystems/analog-io.md` — **IN PROGRESS (Step 1
+   done: front-end + isolation-crossing design; new isolated 15V rail identified for
+   power.md)**
 7. RS485 (isolated)
 8. RS232
 9. Ethernet (W5500)
