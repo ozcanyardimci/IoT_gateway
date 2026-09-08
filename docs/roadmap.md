@@ -37,8 +37,11 @@ Order:
 1. Power — `docs/subsystems/power.md` — **DONE**
 2. Core compute (ESP32-S3 bring-up) — `docs/subsystems/core-compute.md` — **DONE**
 3. Digital inputs (8x, opto-isolated) — `docs/subsystems/digital-inputs.md` — **DONE**
-4. Relay outputs (4x)
-5. Status indication (I2C GPIO expander + LEDs)
+4. Relay outputs (4x) — `docs/subsystems/relay-outputs.md` — **DONE**
+5. Status indication (I2C GPIO expander + LEDs) — `docs/subsystems/status-indication.md` —
+   **DONE** (schematic captured as LTEBOARD's second hierarchical sheet, wired directly to
+   the ESP32-S3 over I2C; ERC deferred to a single project-wide pass once every subsystem is
+   built; ~11.5mA worst-case LED current addition flagged for `power.md` on `main`)
 6. Analog I/O (input + output)
 7. RS485 (isolated)
 8. RS232
