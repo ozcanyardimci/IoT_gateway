@@ -41,7 +41,7 @@ Order:
 5. Status indication (I2C GPIO expander + LEDs) — `docs/subsystems/status-indication.md` —
    **DONE** (schematic captured as LTEBOARD's second hierarchical sheet, wired directly to
    the ESP32-S3 over I2C; ERC deferred to a single project-wide pass once every subsystem is
-   built; ~11.5mA worst-case LED current addition still flagged for `power.md`)
+   built; ~11.5mA worst-case LED current now added to `power.md`'s 3.3V-LOGIC budget)
 6. Analog I/O (input + output) — `docs/subsystems/analog-io.md` — **DONE** (all 9 steps
    closed, including ERC to a fully-explained clean state; the isolated 15V rail it
    identified was added to `power.md`/`power.kicad_sch` on `main` — see that doc's

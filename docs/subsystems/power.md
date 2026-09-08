@@ -33,6 +33,7 @@ industrial enclosure). Every component below is checked against this range.
 | LM2904 op-amp, output gain stage (U13) | 15V-ANALOG-ISO | 3-26V | 0.7-1.2 mA (dual pkg, same reasoning) | ~1.2 mA max | TI datasheet |
 | Panasonic ALDP105 relay coil (x4) | 5V | 5V nominal | 40 mA each | 40 mA each, resistive coil | Manufacturer page |
 | LTV-247 optocoupler (x2, 8ch) | Field side | — | — | — | LED side draws from field wiring, not internal rails; output side is a negligible pull-up on GND_LOGIC |
+| 6x status LEDs (PCA9535PW-driven) | 3.3V-LOGIC | — | ~11.5 mA worst-case, all 6 on simultaneously | ~11.5 mA | Calculated: (3.3V - ~2.0V generic LED Vf) / 680R per channel x 6 — see status-indication.md |
 
 **Rail architecture:** the Quectel modem's 2-3A transient rules out a single shared 3.3V
 rail — a shared regulator would sag under every LTE TX burst, right when the other chips
@@ -41,7 +42,7 @@ need clean power. Five independent rails:
 | Rail | Load | Worst-case peak |
 |---|---|---|
 | 5V-RELAY | Relay coils (x4), plus the 15V-ANALOG-ISO module's input (U7) | ~160 mA + ~5 mA reflected (U7's actual ~1.2 mA output load, at ~80% conversion efficiency; U7 is rated for 66 mA output if that ever changes) |
-| 3.3V-LOGIC | ESP32-S3, W5500, PCA9535PW, MAX3232E, RS485 module, analog logic side | ~650 mA (sized to ≥850 mA-1A with margin) |
+| 3.3V-LOGIC | ESP32-S3, W5500, PCA9535PW, MAX3232E, RS485 module, analog logic side, 6x status LEDs | ~650 mA + ~11.5 mA (status LEDs) = ~661.5 mA (sized to ≥850 mA-1A with margin) |
 | 3.3V-LTE | Quectel EG915U-EU only, dedicated | 2-3A transient |
 | 3.3V-ANALOG-ISO | Analog input isolation amp/ADC, U12 input-buffer op-amp | Tens of mA |
 | 15V-ANALOG-ISO | U13 output gain-stage op-amp only | ~1.2 mA |
@@ -322,3 +323,4 @@ paper. None block sign-off — all are backed by comfortable design margin.
 | 2026-09-03 | U6 (analog isolated supply) reference designator corrected from P51 |
 | 2026-09-07 | Two schematic-level fixes surfaced by analog-io's ERC pass (this subsystem was otherwise closed, but both issues live in `power.kicad_sch`, so recorded here as the authoritative source — see `analog-io.md`'s Step 6 for how they were found): (1) the reverse-polarity MOSFET's reference designator renamed from **Q1** to **Q5**, resolving a duplicate-reference collision with `relay_outputs.kicad_sch`'s own Q1-Q4 relay driver transistors — every Q1 reference above (protection-chain description, inrush math, acceptance criteria, margin table, BOM) updated to Q5 to match; (2) four stray local `label "GND_LOGIC"` instances (near U2/PWR_FLAG, U3, U5, U4) converted to global labels, matching the one already-correct global instance near J1 — GND_LOGIC is a project-wide net and needs to be a global label everywhere it appears, not mixed local/global. `power_bom.csv` updated to match (Q1 -> Q5). No electrical or topology change from either fix — reference and label-scope corrections only. |
 | 2026-09-08 | Added U7 (Recom RK-0515S), an isolated 15V DC-DC module, for the analog output stage's gain amplifier — the "15V problem" flagged during analog-io's design. Powered from 5V-RELAY; -VIN on GND_LOGIC, -VOUT on GND_ANALOG_ISO (isolation preserved). Corrected the LM2904 load-budget entry: split into U12 (input-buffer stage, 3.3V-ANALOG-ISO) and U13 (output gain stage, new 15V-ANALOG-ISO rail) — the old single row had both on 3.3V-LOGIC, which was wrong, and used an imprecise per-amp current figure instead of the TI-datasheet-verified dual-package draw (both internal amps consume quiescent current whenever the package is powered). Updated grounding/isolation table: analog output is now isolated. Added acceptance criteria items 7 (rewritten) and 8, a commissioning item for U7's isolation, and the U7 BOM row. |
+| 2026-09-08 | Added the 6 status LEDs' worst-case current (~11.5 mA, all on simultaneously) to the 3.3V-LOGIC load budget and rail architecture table — flagged during status-indication's build but not yet added here until now. Negligible against existing margin; no module or sizing change needed. |
