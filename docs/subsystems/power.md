@@ -13,7 +13,8 @@ industrial enclosure). Every component below is checked against this range.
 ## Design approach
 
 - **Regulation:** pre-made DC-DC modules, not a custom buck design. Two-stage topology
-  (protection chain into four independent point-of-load modules).
+  (protection chain into four independent point-of-load modules, plus a fifth,
+  15V-ANALOG-ISO, fed from the 5V-RELAY rail rather than the protected rail directly).
 - **Validation:** simulation only (ngspice), no breadboard bring-up. Items that can't be
   closed on paper are tracked as commissioning tests for Rev-A (see below).
 
@@ -28,20 +29,22 @@ industrial enclosure). Every component below is checked against this range.
 | MAX3232E | 3.3V-LOGIC | 3.0-5.5V | 0.3 mA | 1 mA max | Datasheet |
 | Mornsun TD321S485H-A | 3.3V-LOGIC | 3.15-3.45V | 37 mA | 90 mA max | Datasheet |
 | AME8808 LDO (analog stage) | 3.3V-LOGIC | — | ~30 uA (same-family estimate) | negligible | AME8808's own datasheet wasn't located; using AME8805/8813 sibling figure — immaterial to rail sizing either way |
-| LM2904 op-amp (analog stage) | 3.3V-LOGIC | 3-26V | 0.35 mA/amp | 0.6-1.0 mA/amp | Datasheet |
+| LM2904 op-amp, input-buffer stage (U12) | 3.3V-ANALOG-ISO | 3-26V | 0.7-1.2 mA (dual pkg — both internal amps draw quiescent current whenever the package is powered, regardless of how many units are actually used) | ~1.2 mA max | TI datasheet — corrects an earlier placeholder that had this on 3.3V-LOGIC at a per-amp figure |
+| LM2904 op-amp, output gain stage (U13) | 15V-ANALOG-ISO | 3-26V | 0.7-1.2 mA (dual pkg, same reasoning) | ~1.2 mA max | TI datasheet |
 | Panasonic ALDP105 relay coil (x4) | 5V | 5V nominal | 40 mA each | 40 mA each, resistive coil | Manufacturer page |
 | LTV-247 optocoupler (x2, 8ch) | Field side | — | — | — | LED side draws from field wiring, not internal rails; output side is a negligible pull-up on GND_LOGIC |
 
 **Rail architecture:** the Quectel modem's 2-3A transient rules out a single shared 3.3V
 rail — a shared regulator would sag under every LTE TX burst, right when the other chips
-need clean power. Four independent rails:
+need clean power. Five independent rails:
 
 | Rail | Load | Worst-case peak |
 |---|---|---|
-| 5V | Relay coils (x4) | ~160 mA |
+| 5V-RELAY | Relay coils (x4), plus the 15V-ANALOG-ISO module's input (U7) | ~160 mA + ~5 mA reflected (U7's actual ~1.2 mA output load, at ~80% conversion efficiency; U7 is rated for 66 mA output if that ever changes) |
 | 3.3V-LOGIC | ESP32-S3, W5500, PCA9535PW, MAX3232E, RS485 module, analog logic side | ~650 mA (sized to ≥850 mA-1A with margin) |
 | 3.3V-LTE | Quectel EG915U-EU only, dedicated | 2-3A transient |
-| 3.3V-ANALOG-ISO | Analog input isolation amp/ADC, field side | Tens of mA |
+| 3.3V-ANALOG-ISO | Analog input isolation amp/ADC, U12 input-buffer op-amp | Tens of mA |
+| 15V-ANALOG-ISO | U13 output gain-stage op-amp only | ~1.2 mA |
 
 ## 2. Grounding & isolation architecture
 
@@ -53,7 +56,7 @@ need clean power. Four independent rails:
 | Relay outputs (4x) | Yes, load side only | ALDP105 mechanical contacts; coil/control side stays on GND_LOGIC |
 | Power input | No | Reverse-polarity MOSFET is not galvanic isolation |
 | Analog input | Yes | Isolation amp/ADC added — deliberate deviation from the reference design (see below) |
-| Analog output | No | Unchanged for now; revisit at analog subsystem design |
+| Analog output | Yes | RK-0515S isolated DC-DC module (U7, 3kVDC isolation) powers the output gain-stage op-amp (U13); -VOUT ties to GND_ANALOG_ISO, the same isolated domain as the analog input, not to GND_LOGIC |
 | RS232 | No | MAX3232E has no isolation |
 | LTE / WiFi | N/A | No field-wiring connection |
 
@@ -85,8 +88,9 @@ are contained to the analog subsystem and worth the small BOM cost.
 | 3.3V-LTE | Würth MagI3C-VDLM 171033801 | 3.5-38V (abs. max 42V) | 3A | Quectel's 2-3A transient inside continuous rating | Same part identified on the reference board's teardown |
 | 5V (relays) | Würth MagI3C-VDLM 171013801, second instance | 3.5-38V | 1A | ~84% headroom over 160mA | Divider re-tapped to 5V |
 | 3.3V-ANALOG-ISO | Recom R1SX-3.33.3-R | 3.3V regulated input | ~300mA / 1W | Heavy margin over tens-of-mA load | 1kVDC isolation; "/H" option available for 3kVDC |
+| 15V-ANALOG-ISO | Recom RK-0515S | 4.5-5.5V (from 5V-RELAY) | 15V / 66mA, 80-82% eff. | Heavy margin — actual load is ~1.2 mA, ~50x under rating | 3kVDC isolation (4kVDC with "/H"); -VIN ties to GND_LOGIC, -VOUT to GND_ANALOG_ISO — these are separate, non-connected nets inside the module, which is the entire point of using an isolated part here rather than a simple linear/buck regulator |
 
-Two unique SKUs cover three of the four rails (171013801 used in two separate physical
+Two unique SKUs cover three of the five rails (171013801 used in two separate physical
 instances). Both MagI3C parts publish Iout-vs-ambient derating curves at 12V/24V, usable
 directly for the enclosure-ambient check. Würth doesn't publish a downloadable SPICE model
 for MagI3C — REDEXPERT (their browser-based simulator) is used as an efficiency/thermal
@@ -189,9 +193,13 @@ here — this section covers the field power input connector only.
 ## 7. Schematic capture
 
 Full input-to-output chain wired in KiCad (`hardware/kicad/ioboard/`): J1 -> F1 -> Q1/U1 ->
-U2/TVS3300 -> four DC-DC modules. GND_LOGIC exposed as a project-wide Global Label; the
-other five rail/ground nets exposed via Hierarchical Label + matching Sheet Pin on the
-parent sheet (Output direction). See section 12 for the full reference/part table.
+U2/TVS3300 -> five DC-DC modules. GND_LOGIC exposed as a project-wide Global Label; the
+other six rail/ground nets (3.3V-LOGIC, 3.3V-LTE, 5V-RELAY, 3.3V-ANALOG-ISO, 15V-ANALOG-ISO,
+GND_ANALOG_ISO) exposed via Hierarchical Label + matching Sheet Pin on the parent sheet
+(Output direction). 15V-ANALOG-ISO's producer (U7) sits in `power.kicad_sch`; its consumer
+(U13's V+ pin) was already anticipated in `analog_io.kicad_sch` before this rail existed —
+only the sheet-pin path through the root sheet (`ioboard.kicad_sch`) needed completing.
+See section 12 for the full reference/part table.
 
 ## 8. Operating temperature check
 
@@ -202,6 +210,7 @@ parent sheet (Output direction). See section 12 for the full reference/part tabl
 | TI TVS3300 | -65C to +150C storage (family datasheet; TVS3300-specific page not independently re-pulled) | Yes, wide margin |
 | Würth WCAP-CSSA | -55C to +125C | Yes, wide margin |
 | Recom R1SX-3.33.3-R | -40C to +100C | Yes, wide margin |
+| Recom RK-0515S | -40C to +90C (derates above 50C) | Yes — 60C worst-case ambient is within the derating region but still inside the rated range; load is far under the module's rated output so derated capacity isn't a constraint |
 
 ## 9. Margin verification
 
@@ -222,10 +231,13 @@ were accepted deliberately for the reasons in section 4, not overlooked.
 
 ## 10. Power sequencing & brown-out check
 
-**Sequencing:** all four rails power independent downstream devices rather than multiple
-rails feeding one IC, so there's no core-before-IO-style dependency between them. All four
-modules' EN pins tie directly to the shared protected-rail VIN, so all four come up
-together — no relative ordering constraint found in any downstream datasheet.
+**Sequencing:** all five rails power independent downstream devices rather than multiple
+rails feeding one IC, so there's no core-before-IO-style dependency between them. The four
+regulators fed directly from the protected rail have EN tied to that shared VIN, so they come
+up together; U7 (15V-ANALOG-ISO) instead comes up off the already-sequenced 5V-RELAY rail, so
+it necessarily lags it by whatever 5V-RELAY's own startup time is — an inherent, not
+accidental, ordering, and not a fault condition since nothing downstream of U7 depends on
+beating 5V-RELAY's own startup.
 
 **Brown-out from load transients:** the LTE modem's 2-3A TX burst is the largest transient
 on the shared protected rail. Through the board's own series resistance (fuse + MOSFET +
@@ -247,10 +259,15 @@ item, not a design risk, given the ~3x margin already present.
 4. A surge event up to TVS3300's rated 35A/8-20us Ipp does not expose any DC-DC module
    beyond its 42V absolute maximum input rating.
 5. Input capacitor inrush at power-up does not exceed Q1's IDM (400A/100us) or trip F1.
-6. GND_ANALOG_ISO has no direct DC path to GND_LOGIC — isolation boundary intact.
-7. All four rails power up together with no relative sequencing fault.
+6. GND_ANALOG_ISO has no direct DC path to GND_LOGIC — isolation boundary intact, including
+   through U7 (-VIN on GND_LOGIC, -VOUT on GND_ANALOG_ISO, isolated inside the module).
+7. All five rails power up with no relative sequencing fault (four together off the
+   protected rail, 15V-ANALOG-ISO trailing 5V-RELAY by its own startup time — expected, see
+   section 10).
+8. 15V-ANALOG-ISO holds regulation across the 4.5-5.5V input range at the ~1.2 mA analog
+   output stage load, comfortably inside U7's 66 mA rating.
 
-Items 1, 3 (fault case), 6, and 7 require real hardware to close out fully — Rev-A
+Items 1, 3 (fault case), 6, 7, and 8 require real hardware to close out fully — Rev-A
 bring-up checks, listed under Commissioning below.
 
 ## 12. Bill of materials
@@ -266,6 +283,7 @@ bring-up checks, listed under Commissioning below.
 | U4 | Würth MagI3C-VDLM | 3.3V-LTE DC-DC module (3A) | 171033801 |
 | U5 | Würth MagI3C-VDLM | 5V-RELAY DC-DC module | 171013801 |
 | U6 | Recom R1SX-3.33.3-R | Isolated 3.3V analog supply | R1SX-3.33.3-R |
+| U7 | Recom RK-0515S | Isolated 15V DC-DC module, analog output gain-stage supply | RK-0515S |
 | CY1 | Würth WCAP-CSSA | Input Y-cap, EMI/safety | 8853522140011 |
 | C1 | Ceramic, X7R, 16V | LM74610-Q1 charge-pump cap | 2.2uF |
 | R2/R5/R8 | E96 | FB top resistor (3.3V rails) | 402k |
@@ -287,6 +305,7 @@ paper. None block sign-off — all are backed by comfortable design margin.
 | Inrush vs. real supply impedance | Confirm measured inrush tracks the simulated worst case | Field supply's output impedance is unknown until real hardware exists |
 | Brown-out vs. real supply | Confirm rail stability during an actual LTE TX burst | Same — external supply regulation quality can't be modeled on paper |
 | Inrush trace/connector rating | Confirm PCB copper handles 161A/~35us at layout | Sanity check, not expected to be an issue |
+| 15V-ANALOG-ISO isolation | Hipot/isolation check across U7's input/output barrier | Isolation rating is a datasheet spec, not independently re-tested on paper |
 
 ## Revision history
 
@@ -301,3 +320,4 @@ paper. None block sign-off — all are backed by comfortable design margin.
 | 2026-09-03 | Margin verification, sequencing/brown-out check, acceptance criteria, BOM, sign-off |
 | 2026-09-03 | Operating temperature range (-20C/+60C) confirmed as a real requirement |
 | 2026-09-03 | U6 (analog isolated supply) reference designator corrected from P51 |
+| 2026-09-08 | Added U7 (Recom RK-0515S), an isolated 15V DC-DC module, for the analog output stage's gain amplifier — the "15V problem" flagged during analog-io's design. Powered from 5V-RELAY; -VIN on GND_LOGIC, -VOUT on GND_ANALOG_ISO (isolation preserved). Corrected the LM2904 load-budget entry: split into U12 (input-buffer stage, 3.3V-ANALOG-ISO) and U13 (output gain stage, new 15V-ANALOG-ISO rail) — the old single row had both on 3.3V-LOGIC, which was wrong, and used an imprecise per-amp current figure instead of the TI-datasheet-verified dual-package draw (both internal amps consume quiescent current whenever the package is powered). Updated grounding/isolation table: analog output is now isolated. Added acceptance criteria items 7 (rewritten) and 8, a commissioning item for U7's isolation, and the U7 BOM row. |
