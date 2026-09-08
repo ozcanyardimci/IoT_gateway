@@ -87,6 +87,7 @@ listed under "Power subsystem" above — no separate entry needed.
 | Bencent B3D090L-C | Gas discharge tube, first-stage surge diversion | [LCSC product page](https://www.lcsc.com/product-detail/Gas-Discharge-Tube-GDT_Bencent-B3D090L-C_C511253.html) — 90V DC spark-over, 5kA @ 8/20µs, 3-pole, 1.5pF. Re-verified 2026-09-08 (was flagged from the original teardown as unverified — now confirmed) |
 | Bourns CDSOT23-SM712 | Bidirectional TVS array, second-stage clamp | [Littelfuse SM712 datasheet](https://www.littelfuse.com/assetdocs/littelfuse-tvs-diode-array-sm712-datasheet?assetguid=8313a28c-8802-4d47-a2a7-e30b5b1f67d8) (same silicon as the Bourns cross-part) — asymmetric −7V/+12V range matches RS485 common-mode spec exactly |
 | Würth WE-SL2 744227 | Common-mode choke, EMI suppression on A/B pair | [WE-SL2 product page](https://www.we-online.com/en/components/products/WE-SL2) — 51µH, 5500Ω @ 100MHz, 1A rated |
+| Phoenix Contact MC 1,5/3-ST-3,5 | 3-position field connector (A, B, GND_RS485_ISO) | [Newark product page](https://www.newark.com/phoenix-contact/mc-1-5-3-st-3-5/pluggable-terminal-block-3-position/dp/14J3293) — MPN 1840379 |
 
 Series resistors (27Ω, generic) are a standard-practice value, not independently derived
 for this cascade yet — see `docs/subsystems/rs485.md` "Still open" for the follow-up.
