@@ -1,0 +1,55 @@
+ERC report (2026-09-07T19:50:03+0300, Encoding UTF8)
+
+***** Sheet /
+[pin_not_connected]: Pin not connected
+    ; error
+    @(64.77 mm, 44.45 mm): Hierarchical Sheet Pin 3V3_LTE
+[label_dangling]: Label not connected to anything
+    ; error
+    @(40.64 mm, 52.07 mm): Label 'RELAY1_CTRL'
+[label_dangling]: Label not connected to anything
+    ; error
+    @(40.64 mm, 91.44 mm): Label 'RELAY2_CTRL'
+[label_dangling]: Label not connected to anything
+    ; error
+    @(40.64 mm, 130.81 mm): Label 'RELAY3_CTRL'
+[label_dangling]: Label not connected to anything
+    ; error
+    @(40.64 mm, 170.18 mm): Label 'RELAY4_CTRL'
+[footprint_link_issues]: The current configuration does not include the footprint library 'LM74610QDGKRQ1'.
+    ; warning
+    @(95.25 mm, 77.47 mm): Symbol U1 [LM74610QDGKRQ1]
+[footprint_link_issues]: The current configuration does not include the footprint library '171013801'.
+    ; warning
+    @(168.91 mm, 73.66 mm): Symbol U3 [171013801]
+[footprint_link_issues]: The current configuration does not include the footprint library '171033801'.
+    ; warning
+    @(167.64 mm, 107.95 mm): Symbol U5 [171033801]
+[footprint_link_issues]: The current configuration does not include the footprint library '171013801'.
+    ; warning
+    @(166.37 mm, 143.51 mm): Symbol U4 [171013801]
+[footprint_link_issues]: The current configuration does not include the footprint library 'R1SX-3.33.3-R'.
+    ; warning
+    @(226.06 mm, 71.12 mm): Symbol U6 [R1SX-3.33.3-R]
+[footprint_link_issues]: The current configuration does not include the footprint library 'ALDP105'.
+    ; warning
+    @(73.66 mm, 43.18 mm): Symbol K1 [ALDP105]
+[footprint_link_issues]: The current configuration does not include the footprint library 'ALDP105'.
+    ; warning
+    @(73.66 mm, 82.55 mm): Symbol K2 [ALDP105]
+[footprint_link_issues]: The current configuration does not include the footprint library 'ALDP105'.
+    ; warning
+    @(73.66 mm, 121.92 mm): Symbol K3 [ALDP105]
+[footprint_link_issues]: The current configuration does not include the footprint library 'ALDP105'.
+    ; warning
+    @(73.66 mm, 161.29 mm): Symbol K4 [ALDP105]
+
+***** Sheet /power/
+
+***** Sheet /digital_inputs/
+
+***** Sheet /relay_outputs/
+
+***** Sheet /analog_io/
+
+ ** ERC messages: 14  Errors 5  Warnings 9

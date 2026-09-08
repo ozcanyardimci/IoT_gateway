@@ -1,5 +1,6 @@
 # KiCad
 *.bak
+*-bak
 *-backups/
 _autosave-*
 *.kicad_prl

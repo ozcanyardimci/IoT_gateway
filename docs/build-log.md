@@ -13,8 +13,10 @@
 - Reverse-polarity protection, surge/EMI protection, and four-rail regulation (3.3V-LOGIC,
   3.3V-LTE, 5V-RELAY, 3.3V-ANALOG-ISO) designed and simulated (ngspice inrush, margin
   verification against every part's worst-case rating).
-- Schematic captured in `hardware/kicad/ioboard/` (J1 -> F1 -> Q1/U1 -> U2 -> four DC-DC
-  modules). Full BOM sourced to real, in-stock part numbers.
+- Schematic captured in `hardware/kicad/ioboard/` (J1 -> F1 -> Q5/U1 -> U2 -> four DC-DC
+  modules; the reverse-polarity MOSFET was later renamed from Q1 to Q5 during the analog-io
+  subsystem's ERC pass, to resolve a duplicate-reference collision — see `power.md`'s
+  revision history). Full BOM sourced to real, in-stock part numbers.
 - See `docs/subsystems/power.md` for the full writeup; items needing real hardware are
   tracked there as commissioning tests for Rev-A.
 
@@ -82,3 +84,38 @@
 - ERC deferred to a single project-wide pass once every subsystem is built, a project-wide
   decision replacing the per-subsystem ERC pass used for analog-io.
 - See `docs/subsystems/status-indication.md` for the full writeup.
+
+## 2026-09-07 — Analog I/O subsystem complete
+- 2 analog inputs (0-10V / 4-20mA stuffing option) + 1 analog output (0-10V), isolated from
+  GND_LOGIC: ADS1115 (ADC) + MCP4725 (DAC) share one I2C bus on the isolated side, crossing
+  to GND_LOGIC through an ISO1540 bidirectional isolator. Output stage is a real DAC + LM2904
+  gain stage (gain 3.004), not PWM+filter — the ESP32-S3 has no internal DAC. Surfaced a real
+  gap in the existing rail budget: the 0-10V output needs a new isolated ~15V rail, sourced
+  from 5V-RELAY. That gap was closed separately on `main` (see the 2026-09-08 entry below)
+  before this branch was merged back in.
+- Schematic captured in `hardware/kicad/ioboard/ioboard/analog_io.kicad_sch`. One real wiring
+  bug (output-stage feedback network wired to break the loop) and one naming ambiguity
+  (channel-1/channel-2 resistor designators swapped) caught and fixed during capture.
+- Full KiCad ERC (Electrical Rules Check) run to a fully-explained clean state: 15 findings
+  reviewed and excluded with a written, per-violation comment (cross-sheet power-driver false
+  positives, documented spare/deferred headroom, deferred GPIO assignment, the deferred 15V
+  rail) — nothing silently suppressed. This pass also surfaced and fixed two pre-existing
+  bugs outside this sheet: a duplicate `Q1` reference collision in `power.kicad_sch` (renamed
+  to `Q5`) and an inconsistent local/global `GND_LOGIC` labeling on the same sheet (both
+  recorded in `power.md`'s revision history, not just here).
+- See `docs/subsystems/analog-io.md` for the full writeup.
+
+## 2026-09-08 — Power: isolated 15V rail for analog output stage
+- Solved the 15V problem flagged during analog-io's design: added U7 (Recom RK-0515S,
+  isolated DC-DC, 4.5-5.5V in / 15V out / 66mA, 3kVDC isolation) to `power.kicad_sch`,
+  powered from `5V-RELAY`. Verified wiring programmatically (+VIN->5V_RELAY,
+  -VIN->GND_LOGIC, +VOUT->15V_ANALOG_ISO, -VOUT->GND_ANALOG_ISO), confirming -VIN and
+  -VOUT resolve to two distinct nets — isolation preserved.
+- Completed the root-sheet routing in `ioboard.kicad_sch`: added a `15V_ANALOG_ISO` output
+  pin to the power sheet symbol and wired it through to `analog_io`'s existing
+  `15V_ANALOG_ISO` input pin (on U13's V+, already anticipated in that branch's design).
+- Corrected the LM2904 load-budget entry in `power.md`: the old single row put both op-amp
+  packages on 3.3V-LOGIC with an imprecise per-amp current figure. Split into U12
+  (input-buffer stage, 3.3V-ANALOG-ISO) and U13 (output gain stage, new 15V-ANALOG-ISO
+  rail), both at the TI-datasheet-verified 0.7-1.2 mA dual-package draw.
+- See `docs/subsystems/power.md`'s revision history for the full writeup.

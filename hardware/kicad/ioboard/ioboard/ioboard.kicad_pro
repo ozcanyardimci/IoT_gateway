@@ -25,7 +25,32 @@
     "equivalence_files": []
   },
   "erc": {
-    "erc_exclusions": [],
+    "erc_exclusions": [
+      [
+        "pin_not_connected|1066800|660400|c7919e42-f91f-45a9-b0d5-0e6ca63e2004|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|",
+        "ALERT/RDY comparator output left unconnected; not used by this design (polling-based ADC readout per analog-io.md). Spare output pin."
+      ],
+      [
+        "pin_not_connected|863600|736600|1967a6ac-c8e3-4c01-b3b9-66c0efecfc7c|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|",
+        "Spare ADC input, intentionally unconnected per analog-io.md Step 1 (2 of 4 channels used, headroom for future expansion)."
+      ],
+      [
+        "pin_not_connected|863600|762000|d9049c9b-f474-4c19-8078-9db1d75adb7b|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|",
+        "Spare ADC input, intentionally unconnected per analog-io.md Step 1 (2 of 4 channels used, headroom for future expansion)."
+      ],
+      [
+        "pin_not_driven|863600|736600|1967a6ac-c8e3-4c01-b3b9-66c0efecfc7c|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|",
+        "Spare ADC input, intentionally unconnected per analog-io.md Step 1 (2 of 4 channels used, headroom for future expansion)."
+      ],
+      [
+        "pin_not_driven|863600|762000|d9049c9b-f474-4c19-8078-9db1d75adb7b|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|",
+        "Spare ADC input, intentionally unconnected per analog-io.md Step 1 (2 of 4 channels used, headroom for future expansion)."
+      ],
+      [
+        "power_pin_not_driven|965200|584200|0d277307-8d02-474b-959b-cc75cabe73b6|00000000-0000-0000-0000-000000000000|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|/a0fa9f92-ef51-408b-9617-1545f9e9dad8/ce521ae5-fae5-4047-a79f-945e6fee8e92|",
+        "Rail is driven from power.kicad_sch via a hierarchical sheet pin (U6 +VOUT). ERC does not trace power drivers across sheet hierarchy for this check; net has a real source."
+      ]
+    ],
     "meta": {
       "version": 0
     },
@@ -424,6 +449,10 @@
     [
       "55642ed9-1d66-4d12-aa63-2236b7e87efe",
       "relay_outputs"
+    ],
+    [
+      "ce521ae5-fae5-4047-a79f-945e6fee8e92",
+      "analog_io"
     ]
   ],
   "text_variables": {}
