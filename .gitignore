@@ -23,3 +23,6 @@ Thumbs.db
 # Claude Code CLI project state (local only)
 .claude/
 CLAUDE.md
+
+# Local-only reference photos (not for version control)
+reference-photos/
