@@ -79,6 +79,18 @@ for the rail).
 LM2904 (input buffers + output gain stage, 2 physical instances) reuses the part already
 listed under "Power subsystem" above — no separate entry needed.
 
+## RS485 subsystem
+
+| Part | Role | Datasheet / source |
+|---|---|---|
+| Mornsun TD5(3)21S485H-A | Isolated RS485 transceiver module | [Mornsun datasheet](https://www.mornsun-power.com/public/uploads/pdf/TD5(3)21S485H-A.pdf) — 3kVDC isolation, 500kbps max, built-in 47kΩ A/B pull-down bias (confirmed 2026-09-08) |
+| Bencent B3D090L-C | Gas discharge tube, first-stage surge diversion | [LCSC product page](https://www.lcsc.com/product-detail/Gas-Discharge-Tube-GDT_Bencent-B3D090L-C_C511253.html) — 90V DC spark-over, 5kA @ 8/20µs, 3-pole, 1.5pF. Re-verified 2026-09-08 (was flagged from the original teardown as unverified — now confirmed) |
+| Bourns CDSOT23-SM712 | Bidirectional TVS array, second-stage clamp | [Littelfuse SM712 datasheet](https://www.littelfuse.com/assetdocs/littelfuse-tvs-diode-array-sm712-datasheet?assetguid=8313a28c-8802-4d47-a2a7-e30b5b1f67d8) (same silicon as the Bourns cross-part) — asymmetric −7V/+12V range matches RS485 common-mode spec exactly |
+| Würth WE-SL2 744227 | Common-mode choke, EMI suppression on A/B pair | [WE-SL2 product page](https://www.we-online.com/en/components/products/WE-SL2) — 51µH, 5500Ω @ 100MHz, 1A rated |
+
+Series resistors (27Ω, generic) are a standard-practice value, not independently derived
+for this cascade yet — see `docs/subsystems/rs485.md` "Still open" for the follow-up.
+
 ## Connectors & wiring standards
 
 | Item | Role | Source |
@@ -97,6 +109,8 @@ listed under "Power subsystem" above — no separate entry needed.
 | TI SLVA862 — Basics of eFuses | Background on inrush/reverse-polarity/overvoltage protection concepts | ti.com application report SLVA862 |
 | WIZnet hardware design guide | Generic decoupling (0.1uF bypass, 10uF/4.7uF bulk, 3.3V regulator >=300mA) | [WIZnet Design Guide](https://docs.wiznet.io/Design-Guide/hardware_design_guide) |
 | WIZnet W5500 reference schematic | Transformer/RJ45 config, isolation capacitors | [WIZnet W5500 ref-schematic](https://docs.wiznet.io/Product/Chip/Ethernet/W5500/ref-schematic) |
+| Bourns RS-485 Port Protection Evaluation Board design note | GDT + series-limiting + TVS cascade topology reference for RS485 lines (uses a TBU current limiter instead of plain resistors — informed this project's cascade order, not its exact parts) | [PDF](https://www.bourns.com/docs/technical-documents/technical-library/circuit-protection/design-notes/bourns_rs485_evalboard4_design_note.pdf) |
+| Würth ANP083 — RS-485 EMI filtering app note | Common-mode choke placement on an RS-485 interface (WE-SL2 family) | Referenced via Würth's WE-SL2 product page; direct PDF link 404'd 2026-09-08, retry before finalizing layout |
 
 No single vendor app note covers this exact combination (wide 10-30V input protection with
 multiple MagI3C modules) — the protection sequencing (fuse -> reverse-polarity ->
@@ -118,10 +132,11 @@ Identified during the original teardown; re-pull the current datasheet from the
 manufacturer/distributor before relying on exact figures.
 
 - Würth Elektronik 7499010441 — Ethernet magjack
-- Bencent B3D090L-C — gas discharge tube, RS485/RS232 surge protection
 - Toshiba SSM3J307T family — P-channel MOSFET behind the "PJ307U" board marking
 - Recom R05P215S — isolation-voltage rating (kVDC) not confirmed against the full datasheet
   PDF this session, only distributor listing pages; confirm before BOM lock
+
+(Bencent B3D090L-C — moved to "RS485 subsystem" above, re-verified 2026-09-08.)
 
 ## Not added yet
 
