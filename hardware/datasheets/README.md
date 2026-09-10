@@ -129,6 +129,18 @@ photo evidence shows no dedicated protection stage for this port, unlike RS485).
 | TI MAX3232EIPWR | RS232 transceiver, TSSOP-16, one channel used (DIN1/DOUT1/RIN1/ROUT1); channel 2 left unconnected | [TI MAX3232E datasheet](https://www.ti.com/lit/ds/slls664c/slls664c.pdf) — corrected 2026-09-10 from an earlier placeholder ("MAX3232EI" alone isn't a real SKU); picked over the ADI/Maxim equivalent (MAX3232EEUE+) for SnapEDA symbol/footprint availability |
 | Phoenix Contact MC 1,5/3-ST-3,5 | 3-position field connector (TXD, RXD, GND) | [Newark product page](https://www.newark.com/phoenix-contact/mc-1-5-3-st-3-5/pluggable-terminal-block-3-position/dp/14J3293) — MPN 1840379, same part reused from RS485's connector (J5) |
 
+## Ethernet subsystem
+
+Front end (W5500 crystal/support passives, magnetics/RJ45, LED/control lines) locked
+2026-09-10, cross-checked against WIZnet's own reference schematic and, for the magjack,
+against the reference-hardware's own LTEBOARD photos — see `docs/subsystems/ethernet.md`
+Steps 1-3 for the full component list.
+
+| Part | Role | Datasheet / source |
+|---|---|---|
+| WIZnet W5500 | SPI-to-MAC+PHY, 10/100 Ethernet | [W5500 datasheet v1.1.0](https://docs.wiznet.io/img/products/w5500/W5500_ds_v110e.pdf) — re-confirmed 2026-09-10 (pinout, crystal spec, SPI timing, LED pin behavior); chip visually matched on the reference LTEBOARD too |
+| Würth Elektronik 7499010441 (WE-RJ45LAN) | RJ45 jack with integrated 1:1 transformer, 2 bi-color LEDs | [Datasheet](https://www.we-online.com/components/products/datasheet/7499010441.pdf) — re-verified 2026-09-10 (isolation ≥1500V RMS, turns ratio, LED specs); exact part number visually confirmed against the reference LTEBOARD's own jack marking; Bob-Smith termination treated as integrated (high confidence, not 100% pin-level-guaranteed) — see `docs/subsystems/ethernet.md` decision 4 |
+
 ## Connectors & wiring standards
 
 | Item | Role | Source |
@@ -146,7 +158,7 @@ photo evidence shows no dedicated protection stage for this port, unlike RS485).
 | TVS3300 datasheet, Section 9 | TVS3300's own typical application circuit and layout guidance | [PDF](https://www.ti.com/lit/ds/symlink/tvs3300.pdf) |
 | TI SLVA862 — Basics of eFuses | Background on inrush/reverse-polarity/overvoltage protection concepts | ti.com application report SLVA862 |
 | WIZnet hardware design guide | Generic decoupling (0.1uF bypass, 10uF/4.7uF bulk, 3.3V regulator >=300mA) | [WIZnet Design Guide](https://docs.wiznet.io/Design-Guide/hardware_design_guide) |
-| WIZnet W5500 reference schematic | Transformer/RJ45 config, isolation capacitors | [WIZnet W5500 ref-schematic](https://docs.wiznet.io/Product/Chip/Ethernet/W5500/ref-schematic) |
+| WIZnet W5500 reference schematic | Transformer/RJ45 config, isolation capacitors | [WIZnet W5500 ref-schematic](https://docs.wiznet.io/Product/Chip/Ethernet/W5500/ref-schematic) — full PDF variant (bare-transformer magjack, external Bob-Smith termination): [w5500-ref-rj45with20150406.pdf](https://docs.wiznet.io/img/products/w5500/w5500-ref-rj45with20150406.pdf), pulled 2026-09-10 for crystal/EXRES1/TOCAP/LED-resistor cross-check |
 | Bourns RS-485 Port Protection Evaluation Board design note | GDT + series-limiting + TVS cascade topology reference for RS485 lines (uses a TBU current limiter instead of plain resistors — informed this project's cascade order, not its exact parts) | [PDF](https://www.bourns.com/docs/technical-documents/technical-library/circuit-protection/design-notes/bourns_rs485_evalboard4_design_note.pdf) |
 | Würth ANP083 — RS-485 EMI filtering app note | Common-mode choke placement on an RS-485 interface (WE-SL2 family) | Referenced via Würth's WE-SL2 product page; direct PDF link 404'd 2026-09-08, retry before finalizing layout |
 
@@ -169,10 +181,11 @@ authoritative reference document.
 Identified during the original teardown; re-pull the current datasheet from the
 manufacturer/distributor before relying on exact figures.
 
-- Würth Elektronik 7499010441 — Ethernet magjack
 - Toshiba SSM3J307T family — P-channel MOSFET behind the "PJ307U" board marking
 
-(Bencent B3D090L-C — moved to "RS485 subsystem" above, re-verified 2026-09-08.)
+(Bencent B3D090L-C — moved to "RS485 subsystem" above, re-verified 2026-09-08. Würth
+7499010441 — moved to "Ethernet subsystem" above, re-verified 2026-09-10 including a
+direct visual match against the reference hardware's own jack marking.)
 
 ## Not added yet
 

@@ -97,7 +97,7 @@
 	)
 	(wire
 		(pts
-			(xy 96.52 45.72) (xy 102.87 45.72)
+			(xy 96.52 45.72) (xy 104.14 45.72)
 		)
 		(stroke
 			(width 0)
@@ -666,7 +666,7 @@
 		)
 	)
 	(sheet
-		(at 102.87 33.02)
+		(at 104.14 33.02)
 		(size 31.75 40.64)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -682,7 +682,7 @@
 		)
 		(uuid "e9785409-3f19-46aa-ac08-cdd108590a81")
 		(property "Sheetname" "digital_inputs"
-			(at 102.87 31.9434 0)
+			(at 104.14 31.9434 0)
 			(effects
 				(font
 					(size 2 2)
@@ -691,7 +691,7 @@
 			)
 		)
 		(property "Sheetfile" "digital_inputs.kicad_sch"
-			(at 102.87 74.5366 0)
+			(at 104.14 74.5366 0)
 			(effects
 				(font
 					(size 2 2)
@@ -700,7 +700,7 @@
 			)
 		)
 		(pin "3V3_LOGIC" input
-			(at 102.87 45.72 180)
+			(at 104.14 45.72 180)
 			(uuid "3915913d-2073-4ad4-a9a0-809e56c33103")
 			(effects
 				(font
