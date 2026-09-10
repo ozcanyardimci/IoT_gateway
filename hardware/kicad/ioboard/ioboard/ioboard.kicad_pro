@@ -453,6 +453,14 @@
     [
       "ce521ae5-fae5-4047-a79f-945e6fee8e92",
       "analog_io"
+    ],
+    [
+      "57031ac2-c170-4aa5-a496-01dd6c51d9ee",
+      "rs485"
+    ],
+    [
+      "76e19aa2-12ff-4bfe-8bd8-7b7c95f6f393",
+      "rs232"
     ]
   ],
   "text_variables": {}
