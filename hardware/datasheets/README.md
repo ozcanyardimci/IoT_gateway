@@ -88,15 +88,13 @@ generic cascade — see `docs/subsystems/rs485.md` Step 2 for the full reasoning
 | Part | Role | Datasheet / source |
 |---|---|---|
 | Mornsun TD321S485H-A (TD5(3)21S485H-A series) | Isolated RS485 transceiver module | [Mornsun datasheet](https://www.mornsun-power.com/public/uploads/pdf/TD5(3)21S485H-A.pdf) — full PDF obtained 2026-09-08 (user-supplied): 3kVDC isolation, 500kbps max, built-in 47kΩ A/B pull-down, confirmed 10-pin pinout, and the harsh-environment reference circuit (Fig. 2) this section's other parts come from |
-| Bencent B3D090L-C | Gas discharge tube (GDT), wired line-to-line per Fig. 2 | [LCSC product page](https://www.lcsc.com/product-detail/Gas-Discharge-Tube-GDT_Bencent-B3D090L-C_C511253.html) — 90V DC spark-over, 5kA @ 8/20µs, 3-pole, 1.5pF. Doubly confirmed: flagged from the original teardown, and Mornsun's own datasheet names the base part "B3D090L" directly |
-| Littelfuse SMBJ6.5CA (x3, D1/D2/D3) | Bidirectional TVS diodes, line-to-ground clamp | [Littelfuse SMBJ series datasheet](https://www.littelfuse.com/assetdocs/tvs-diodes-smbj-series-datasheet) · [DigiKey](https://www.digikey.com/en/products/detail/littelfuse-inc/SMBJ6-5CA/285958) — 600W, DO-214AA. Mornsun-specified exact part. Same SMBJ family already used for analog-input protection (SMBJ15CA) |
-| TDK ACM2520-301-2P | Common-mode choke (T1) | [TDK product page](https://product.tdk.com/en/search/emc/emc/cmf_cmc/info?part_no=ACM2520-301-2P-T002) · [LCSC](https://www.lcsc.com/product-detail/Common-Mode-Filters_TDK-ACM2520-301-2P-T002_C76577.html) — Mornsun-specified exact part |
-| Generic 2.7Ω/2W (R1, R2) | Series current-limiting resistors, Fig. 2 | Mornsun-specified value/power rating |
-| Generic 1MΩ (R3) + 1nF/2kV (C1) | RC snubber to EARTH, Fig. 2 | Mornsun-specified |
-| Phoenix Contact MC 1,5/3-ST-3,5 | 3-position field connector (A, B, GND_RS485_ISO) | [Newark product page](https://www.newark.com/phoenix-contact/mc-1-5-3-st-3-5/pluggable-terminal-block-3-position/dp/14J3293) — MPN 1840379 |
-
-Rpullup/Rpulldown (external bias, VO/pin7 and RGND/pin10) — Mornsun specifies a current
-ceiling (<25mA) but no resistance value; still open, see `docs/subsystems/rs485.md`.
+| Bencent B3D090L-C (GD1) | Gas discharge tube (GDT), 3-electrode: line pins wired A-B, third (common) electrode bonds to `EARTH` | [LCSC product page](https://www.lcsc.com/product-detail/Gas-Discharge-Tube-GDT_Bencent-B3D090L-C_C511253.html) — 90V DC spark-over, 5kA @ 8/20µs, 3-pole, 1.5pF. Doubly confirmed: flagged from the original teardown, and Mornsun's own datasheet names the base part "B3D090L" directly |
+| Littelfuse SMBJ6.5CA (x3, D15/D18/D19; Mornsun Fig. 2 D1/D2/D3) | Bidirectional TVS diodes — D15 A-B differential clamp, D18/D19 line-to-EARTH clamp | [Littelfuse SMBJ series datasheet](https://www.littelfuse.com/assetdocs/tvs-diodes-smbj-series-datasheet) · [DigiKey](https://www.digikey.com/en/products/detail/littelfuse-inc/SMBJ6-5CA/285958) — 600W, DO-214AA. Mornsun-specified exact part. Same SMBJ family already used for analog-input protection (SMBJ15CA) |
+| TDK ACM2520-301-2P (U14) | Common-mode choke (Mornsun Fig. 2 T1) | [TDK product page](https://product.tdk.com/en/search/emc/emc/cmf_cmc/info?part_no=ACM2520-301-2P-T002) · [LCSC](https://www.lcsc.com/product-detail/Common-Mode-Filters_TDK-ACM2520-301-2P-T002_C76577.html) — Mornsun-specified exact part |
+| Generic 2.7Ω/2W (R34, R35; Mornsun Fig. 2 R1/R2) | Series current-limiting resistors | Mornsun-specified value/power rating |
+| Generic 1MΩ (R36; Mornsun Fig. 2 R3) + 1nF/2kV (C23; Mornsun Fig. 2 C1) | RC snubber to EARTH | Mornsun-specified |
+| Generic 4.7kΩ (R_pullup1, R_pulldown1) | External bias — Rpullup: VO (pin 7) to A; Rpulldown: RGND (pin 10) to B | Mornsun specifies only a current ceiling (<25mA) on VO/RGND, not a resistance — 4.7kΩ gives ≈1.1mA worst case, well inside that ceiling; picked and locked on the schematic 2026-09-10 |
+| Phoenix Contact MC 1,5/3-ST-3,5 (J5) | 3-position field connector (A, B, EARTH) | [Newark product page](https://www.newark.com/phoenix-contact/mc-1-5-3-st-3-5/pluggable-terminal-block-3-position/dp/14J3293) — MPN 1840379 |
 
 Superseded (2026-09-08, same day — kept here for traceability, not because they were
 wrong parts, just replaced by Mornsun's own tested circuit once its datasheet was fully

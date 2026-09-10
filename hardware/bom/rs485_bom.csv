@@ -1,0 +1,14 @@
+Ref,Part,Role,MPN,Manufacturer,Distributor link
+U15,Mornsun TD321S485H-A,Isolated RS485 transceiver module,TD321S485H-A,Mornsun,https://www.mornsun-power.com/public/uploads/pdf/TD5(3)21S485H-A.pdf
+GD1,Bencent B3D090L-C,Gas discharge tube — line surge diversion to EARTH,B3D090L-C,Bencent,https://www.lcsc.com/product-detail/Gas-Discharge-Tube-GDT_Bencent-B3D090L-C_C511253.html
+U14,TDK ACM2520-301-2P,Common-mode choke,ACM2520-301-2P-T002,TDK,https://www.lcsc.com/product-detail/Common-Mode-Filters_TDK-ACM2520-301-2P-T002_C76577.html
+D15,Littelfuse SMBJ6.5CA,Bidirectional TVS diode — A-B differential clamp,SMBJ6.5CA,Littelfuse,https://www.digikey.com/en/products/detail/littelfuse-inc/SMBJ6-5CA/285958
+D18,Littelfuse SMBJ6.5CA,Bidirectional TVS diode — line-to-EARTH clamp,SMBJ6.5CA,Littelfuse,https://www.digikey.com/en/products/detail/littelfuse-inc/SMBJ6-5CA/285958
+D19,Littelfuse SMBJ6.5CA,Bidirectional TVS diode — line-to-EARTH clamp,SMBJ6.5CA,Littelfuse,https://www.digikey.com/en/products/detail/littelfuse-inc/SMBJ6-5CA/285958
+R35,Generic 2.7 ohm 2W,Series current-limiting resistor (line side),2.7,generic,
+R34,Generic 2.7 ohm 2W,Series current-limiting resistor (line side),2.7,generic,
+R36,Generic 1M,Bleed resistor — RC snubber to EARTH (with C23),1M,generic,
+C23,"Generic ceramic, 1nF, 2kV",RC snubber capacitor to EARTH (with R36),1nF,generic,
+R_pullup1,Generic 4.7k,External bias pull-up — VO (pin 7) to A,4.7k,generic,
+R_pulldown1,Generic 4.7k,External bias pull-down — RGND (pin 10) to B,4.7k,generic,
+J5,"Phoenix Contact MC 1,5/3-ST-3,5",3-position field connector (A/B/EARTH),1840379,Phoenix Contact,https://www.newark.com/phoenix-contact/mc-1-5-3-st-3-5/pluggable-terminal-block-3-position/dp/14J3293
