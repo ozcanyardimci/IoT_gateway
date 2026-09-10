@@ -42,15 +42,15 @@ Order:
    **DONE**
 6. Analog I/O (input + output) — `docs/subsystems/analog-io.md` — **DONE**
 7. RS485 (isolated) — `docs/subsystems/rs485.md` — **DONE**
-8. RS232 — `docs/subsystems/rs232.md` — **IN PROGRESS**: front end, protection, and
-   connector locked 2026-09-10; schematic capture is next
+8. RS232 — `docs/subsystems/rs232.md` — **DONE**
 9. Ethernet (W5500)
 10. WiFi
 11. LTE (Quectel EG915U-EU) — most complex, done last
 
-ERC is deferred to a single pre-merge pass across digital-inputs, relay-outputs, and RS485
-(status-indication opted into the same project-wide-pass approach independently); tracked
-per-subsystem in `CLAUDE.md`'s open items, not blocking this roadmap's forward progress.
+ERC is deferred to a single end-of-project pass across all subsystems, not a per-subsystem
+pre-merge gate (Ozcan's explicit decision, confirmed 2026-09-10 — status-indication had
+already opted into the same project-wide-pass approach independently); tracked per-subsystem
+in `CLAUDE.md`'s open items, not blocking this roadmap's forward progress.
 
 ## 5. Per-subsystem acceptance criteria — DONE FOR POWER, PER-SUBSYSTEM GOING FORWARD
 

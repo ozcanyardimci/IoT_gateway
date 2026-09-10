@@ -2,7 +2,7 @@
 	(version 20250114)
 	(generator "eeschema")
 	(generator_version "9.0")
-	(uuid "c357eb89-f36e-457b-9433-4f1462498e7f")
+	(uuid "c7c1238d-d205-4698-9d94-2e132ea46e4e")
 	(paper "A4")
 	(lib_symbols
 		(symbol "Connector_Generic:Conn_01x03"
@@ -826,6 +826,16 @@
 	)
 	(wire
 		(pts
+			(xy 139.7 67.31) (xy 139.7 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "11443e3e-94a6-41fe-a875-db7e587678c5")
+	)
+	(wire
+		(pts
 			(xy 81.28 87.63) (xy 81.28 92.71)
 		)
 		(stroke
@@ -853,6 +863,16 @@
 			(type default)
 		)
 		(uuid "1c1c987d-07b6-4a35-b3ef-00d0c8384b0d")
+	)
+	(wire
+		(pts
+			(xy 116.84 72.39) (xy 139.7 72.39)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3659d03b-ea5e-459c-a42a-fa360c44c477")
 	)
 	(wire
 		(pts
@@ -956,6 +976,16 @@
 	)
 	(wire
 		(pts
+			(xy 116.84 67.31) (xy 139.7 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d18aef0c-ca1a-42b6-8a0d-2fa48d4049f6")
+	)
+	(wire
+		(pts
 			(xy 77.47 48.26) (xy 77.47 46.99)
 		)
 		(stroke
@@ -983,46 +1013,6 @@
 			(type default)
 		)
 		(uuid "f47be2ba-1b72-4d47-8123-a27f2a161003")
-	)
-	(label "TXD"
-		(at 116.84 67.31 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "08020e41-482f-4681-b441-fed0a1a1669a")
-	)
-	(label "RXD"
-		(at 116.84 72.39 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "498b900e-9964-442b-a3f8-ebc3f6a25cde")
-	)
-	(label "TXD"
-		(at 139.7 68.58 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "edfdb9e4-5eb5-4eb5-ab53-7c7de99e5caf")
-	)
-	(label "RXD"
-		(at 139.7 71.12 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "f9856bcf-82f0-4db3-82a8-1febb36ad033")
 	)
 	(global_label "GND_LOGIC"
 		(shape input)
@@ -1114,7 +1104,7 @@
 	)
 	(global_label "GND_LOGIC"
 		(shape input)
-		(at 139.7 73.66 180)
+		(at 139.7 74.93 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1124,7 +1114,7 @@
 		)
 		(uuid "f6e14161-4b1e-406f-aae7-87670fc7d5ec")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 126.3733 73.66 0)
+			(at 126.3733 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1480,7 +1470,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x03")
-		(at 144.78 71.12 0)
+		(at 144.78 72.39 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1489,7 +1479,7 @@
 		(fields_autoplaced yes)
 		(uuid "9e3276dc-ba5b-4f20-a60a-932146351add")
 		(property "Reference" "J6"
-			(at 147.32 69.8499 0)
+			(at 147.32 71.1199 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1497,8 +1487,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "Conn_01x03"
-			(at 147.32 72.3899 0)
+		(property "Value" "Phoenix Contact MC 1,5/3-ST-3,5"
+			(at 147.32 73.6599 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1507,7 +1497,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 144.78 71.12 0)
+			(at 144.78 72.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1516,7 +1506,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 144.78 71.12 0)
+			(at 144.78 72.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1525,7 +1515,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 144.78 71.12 0)
+			(at 144.78 72.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)

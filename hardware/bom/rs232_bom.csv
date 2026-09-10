@@ -1,0 +1,8 @@
+Ref,Part,Role,MPN,Manufacturer,Distributor link
+U16,TI MAX3232EIPWR,RS232 transceiver (TSSOP-16) — one channel used (DIN1/DOUT1/RIN1/ROUT1); channel 2 left unconnected,MAX3232EIPWR,Texas Instruments,https://www.ti.com/product/MAX3232E/part-details/MAX3232EIPWR
+C24,"Generic ceramic, 0.1uF",Charge-pump flying capacitor (C1+ to C1-),0.1uF,generic,
+C25,"Generic ceramic, 0.1uF",Charge-pump reservoir capacitor (C2+ to C2-),0.1uF,generic,
+C26,"Generic ceramic, 0.1uF",VCC bypass capacitor (VCC to GND_LOGIC),0.1uF,generic,
+C27,"Generic ceramic, 0.1uF",Charge-pump reservoir capacitor (V- to GND_LOGIC),0.1uF,generic,
+C29,"Generic ceramic, 0.1uF",Charge-pump reservoir capacitor (V+ to GND_LOGIC),0.1uF,generic,
+J6,"Phoenix Contact MC 1,5/3-ST-3,5",3-position field connector (TXD/RXD/GND) — reused from RS485's J5,1840379,Phoenix Contact,https://www.newark.com/phoenix-contact/mc-1-5-3-st-3-5/pluggable-terminal-block-3-position/dp/14J3293
