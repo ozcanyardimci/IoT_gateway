@@ -9,7 +9,8 @@ learning project spanning electronics, PCB design (KiCad), and embedded firmware
 - LTE Cat-1 cellular connectivity (with 2G fallback), WiFi, and 10/100 Ethernet
 - 8x optically isolated digital inputs, 4x relay outputs
 - Analog I/O (0-10V / 4-20mA input, 0-10V output)
-- Isolated RS485 and RS232 serial interfaces
+- RS485 (galvanically isolated) and RS232 (not isolated — see `docs/subsystems/power.md`'s
+  isolation table) serial interfaces
 - 10-30 VDC field power input, DIN-rail enclosure target
 - Firmware targets: web UI, Modbus TCP/RTU, MQTT, HTTP, and eventually a WireGuard VPN tunnel
 

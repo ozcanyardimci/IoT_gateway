@@ -42,7 +42,8 @@ Order:
    **DONE**
 6. Analog I/O (input + output) — `docs/subsystems/analog-io.md` — **DONE**
 7. RS485 (isolated) — `docs/subsystems/rs485.md` — **DONE**
-8. RS232 — **NEXT UP**
+8. RS232 — `docs/subsystems/rs232.md` — **IN PROGRESS**: front end, protection, and
+   connector locked 2026-09-10; schematic capture is next
 9. Ethernet (W5500)
 10. WiFi
 11. LTE (Quectel EG915U-EU) — most complex, done last

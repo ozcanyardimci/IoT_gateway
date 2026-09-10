@@ -117,6 +117,18 @@ wrong parts, just replaced by Mornsun's own tested circuit once its datasheet wa
 readable): Bourns CDSOT23-SM712 (TVS), Würth WE-SL2 744227 (common-mode choke), generic
 27Ω series resistors.
 
+## RS232 subsystem
+
+No dedicated protection component — decided against an added TVS network; see
+`docs/subsystems/rs232.md` decision 3 for the full reasoning (datasheet's own application
+circuit has none, receiver is separately rated safe to ±25V unpowered, and reference-design
+photo evidence shows no dedicated protection stage for this port, unlike RS485).
+
+| Part | Role | Datasheet / source |
+|---|---|---|
+| MAX3232EI | RS232 transceiver, one channel used (T1/R1); channel 2 left unconnected | [ADI/Maxim MAX3222E-MAX3246E family datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/max3222e-max3246e.pdf) — already listed under "Power subsystem" above, full pinout/specs re-confirmed 2026-09-10 for this subsystem's own build plan |
+| Phoenix Contact MC 1,5/3-ST-3,5 | 3-position field connector (TXD, RXD, GND) | [Newark product page](https://www.newark.com/phoenix-contact/mc-1-5-3-st-3-5/pluggable-terminal-block-3-position/dp/14J3293) — MPN 1840379, same part reused from RS485's connector (J5) |
+
 ## Connectors & wiring standards
 
 | Item | Role | Source |
