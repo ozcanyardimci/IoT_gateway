@@ -126,7 +126,7 @@ photo evidence shows no dedicated protection stage for this port, unlike RS485).
 
 | Part | Role | Datasheet / source |
 |---|---|---|
-| MAX3232EI | RS232 transceiver, one channel used (T1/R1); channel 2 left unconnected | [ADI/Maxim MAX3222E-MAX3246E family datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/max3222e-max3246e.pdf) — already listed under "Power subsystem" above, full pinout/specs re-confirmed 2026-09-10 for this subsystem's own build plan |
+| TI MAX3232EIPWR | RS232 transceiver, TSSOP-16, one channel used (DIN1/DOUT1/RIN1/ROUT1); channel 2 left unconnected | [TI MAX3232E datasheet](https://www.ti.com/lit/ds/slls664c/slls664c.pdf) — corrected 2026-09-10 from an earlier placeholder ("MAX3232EI" alone isn't a real SKU); picked over the ADI/Maxim equivalent (MAX3232EEUE+) for SnapEDA symbol/footprint availability |
 | Phoenix Contact MC 1,5/3-ST-3,5 | 3-position field connector (TXD, RXD, GND) | [Newark product page](https://www.newark.com/phoenix-contact/mc-1-5-3-st-3-5/pluggable-terminal-block-3-position/dp/14J3293) — MPN 1840379, same part reused from RS485's connector (J5) |
 
 ## Connectors & wiring standards

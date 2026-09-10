@@ -24,8 +24,8 @@ graph TB
         PWR["Power input + protection\n+ 3.3V / 5V regulation"]
         RELAY["4x relay outputs"]
         DIN["8x digital inputs\nopto-isolated"]
-        AIN["Analog input\n0-10V / 4-20mA\n(isolated, I2C ADC)"]
-        AOUT["Analog output\n0-10V\n(isolated, I2C DAC)"]
+        AIN["Analog input\n0-10V / 4-20mA"]
+        AOUT["Analog output\n0-10V"]
         RS485["RS485\nisolated"]
         RS232["RS232"]
     end
@@ -33,8 +33,8 @@ graph TB
     PWR -- "3.3V / 5V / GND\n(board-to-board header)" --> MCU
     MCU -- "GPIO x4 (header)" --> RELAY
     DIN -- "GPIO x8 (header)" --> MCU
-    AIN -- "I2C, isolated (header)" --> MCU
-    MCU -- "I2C, isolated (header)" --> AOUT
+    AIN -- "ADC (header)" --> MCU
+    MCU -- "PWM + filter (header)" --> AOUT
     MCU -- "UART (header)" --> RS485
     MCU -- "UART (header)" --> RS232
 
@@ -49,14 +49,14 @@ graph TB
 |---|---|---|
 | LTE modem | UART | AT commands |
 | RS485 | UART | Isolated module handles the transceiver side |
-| RS232 | UART | MAX3232EI |
+| RS232 | UART | TI MAX3232EIPWR |
 | Ethernet (W5500) | SPI | + 1 interrupt/CS line |
 | I2C GPIO expander | I2C | Shared bus, status LEDs only |
 | WiFi | Native (no external pins) | Antenna only |
 | Digital inputs (8x) | GPIO, input | After opto-isolation |
 | Relay outputs (4x) | GPIO, output | Driver stage TBD — see relay-outputs subsystem |
-| Analog input (0-10V / 4-20mA) | I2C (isolated) | External ADC + LDO + op-amp signal conditioning, isolated side — see analog-io.md |
-| Analog output (0-10V) | I2C (isolated) | External DAC + op-amp gain stage, isolated side — ESP32-S3 has no built-in DAC peripheral (removed vs. ESP32/S2); see analog-io.md |
+| Analog input (0-10V / 4-20mA) | ADC | After LDO + op-amp signal conditioning |
+| Analog output (0-10V) | PWM + RC filter | ESP32-S3 has no built-in DAC peripheral (removed vs. ESP32/S2) — needs PWM+filter or an external DAC chip, decided at step 6 |
 
 This uses all 3 hardware UARTs (LTE, RS485, RS232) — debug/console uses native USB instead
 of a 4th UART.
@@ -64,11 +64,9 @@ of a 4th UART.
 ## Board-to-board header
 
 Rough signal count ahead of exact pin assignment at step 6: power (3.3V, 5V, GND) + 4 relay
-GPIOs + 8 digital-input GPIOs + isolated I2C (SDA/SCL, shared by the analog ADC and DAC —
-no separate ADC/PWM lines needed, see analog-io.md) + RS485 UART (TX/RX + possible DE/RE) +
-RS232 UART (TX/RX) — roughly 18+ signal lines plus power/ground. Gets its own test milestone
-at roadmap step 7. (Analog I/O originally planned as dedicated ADC + PWM lines; moved to the
-isolated I2C bus during analog-io subsystem design — net fewer header signals, not more.)
+GPIOs + 8 digital-input GPIOs + 1-2 ADC lines + 1 PWM line + RS485 UART (TX/RX + possible
+DE/RE) + RS232 UART (TX/RX) — roughly 20+ signal lines plus power/ground. Gets its own test
+milestone at roadmap step 7.
 
 ## Subsystem list
 

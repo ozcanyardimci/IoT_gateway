@@ -2121,7 +2121,7 @@
 		(uuid "0fab943d-9f05-4412-aa27-8ded317ec61c")
 	)
 	(hierarchical_label "RS485_RXD"
-		(shape input)
+		(shape output)
 		(at 30.48 35.56 180)
 		(effects
 			(font

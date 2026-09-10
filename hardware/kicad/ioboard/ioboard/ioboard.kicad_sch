@@ -6,10 +6,22 @@
 	(paper "A4")
 	(lib_symbols)
 	(junction
+		(at 65.278 167.64)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1a64011c-52d4-4879-bfd4-860d28881531")
+	)
+	(junction
 		(at 78.74 38.1)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "2e928695-8c98-4260-9c2f-11376ec2a82e")
+	)
+	(junction
+		(at 78.74 113.03)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4bdbe976-e2bf-4e58-b1b6-91509cb51389")
 	)
 	(junction
 		(at 83.82 38.1)
@@ -42,6 +54,16 @@
 			(type default)
 		)
 		(uuid "0b51c162-320b-435d-83ff-c4ab414fda1e")
+	)
+	(wire
+		(pts
+			(xy 78.74 167.64) (xy 78.74 113.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0d86000f-9573-4fc1-a427-dec300498b3c")
 	)
 	(wire
 		(pts
@@ -92,6 +114,16 @@
 			(type default)
 		)
 		(uuid "36412d7b-4a36-4b8b-bb20-d312efb44c38")
+	)
+	(wire
+		(pts
+			(xy 64.77 167.64) (xy 65.278 167.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4730e1ac-a0df-45ad-99a1-47629c4bd738")
 	)
 	(wire
 		(pts
@@ -182,6 +214,16 @@
 			(type default)
 		)
 		(uuid "9d4c6810-b9aa-4a55-ab29-cb7b71c92e38")
+	)
+	(wire
+		(pts
+			(xy 65.278 167.64) (xy 78.74 167.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b9f80382-b014-4446-aebb-b1ea341f535a")
 	)
 	(wire
 		(pts
@@ -384,21 +426,51 @@
 		)
 		(uuid "76e19aa2-12ff-4bfe-8bd8-7b7c95f6f393")
 		(property "Sheetname" "rs232"
-			(at 36.068 161.5944 0)
+			(at 36.068 161.2294 0)
 			(effects
 				(font
-					(size 1.27 1.27)
+					(size 2 2)
 				)
 				(justify left bottom)
 			)
 		)
 		(property "Sheetfile" "rs232.kicad_sch"
-			(at 36.068 191.5926 0)
+			(at 36.068 191.8846 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left top)
+			)
+		)
+		(pin "3V3_LOGIC" input
+			(at 65.278 167.64 0)
+			(uuid "ca2ed88c-659e-4b3b-9bc5-b1ab68f5a184")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left top)
+				(justify right)
+			)
+		)
+		(pin "RS232_RXD" output
+			(at 65.278 172.72 0)
+			(uuid "74ea1fd1-f434-4d2d-a3e0-39821aa0282f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "RS232_TXD" input
+			(at 65.278 179.07 0)
+			(uuid "e8fd70f8-fd14-4087-ae0d-2214672c5de1")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
 			)
 		)
 		(instances
