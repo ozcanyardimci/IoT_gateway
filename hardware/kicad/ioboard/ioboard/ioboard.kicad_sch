@@ -6,10 +6,22 @@
 	(paper "A4")
 	(lib_symbols)
 	(junction
+		(at 78.74 38.1)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "2e928695-8c98-4260-9c2f-11376ec2a82e")
+	)
+	(junction
 		(at 83.82 38.1)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "b5762d23-c612-42df-ada6-3365938891c8")
+	)
+	(junction
+		(at 62.484 113.03)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fed94a5a-6bad-4155-822d-c4b890fe73cd")
 	)
 	(wire
 		(pts
@@ -103,7 +115,37 @@
 	)
 	(wire
 		(pts
-			(xy 64.77 38.1) (xy 83.82 38.1)
+			(xy 78.74 38.1) (xy 83.82 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "731c97a8-3c5b-45eb-848a-6c2d227908a6")
+	)
+	(wire
+		(pts
+			(xy 78.74 113.03) (xy 78.74 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7322612c-f34e-4a25-ae2a-b619cb93e166")
+	)
+	(wire
+		(pts
+			(xy 62.484 113.03) (xy 78.74 113.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "73e7035e-b0f2-41a2-850e-b2cf24bf7747")
+	)
+	(wire
+		(pts
+			(xy 64.77 38.1) (xy 78.74 38.1)
 		)
 		(stroke
 			(width 0)
@@ -150,6 +192,16 @@
 			(type default)
 		)
 		(uuid "c9b4acb2-f99c-4418-a01a-80cbf75eea2a")
+	)
+	(wire
+		(pts
+			(xy 62.23 113.03) (xy 62.484 113.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e6ef2eb6-dc13-4762-b7d9-69e915020dee")
 	)
 	(wire
 		(pts
@@ -239,6 +291,120 @@
 			(project "ioboard"
 				(path "/a0fa9f92-ef51-408b-9617-1545f9e9dad8"
 					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 31.242 104.648)
+		(size 31.242 44.958)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "57031ac2-c170-4aa5-a496-01dd6c51d9ee")
+		(property "Sheetname" "rs485"
+			(at 31.242 103.5714 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "rs485.kicad_sch"
+			(at 31.242 150.4826 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left top)
+			)
+		)
+		(pin "3V3_LOGIC" input
+			(at 62.484 113.03 0)
+			(uuid "c7480f41-023d-44d0-892f-de1ea7043da1")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "RS485_RXD" input
+			(at 62.484 118.11 0)
+			(uuid "4c92b3b9-d8b4-4d54-93ed-8c3073801295")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "RS485_TXD" input
+			(at 62.484 124.46 0)
+			(uuid "39a9313b-2609-408e-aed1-a2932cf0f7d4")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "ioboard"
+				(path "/a0fa9f92-ef51-408b-9617-1545f9e9dad8"
+					(page "6")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 36.068 162.306)
+		(size 29.21 28.702)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "76e19aa2-12ff-4bfe-8bd8-7b7c95f6f393")
+		(property "Sheetname" "rs232"
+			(at 36.068 161.5944 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "rs232.kicad_sch"
+			(at 36.068 191.5926 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "ioboard"
+				(path "/a0fa9f92-ef51-408b-9617-1545f9e9dad8"
+					(page "7")
 				)
 			)
 		)
