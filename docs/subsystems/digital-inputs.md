@@ -1,6 +1,7 @@
 # Digital Inputs Subsystem — Build Plan
 
-**Status:** in progress. Requirements locked, schematic capture not started.
+**Status:** Complete. All 9 plan steps closed 2026-09-05. ERC and footprint verification
+deferred to the same pre-merge pass as relay-outputs (see `CLAUDE.md` open items).
 
 ## Scope
 
@@ -261,3 +262,4 @@ intended to guide every remaining subsystem.
 |---|---|
 | 2026-09-04 | Scope, design approach, and step 1 requirements (LTV-247 specs, resistor sizing, pull-up, filter cap, logic sense) locked |
 | 2026-09-05 | Connector selected, strapping-pin cross-check done, full schematic capture (8 channels + J2), verification checklist, acceptance criteria, BOM, sign-off |
+| 2026-09-10 | Corrected this doc's own top-of-file status line — it still read "in progress, schematic capture not started" despite the body showing all 9 steps closed since 2026-09-05. Caught during a project-wide documentation consistency pass; no design content changed. |

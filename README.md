@@ -38,7 +38,9 @@ firmware/
   include/, lib/       Headers / project-local libraries
 docs/
   architecture.md       Block diagram and subsystem breakdown
+  roadmap.md            Top-level 10-step plan and subsystem order/status
   build-log.md          Incremental build/bring-up log
+  subsystems/           Per-subsystem build plans (requirements through sign-off)
 ```
 
 ## Build methodology
@@ -53,10 +55,11 @@ See `docs/architecture.md` and `docs/build-log.md` for details as the project pr
 
 ## Status
 
-Power, core compute (ESP32-S3 bring-up), and digital inputs (8x, opto-isolated) subsystems
-design complete — protection, regulation, and schematic capture done for all three, verified
-pin-by-pin against manufacturer documentation. Relay outputs (4x) is next. Not yet built or
-tested on real hardware.
+Seven subsystems complete on paper — power, core compute (ESP32-S3 bring-up), digital
+inputs (8x, opto-isolated), relay outputs (4x), status indication (I2C GPIO expander + 6
+LEDs), analog I/O (2 in / 1 out, isolated), and RS485 (isolated) — protection, regulation,
+part selection, and schematic capture done for each, verified pin-by-pin against
+manufacturer documentation. RS232 is next. Not yet built or tested on real hardware.
 
 ## License
 

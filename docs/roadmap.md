@@ -39,18 +39,17 @@ Order:
 3. Digital inputs (8x, opto-isolated) — `docs/subsystems/digital-inputs.md` — **DONE**
 4. Relay outputs (4x) — `docs/subsystems/relay-outputs.md` — **DONE**
 5. Status indication (I2C GPIO expander + LEDs) — `docs/subsystems/status-indication.md` —
-   **DONE** (schematic captured as LTEBOARD's second hierarchical sheet, wired directly to
-   the ESP32-S3 over I2C; ERC deferred to a single project-wide pass once every subsystem is
-   built; ~11.5mA worst-case LED current now added to `power.md`'s 3.3V-LOGIC budget)
-6. Analog I/O (input + output) — `docs/subsystems/analog-io.md` — **DONE** (all 9 steps
-   closed, including ERC to a fully-explained clean state; the isolated 15V rail it
-   identified was added to `power.md`/`power.kicad_sch` on `main` — see that doc's
-   2026-09-08 revision entry)
-7. RS485 (isolated)
-8. RS232
+   **DONE**
+6. Analog I/O (input + output) — `docs/subsystems/analog-io.md` — **DONE**
+7. RS485 (isolated) — `docs/subsystems/rs485.md` — **DONE**
+8. RS232 — **NEXT UP**
 9. Ethernet (W5500)
 10. WiFi
 11. LTE (Quectel EG915U-EU) — most complex, done last
+
+ERC is deferred to a single pre-merge pass across digital-inputs, relay-outputs, and RS485
+(status-indication opted into the same project-wide-pass approach independently); tracked
+per-subsystem in `CLAUDE.md`'s open items, not blocking this roadmap's forward progress.
 
 ## 5. Per-subsystem acceptance criteria — DONE FOR POWER, PER-SUBSYSTEM GOING FORWARD
 

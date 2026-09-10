@@ -28,12 +28,12 @@ industrial enclosure). Every component below is checked against this range.
 | NXP PCA9535PW | 3.3V-LOGIC | 2.3-5.5V | ~0.03-0.1 mA | 0.2 mA max | Datasheet |
 | MAX3232E | 3.3V-LOGIC | 3.0-5.5V | 0.3 mA | 1 mA max | Datasheet |
 | Mornsun TD321S485H-A | 3.3V-LOGIC | 3.15-3.45V | 37 mA | 90 mA max | Datasheet |
+| Status LEDs (x6, via PCA9535PW, active-low sink) | 3.3V-LOGIC | — | ~1.91 mA/LED typ | ~11.5 mA worst case, all 6 lit simultaneously | `status-indication.md` Step 4 — 680Ω per channel, red/green/yellow/orange family (Vf ~2.0V); the PCA9535PW row above covers only the expander IC's own supply current, not the LEDs it drives |
 | AME8808 LDO (analog stage) | 3.3V-LOGIC | — | ~30 uA (same-family estimate) | negligible | AME8808's own datasheet wasn't located; using AME8805/8813 sibling figure — immaterial to rail sizing either way |
 | LM2904 op-amp, input-buffer stage (U12) | 3.3V-ANALOG-ISO | 3-26V | 0.7-1.2 mA (dual pkg — both internal amps draw quiescent current whenever the package is powered, regardless of how many units are actually used) | ~1.2 mA max | TI datasheet — corrects an earlier placeholder that had this on 3.3V-LOGIC at a per-amp figure |
 | LM2904 op-amp, output gain stage (U13) | 15V-ANALOG-ISO | 3-26V | 0.7-1.2 mA (dual pkg, same reasoning) | ~1.2 mA max | TI datasheet |
 | Panasonic ALDP105 relay coil (x4) | 5V | 5V nominal | 40 mA each | 40 mA each, resistive coil | Manufacturer page |
 | LTV-247 optocoupler (x2, 8ch) | Field side | — | — | — | LED side draws from field wiring, not internal rails; output side is a negligible pull-up on GND_LOGIC |
-| 6x status LEDs (PCA9535PW-driven) | 3.3V-LOGIC | — | ~11.5 mA worst-case, all 6 on simultaneously | ~11.5 mA | Calculated: (3.3V - ~2.0V generic LED Vf) / 680R per channel x 6 — see status-indication.md |
 
 **Rail architecture:** the Quectel modem's 2-3A transient rules out a single shared 3.3V
 rail — a shared regulator would sag under every LTE TX burst, right when the other chips
@@ -42,7 +42,7 @@ need clean power. Five independent rails:
 | Rail | Load | Worst-case peak |
 |---|---|---|
 | 5V-RELAY | Relay coils (x4), plus the 15V-ANALOG-ISO module's input (U7) | ~160 mA + ~5 mA reflected (U7's actual ~1.2 mA output load, at ~80% conversion efficiency; U7 is rated for 66 mA output if that ever changes) |
-| 3.3V-LOGIC | ESP32-S3, W5500, PCA9535PW, MAX3232E, RS485 module, analog logic side, 6x status LEDs | ~650 mA + ~11.5 mA (status LEDs) = ~661.5 mA (sized to ≥850 mA-1A with margin) |
+| 3.3V-LOGIC | ESP32-S3, W5500, PCA9535PW, MAX3232E, RS485 module, analog logic side, 6 status LEDs | ~660 mA (sized to ≥850 mA-1A with margin — the ~11.5mA LED addition doesn't change this conclusion) |
 | 3.3V-LTE | Quectel EG915U-EU only, dedicated | 2-3A transient |
 | 3.3V-ANALOG-ISO | Analog input isolation amp/ADC, U12 input-buffer op-amp | Tens of mA |
 | 15V-ANALOG-ISO | U13 output gain-stage op-amp only | ~1.2 mA |
@@ -113,7 +113,7 @@ of a permanent short.
 1. **J1 — Phoenix Contact MC 1,5/2-ST-3,5** terminal block.
 2. **F1 — Littelfuse RXEF135** PTC resettable fuse. 1.35A hold / 2.70A trip / 72V max at
    20C; derates to 0.85A hold at 60C ambient.
-3. **U1/Q5 — TI LM74610-Q1 ideal diode controller + CSD18531Q5A NexFET**, reverse-polarity
+3. **U1/Q1 — TI LM74610-Q1 ideal diode controller + CSD18531Q5A NexFET**, reverse-polarity
    protection. Follows TI reference design TIDUBP3A, rated for automotive 12/24V systems
    with load-dump survival past 30V. Chosen over a discrete P-MOSFET + Zener approach
    because the IC's internally-regulated gate drive has no Vgs-overvoltage failure mode to
@@ -147,7 +147,7 @@ current-limiting needed on the module outputs.
 ## 5. Inrush current (ngspice simulation)
 
 Circuit: 0V->30V step (worst-case hot-plug) through Rfuse (F1 cold resistance, 0.12 ohm) +
-Rq5 (Q5 RDS(on), 3.5 mOhm) + 0.05 ohm assumed PCB/connector parasitic, into the input
+Rq1 (Q1 RDS(on), 3.5 mOhm) + 0.05 ohm assumed PCB/connector parasitic, into the input
 capacitor bank (8x 4.7uF, 37.6uF total, 20 mOhm ESR each).
 
 | Case | Rsrc | Peak current | Time constant |
@@ -160,13 +160,13 @@ Cross-checked two ways: hand-calculated tau = R_total x C_total = 6.99us vs. sim
 This level of agreement is what establishes confidence in the netlist, not just that the
 simulator ran without error.
 
-Checked against ratings: Q5's IDM (pulsed drain current) is 400A for pulse width <=100us at
+Checked against ratings: Q1's IDM (pulsed drain current) is 400A for pulse width <=100us at
 <=1% duty — 161A peak over a ~35us decay gives 2.5x margin even in the pessimistic case. F1
 is thermally slow (9.6s time-to-trip at rated fault current); a 35us pulse carries ~0.9 A^2s
 of I^2t, far too little to heat the PTC's thermal mass.
 
 **No NTC thermistor needed** — the fuse's cold resistance already provides enough
-current-limiting margin on both Q5 and F1. One item carried to layout: 161A for ~35us
+current-limiting margin on both Q1 and F1. One item carried to layout: 161A for ~35us
 should be checked against PCB trace/connector current-carrying capacity at that stage —
 standard copper handles microsecond pulses like this without issue, but worth confirming.
 
@@ -193,7 +193,7 @@ here — this section covers the field power input connector only.
 
 ## 7. Schematic capture
 
-Full input-to-output chain wired in KiCad (`hardware/kicad/ioboard/`): J1 -> F1 -> Q5/U1 ->
+Full input-to-output chain wired in KiCad (`hardware/kicad/ioboard/`): J1 -> F1 -> Q1/U1 ->
 U2/TVS3300 -> five DC-DC modules. GND_LOGIC exposed as a project-wide Global Label; the
 other six rail/ground nets (3.3V-LOGIC, 3.3V-LTE, 5V-RELAY, 3.3V-ANALOG-ISO, 15V-ANALOG-ISO,
 GND_ANALOG_ISO) exposed via Hierarchical Label + matching Sheet Pin on the parent sheet
@@ -220,7 +220,7 @@ Every component checked against its worst-case condition, not nominal:
 | Item | Worst-case condition | Rating vs. actual | Margin |
 |---|---|---|---|
 | F1 hold current vs. sustained load | 60C ambient (derated) | 0.85A hold vs. ~0.48A load | 1.77x |
-| Q5 inrush pulse | Near-zero source impedance | 400A/100us vs. 161A/~35us | 2.5x |
+| Q1 inrush pulse | Near-zero source impedance | 400A/100us vs. 161A/~35us | 2.5x |
 | TVS3300 clamp vs. MagI3C abs. max | 35A/8-20us surge | 42V abs. max vs. 40V max clamp | ~5% |
 | TVS3300 standoff vs. max input | 30V continuous | 33V standoff | ~10% |
 | DC-DC module input voltage | 10V min design input | 3.5-38V operating range | Wide |
@@ -253,13 +253,13 @@ item, not a design risk, given the ~3x margin already present.
 
 1. Each output rail holds within +/-3% of nominal across the full 10-30V input range and
    full rated load.
-2. Reverse-polarity connection (J1 swapped) results in zero current flow past Q5 and no
+2. Reverse-polarity connection (J1 swapped) results in zero current flow past Q1 and no
    downstream damage.
 3. F1 does not nuisance-trip under worst-case sustained load (0.48A) at 60C ambient, and
    trips within its rated curve under an actual fault.
 4. A surge event up to TVS3300's rated 35A/8-20us Ipp does not expose any DC-DC module
    beyond its 42V absolute maximum input rating.
-5. Input capacitor inrush at power-up does not exceed Q5's IDM (400A/100us) or trip F1.
+5. Input capacitor inrush at power-up does not exceed Q1's IDM (400A/100us) or trip F1.
 6. GND_ANALOG_ISO has no direct DC path to GND_LOGIC — isolation boundary intact, including
    through U7 (-VIN on GND_LOGIC, -VOUT on GND_ANALOG_ISO, isolated inside the module).
 7. All five rails power up with no relative sequencing fault (four together off the
@@ -277,7 +277,7 @@ bring-up checks, listed under Commissioning below.
 |---|---|---|---|
 | J1 | Phoenix Contact MC 1,5/2-ST-3,5 | Field power input terminal block | 1840366 |
 | F1 | Littelfuse RXEF135 | PTC resettable fuse | RXEF135 |
-| Q5 | TI CSD18531Q5A | N-MOSFET, reverse-polarity switch | CSD18531Q5A |
+| Q1 | TI CSD18531Q5A | N-MOSFET, reverse-polarity switch | CSD18531Q5A |
 | U1 | TI LM74610-Q1 | Ideal diode controller | LM74610QDGKRQ1 |
 | U2 | TI TVS3300 | Flat-Clamp surge protection | TVS3300DRVR |
 | U3 | Würth MagI3C-VDLM | 3.3V-LOGIC DC-DC module | 171013801 |
@@ -321,6 +321,5 @@ paper. None block sign-off — all are backed by comfortable design margin.
 | 2026-09-03 | Margin verification, sequencing/brown-out check, acceptance criteria, BOM, sign-off |
 | 2026-09-03 | Operating temperature range (-20C/+60C) confirmed as a real requirement |
 | 2026-09-03 | U6 (analog isolated supply) reference designator corrected from P51 |
-| 2026-09-07 | Two schematic-level fixes surfaced by analog-io's ERC pass (this subsystem was otherwise closed, but both issues live in `power.kicad_sch`, so recorded here as the authoritative source — see `analog-io.md`'s Step 6 for how they were found): (1) the reverse-polarity MOSFET's reference designator renamed from **Q1** to **Q5**, resolving a duplicate-reference collision with `relay_outputs.kicad_sch`'s own Q1-Q4 relay driver transistors — every Q1 reference above (protection-chain description, inrush math, acceptance criteria, margin table, BOM) updated to Q5 to match; (2) four stray local `label "GND_LOGIC"` instances (near U2/PWR_FLAG, U3, U5, U4) converted to global labels, matching the one already-correct global instance near J1 — GND_LOGIC is a project-wide net and needs to be a global label everywhere it appears, not mixed local/global. `power_bom.csv` updated to match (Q1 -> Q5). No electrical or topology change from either fix — reference and label-scope corrections only. |
 | 2026-09-08 | Added U7 (Recom RK-0515S), an isolated 15V DC-DC module, for the analog output stage's gain amplifier — the "15V problem" flagged during analog-io's design. Powered from 5V-RELAY; -VIN on GND_LOGIC, -VOUT on GND_ANALOG_ISO (isolation preserved). Corrected the LM2904 load-budget entry: split into U12 (input-buffer stage, 3.3V-ANALOG-ISO) and U13 (output gain stage, new 15V-ANALOG-ISO rail) — the old single row had both on 3.3V-LOGIC, which was wrong, and used an imprecise per-amp current figure instead of the TI-datasheet-verified dual-package draw (both internal amps consume quiescent current whenever the package is powered). Updated grounding/isolation table: analog output is now isolated. Added acceptance criteria items 7 (rewritten) and 8, a commissioning item for U7's isolation, and the U7 BOM row. |
-| 2026-09-08 | Added the 6 status LEDs' worst-case current (~11.5 mA, all on simultaneously) to the 3.3V-LOGIC load budget and rail architecture table — flagged during status-indication's build but not yet added here until now. Negligible against existing margin; no module or sizing change needed. |
+| 2026-09-10 | Added the 6 status LEDs' ~11.5mA worst-case current addition to the 3.3V-LOGIC rail's load table and total — flagged by `status-indication.md` as a real gap when that subsystem was built (2026-09-07) but never actually applied here until this project-wide documentation pass caught it. Doesn't change the rail-sizing conclusion (still comfortably under the ≥850mA-1A margin target). |

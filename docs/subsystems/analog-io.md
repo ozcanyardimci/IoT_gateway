@@ -1,10 +1,8 @@
 # Analog I/O Subsystem — Build Plan
 
-**Status:** Steps 1 (front-end + isolation-crossing design), 3 (connector), 5 (schematic
-capture), and 6 (verification checklist, including KiCad ERC) locked and verified —
-schematic capture verified pin-by-pin against the saved `analog_io.kicad_sch` file, and ERC
-run to a fully-explained clean state (0 unexplained violations; 15 documented exclusions),
-not by self-report. Steps 7-9 (acceptance criteria, documentation & BOM, sign-off) are next.
+**Status:** Complete. All 9 plan steps closed 2026-09-07. Schematic capture verified
+pin-by-pin against the saved `analog_io.kicad_sch` file, and ERC run to a fully-explained
+clean state (0 unexplained violations; 15 documented exclusions), not by self-report.
 
 ## Scope
 
@@ -48,7 +46,9 @@ Step 1 math below for why). This subsystem's design assumes **one new isolated ~
 sourced from the already-regulated 5V-RELAY rail rather than a new tap on raw field power.
 That rail addition (module selection, load budget entry, fuse-budget check) is written up in
 `power.md`, not here, once this doc is locked — same pattern as relay-outputs.md consuming
-the already-sized 5V_RELAY rail without redefining it.
+the already-sized 5V_RELAY rail without redefining it. **Done 2026-09-08** — see the
+superseded-part note under Step 1 below for the one thing that changed along the way (final
+part differs from this doc's own candidate).
 
 ---
 
@@ -163,7 +163,7 @@ a 9.91V target: ~30% margin, not a bare-minimum fit.
 
 | Parameter | Value |
 |---|---|
-| Candidate part | Recom R05P215S |
+| Candidate part (superseded, see below) | Recom R05P215S |
 | Input | 5V (from the existing, already-budgeted 5V-RELAY rail — not a new raw-field tap) |
 | Output | 15V |
 | Rated power/current | 2W / 133mA |
@@ -172,11 +172,19 @@ a 9.91V target: ~30% margin, not a bare-minimum fit.
   against the datasheet PDF directly before BOM lock, same "not yet re-verified" flag used
   elsewhere in `hardware/datasheets/README.md` |
 
+**Superseded 2026-09-08 (kept for traceability):** when this rail was actually added to
+`power.md`, the part landed on was **Recom RK-0515S** (2W, 66mA, 3kVDC isolation stated
+directly — no re-verification caveat needed), not R05P215S above. Same role (5V-RELAY in,
+15V out, feeds the output gain stage), different specific part — R05P215S's unresolved
+isolation-rating gap was the reason to look further rather than lock it in. See `power.md`
+section 3 for the part actually implemented, and its own revision history for when.
+
 **Load check:** this rail only feeds the output gain stage's LM2904 half — quiescent draw
 ~0.35mA, plus output load current (a downstream analog input is typically >=100k ohm
-impedance, so <=100 uA at 9.91V). Total draw is comfortably under 1mA against a 133mA-rated
-module — heavy margin, consistent with this project's "proven module with margin, not a
-custom design sized to the bare load" pattern for every other rail.
+impedance, so <=100 uA at 9.91V). Total draw is comfortably under 1mA against RK-0515S's
+66mA rating (was 133mA against the superseded candidate above) — heavy margin either way,
+consistent with this project's "proven module with margin, not a custom design sized to the
+bare load" pattern for every other rail.
 
 ### I2C bus extension
 
@@ -191,10 +199,12 @@ introduced.
 - Exact I2C addresses — roadmap step 6, same deferral as GPIO assignment project-wide.
 - ADS1115 / ISO1540 / MCP4725 / SMBJ15CA footprints not yet verified — same deferred-to-
   pre-merge policy as every other subsystem.
-- New 15V rail's addition to `power.md` (module selection table, load budget, fuse-budget
-  check) — written up separately once this doc is locked, per "Power subsystem impact"
-  above. `15V_ANALOG_ISO` is already brought out as a dangling root-sheet pin on the
-  `analog_io` sheet symbol, ready to be wired once that rail exists.
+- ~~New 15V rail's addition to `power.md`~~ **Done 2026-09-08** — added as `15V-ANALOG-ISO`
+  (Recom RK-0515S, not the R05P215S candidate above — see the superseded note under Step 1).
+  The `15V_ANALOG_ISO` root-sheet pin on the `analog_io` sheet symbol was left dangling until
+  then; wiring it up on `ioboard.kicad_sch` is a small remaining hookup, not a re-design —
+  not yet confirmed done, check against the current `ioboard.kicad_sch` before this
+  subsystem's next touch.
 
 ### Known headroom (not a defect)
 
@@ -398,9 +408,10 @@ here, since no physical board exists yet.
   R_top1/R_bottom1/R_top2/R_bottom2/R_in1/R_f1) plus Step 3's connector (J4, Phoenix Contact
   MC 1,5/4-ST-3,5), matching the reference designators actually in `analog_io.kicad_sch` —
   cross-checked designator-by-designator against the saved schematic file, not copied from
-  this doc's prose. The 15V_ANALOG_ISO supply module (Recom R05P215S) is **not** in this BOM
-  — it's a `power.kicad_sch` part and belongs in `power_bom.csv` once `power.md` adds that
-  rail, same ownership split as the schematic itself.
+  this doc's prose. The 15V_ANALOG_ISO supply module is **not** in this BOM — it's a
+  `power.kicad_sch` part and belongs in `power_bom.csv` (added 2026-09-08 as Recom RK-0515S,
+  not the R05P215S this doc had in mind at the time — see Step 1's superseded-part note),
+  same ownership split as the schematic itself.
 - **Datasheets:** part numbers above already appear in `hardware/datasheets/README.md`'s
   tracking table (added/confirmed as part of the project-wide documentation pass done
   alongside this step — see that file's own revision history). Footprint verification stays
@@ -408,18 +419,21 @@ here, since no physical board exists yet.
 
 ## Step 9 results: sign-off (2026-09-07)
 
-All 9 steps of this subsystem's build plan are complete. Remaining before this subsystem
-branch closes: the user's own final review and push (per the agreed workflow — this session
-does not push). Next subsystem per the roadmap: RS485. The one deliberately-carried-forward
-item is the 15V_ANALOG_ISO rail addition to `power.md`, done on `main` immediately after this
-branch merges, per "Power subsystem impact" above.
+All 9 steps of this subsystem's build plan are complete. Next subsystem per the roadmap:
+RS485 (now also complete — see `docs/subsystems/rs485.md`). The 15V_ANALOG_ISO rail addition
+to `power.md`, flagged here as a carried-forward item, was completed 2026-09-08 (as Recom
+RK-0515S, not this doc's own R05P215S candidate — see Step 1's superseded-part note). Not
+independently confirmed here: whether the `15V_ANALOG_ISO` root-sheet pin on `ioboard.kicad_sch`
+has actually been wired to the new rail, or is still the dangling pin this doc originally
+left it as — check before treating that connection as done.
 
 ## Steps
 
 1. **Front-end + isolation-crossing design** — real part selection, front-end math,
    isolation-crossing decision — **DONE (this doc)**.
-2. **New rail spec** — written into `power.md`, not duplicated here — deferred until this
-   subsystem is otherwise closed out, per the user's own sequencing call.
+2. **New rail spec** — written into `power.md`, not duplicated here — **DONE (2026-09-08,
+   in `power.md`)**, final part (Recom RK-0515S) differs from this doc's own candidate, see
+   Step 1's superseded-part note.
 3. **Connector selection** — **DONE (this doc)**.
 4. **Strapping/reserved pin cross-check** — deferred to roadmap step 6, same as every other
    subsystem.
@@ -460,3 +474,9 @@ branch merges, per "Power subsystem impact" above.
   via ERC re-run and reverted before being treated as final. Steps 7 (acceptance criteria), 8
   (documentation & BOM, including new `hardware/bom/analog_io_bom.csv`), and 9 (sign-off)
   completed same day — all 9 steps of this subsystem's build plan are now done. |
+| 2026-09-10 | **Correction, project-wide documentation pass.** This doc still described the
+  15V rail as an open item with candidate part Recom R05P215S and said the `power.md`
+  addition was "written up separately once this doc is locked" — but that addition actually
+  happened 2026-09-08, using a different part (Recom RK-0515S). Updated Step 1's table,
+  "Power subsystem impact," "Still open," the Steps list, and Step 9 sign-off to reflect
+  this. No schematic content changed; this was a documentation lag, not a design change. |

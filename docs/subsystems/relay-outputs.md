@@ -1,7 +1,9 @@
 # Relay Outputs Subsystem — Build Plan
 
-**Status:** schematic capture complete. ERC and footprint verification (including the
-imported ALDP105 footprint) deferred to the same pre-merge pass as digital-inputs.
+**Status:** Complete. All 8 plan steps closed 2026-09-06 (driver stage, connector, schematic
+capture, verification checklist, acceptance criteria, BOM, sign-off). ERC and footprint
+verification (including the imported ALDP105 footprint) deferred to the same pre-merge pass
+as digital-inputs (see `CLAUDE.md` open items).
 
 ## Scope
 
@@ -297,3 +299,4 @@ subsystem.
 |---|---|
 | 2026-09-05 | Scope, design approach, driver-stage math, and connector selection locked |
 | 2026-09-06 | Bulk/bypass capacitor decision added; schematic capture, verification checklist, acceptance criteria, BOM, and sign-off completed |
+| 2026-09-10 | Clarified this doc's top-of-file status line — it read only "schematic capture complete," understating that all 8 plan steps (through sign-off) are actually closed. Caught during a project-wide documentation consistency pass; no design content changed. |

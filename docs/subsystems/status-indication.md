@@ -1,9 +1,10 @@
 # Status Indication Subsystem — Build Plan
 
-**Status:** schematic capture complete on both sheets, cross-sheet link to core-compute
-verified. ERC deferred to a single project-wide pass once every subsystem is built (a
-project-wide decision made for this subsystem, replacing the per-subsystem ERC pass used for
-analog-io).
+**Status:** Complete. All 8 plan steps closed 2026-09-07, including the `power.md` LED
+budget item this doc originally carried forward (closed 2026-09-10). Schematic capture
+complete on both sheets, cross-sheet link to core-compute verified. ERC deferred to a
+single project-wide pass once every subsystem is built (a project-wide decision made for
+this subsystem, replacing the per-subsystem ERC pass used for analog-io).
 
 ## Scope
 
@@ -56,9 +57,11 @@ Key decisions, each made deliberately with reasoning:
 
 **Real gap surfaced, not silently absorbed:** `power.md`'s existing PCA9535 budget line
 (~0.03-0.2mA) covers only the IC itself. The 6 LEDs add up to ~11.5mA worst-case (Step 4) that
-isn't in that budget yet — same category of gap as the isolated 15V rail found during
-analog-io. Flagged here; the actual `power.md` edit is deferred to `main`, same pattern used
-for that rail.
+wasn't in that budget yet — same category of gap as the isolated 15V rail found during
+analog-io. **Done 2026-09-10** — added to `power.md`'s 3.3V-LOGIC load table and rail total
+(see that file's revision history); this took longer than the analog-io rail addition to
+actually land (that one was done same-day, 2026-09-08), caught during a later project-wide
+documentation consistency pass rather than promptly after this subsystem closed.
 
 ## Steps
 
@@ -192,7 +195,7 @@ on both sheets. No mismatches found.
    by design math and connectivity above; confirmable physically at bring-up).
 3. No floating I2C or INT pins — met (pull-ups verified above).
 4. LED current addition (~11.5mA worst-case) reflected in `power.md`'s budget before this
-   subsystem merges to `main` — tracked, not yet done (see Design approach).
+   subsystem merges to `main` — **Done 2026-09-10** (see Design approach).
 5. ERC clean, once the project-wide ERC pass happens (not blocking this subsystem's own
    progress).
 
@@ -222,7 +225,7 @@ polarity on all 6 channels, a floating hierarchical label) and one pre-existing 
 this sheet (local instead of global `GND_LOGIC` in `core-compute.kicad_sch`) were caught by
 full programmatic connectivity verification and fixed before commit. ERC deferred to a single
 project-wide pass once every subsystem is built, per current project decision. LED current
-addition to `power.md`'s budget flagged for `main`, not done on this branch.
+addition to `power.md`'s budget — flagged for `main` at the time, done 2026-09-10.
 
 **Next:** roadmap continues to RS485 (isolated) as the next subsystem.
 
@@ -231,3 +234,4 @@ addition to `power.md`'s budget flagged for `main`, not done on this branch.
 | Date | Change |
 |---|---|
 | 2026-09-07 | Scope, part selection, design approach, and component math locked; schematic capture completed on both sheets with cross-sheet link to core-compute; two wiring bugs and one pre-existing local/global label bug caught and fixed; acceptance criteria, BOM, and sign-off completed |
+| 2026-09-10 | Closed the one item this doc had carried forward as "not yet done": the ~11.5mA status-LED current addition to `power.md`'s 3.3V-LOGIC budget, added during a project-wide documentation consistency pass. Updated Design approach, Step 6 acceptance criteria item 4, and Step 8 sign-off to reflect this. |

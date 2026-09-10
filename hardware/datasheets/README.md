@@ -31,11 +31,14 @@ copyrighted PDFs. Updated as each subsystem is worked through.
 | TI CSD18531Q5A | 60V N-channel MOSFET, driven by LM74610-Q1 | [Product page](https://www.ti.com/product/CSD18531Q5A) |
 | TI TVS3300 | Input surge TVS, Flat-Clamp technology, 33V standoff, 40V max clamp at 35A | [Datasheet](https://www.ti.com/lit/ds/symlink/tvs3300.pdf) · [Product page](https://www.ti.com/product/TVS3300) |
 | Würth WCAP-CSSA 8853522140011 | Input EMI/safety Y-cap | [Datasheet](https://www.we-online.com/components/products/datasheet/8853522140011.pdf) |
+| Recom RK-0515S | Isolated 15V DC-DC module, analog output gain-stage supply (U7) | [Recom Econoline family PDF](https://recom-power.com/pdf/Econoline/RK_RH.pdf) — added 2026-09-08 for analog-io's "15V problem"; 3kVDC isolation stated directly, no re-verification gap |
 
 Superseded parts (kept for traceability — see `docs/subsystems/power.md` revision history
 for why): Toshiba SSM3J351R,LF (replaced by LM74610-Q1 + CSD18531Q5A), Littelfuse SMBJ36A
 (replaced by TVS3300), Recom R1SX-3305 (replaced by R1SX-3.33.3-R — wrong output voltage
-for the rail).
+for the rail), Recom R05P215S (replaced by RK-0515S for the 15V-ANALOG-ISO rail —
+unresolved isolation-rating gap on the R05P215S datasheet pull, see
+`docs/subsystems/analog-io.md`'s revision history).
 
 ## Core compute subsystem
 
@@ -65,6 +68,15 @@ for the rail).
 | Nexperia MMBT3904 | NPN driver transistor (one per relay channel) | [Nexperia datasheet](https://assets.nexperia.com/documents/data-sheet/MMBT3904.pdf) |
 | Phoenix Contact MC 1,5/8-ST-3,5 | 8-position (4x COM+NO independent) field connector | [Newark product page](https://www.newark.com/phoenix-contact/mc-1-5-8-st-3-5/pluggable-terminal-block-8-position/dp/14J3298) · [Farnell product page](https://ie.farnell.com/phoenix-contact/mc-1-5-8-st-3-5/terminal-block-pluggable-8pos/dp/5089013) |
 
+## Status indication subsystem
+
+PCA9535PW (I2C GPIO expander) is already listed under "Power subsystem" above — no separate
+entry needed, same reuse pattern as LM2904 under "Analog I/O subsystem" below. The 6 status
+LEDs are generic 3mm THT parts (red/green/yellow/orange family, chosen for their ~1.8-2.2V
+forward voltage — see `docs/subsystems/status-indication.md` Step 4 for why), no specific
+manufacturer/part-number match — same "generic, no sourcing risk" treatment as this
+project's standard passives.
+
 ## Analog I/O subsystem
 
 | Part | Role | Datasheet / source |
@@ -73,11 +85,37 @@ for the rail).
 | TI ISO1540 | I2C digital isolator, both channels bidirectional | [TI datasheet](https://www.ti.com/lit/ds/symlink/iso1541.pdf) (covers both ISO1540/ISO1541 in one document) |
 | Microchip MCP4725 | 12-bit I2C DAC, isolated side (analog output) | [Microchip datasheet](https://ww1.microchip.com/downloads/en/devicedoc/22039d.pdf) |
 | Littelfuse SMBJ15CA | Bidirectional TVS, analog input overvoltage protection (x2) | [Littelfuse datasheet](https://www.littelfuse.com/assetdocs/tvs-diodes-smbj-series-datasheet) |
-| Recom R05P215S | Isolated 5V-in/15V-out DC-DC, analog output gain-stage supply | [DigiKey product page](https://www.digikey.com/en/products/detail/recom-power/R05P215S-P/2301265) — isolation-voltage figure for this specific part not independently re-verified this session, see "Not yet re-verified" below |
 | Phoenix Contact MC 1,5/4-ST-3,5 | 4-position field connector (AI1/AI2/AO + shared return) | [Newark product page](https://www.newark.com/phoenix-contact/mc-1-5-4-st-3-5/pluggable-terminal-block-4-position/dp/14J3294) |
+
+The 15V-ANALOG-ISO supply module belongs to `power.kicad_sch`, not this sheet — see Recom
+RK-0515S under "Power modules & protection components" above. An earlier candidate for that
+rail, Recom R05P215S, is listed there under superseded parts (unresolved isolation-rating
+gap, never actually implemented).
 
 LM2904 (input buffers + output gain stage, 2 physical instances) reuses the part already
 listed under "Power subsystem" above — no separate entry needed.
+
+## RS485 subsystem
+
+Protection network (GDT/TVS/choke/bias resistors) is Mornsun's own "Fig. 2: Port
+protection circuit for harsh environments" from the transceiver's datasheet, not a
+generic cascade — see `docs/subsystems/rs485.md` Step 2 for the full reasoning.
+
+| Part | Role | Datasheet / source |
+|---|---|---|
+| Mornsun TD321S485H-A (TD5(3)21S485H-A series) | Isolated RS485 transceiver module | [Mornsun datasheet](https://www.mornsun-power.com/public/uploads/pdf/TD5(3)21S485H-A.pdf) — full PDF obtained 2026-09-08 (user-supplied): 3kVDC isolation, 500kbps max, built-in 47kΩ A/B pull-down, confirmed 10-pin pinout, and the harsh-environment reference circuit (Fig. 2) this section's other parts come from |
+| Bencent B3D090L-C (GD1) | Gas discharge tube (GDT), 3-electrode: line pins wired A-B, third (common) electrode bonds to `EARTH` | [LCSC product page](https://www.lcsc.com/product-detail/Gas-Discharge-Tube-GDT_Bencent-B3D090L-C_C511253.html) — 90V DC spark-over, 5kA @ 8/20µs, 3-pole, 1.5pF. Doubly confirmed: flagged from the original teardown, and Mornsun's own datasheet names the base part "B3D090L" directly |
+| Littelfuse SMBJ6.5CA (x3, D15/D18/D19; Mornsun Fig. 2 D1/D2/D3) | Bidirectional TVS diodes — D15 A-B differential clamp, D18/D19 line-to-EARTH clamp | [Littelfuse SMBJ series datasheet](https://www.littelfuse.com/assetdocs/tvs-diodes-smbj-series-datasheet) · [DigiKey](https://www.digikey.com/en/products/detail/littelfuse-inc/SMBJ6-5CA/285958) — 600W, DO-214AA. Mornsun-specified exact part. Same SMBJ family already used for analog-input protection (SMBJ15CA) |
+| TDK ACM2520-301-2P (U14) | Common-mode choke (Mornsun Fig. 2 T1) | [TDK product page](https://product.tdk.com/en/search/emc/emc/cmf_cmc/info?part_no=ACM2520-301-2P-T002) · [LCSC](https://www.lcsc.com/product-detail/Common-Mode-Filters_TDK-ACM2520-301-2P-T002_C76577.html) — Mornsun-specified exact part |
+| Generic 2.7Ω/2W (R34, R35; Mornsun Fig. 2 R1/R2) | Series current-limiting resistors | Mornsun-specified value/power rating |
+| Generic 1MΩ (R36; Mornsun Fig. 2 R3) + 1nF/2kV (C23; Mornsun Fig. 2 C1) | RC snubber to EARTH | Mornsun-specified |
+| Generic 4.7kΩ (R_pullup1, R_pulldown1) | External bias — Rpullup: VO (pin 7) to A; Rpulldown: RGND (pin 10) to B | Mornsun specifies only a current ceiling (<25mA) on VO/RGND, not a resistance — 4.7kΩ gives ≈1.1mA worst case, well inside that ceiling; picked and locked on the schematic 2026-09-10 |
+| Phoenix Contact MC 1,5/3-ST-3,5 (J5) | 3-position field connector (A, B, EARTH) | [Newark product page](https://www.newark.com/phoenix-contact/mc-1-5-3-st-3-5/pluggable-terminal-block-3-position/dp/14J3293) — MPN 1840379 |
+
+Superseded (2026-09-08, same day — kept here for traceability, not because they were
+wrong parts, just replaced by Mornsun's own tested circuit once its datasheet was fully
+readable): Bourns CDSOT23-SM712 (TVS), Würth WE-SL2 744227 (common-mode choke), generic
+27Ω series resistors.
 
 ## Connectors & wiring standards
 
@@ -97,6 +135,8 @@ listed under "Power subsystem" above — no separate entry needed.
 | TI SLVA862 — Basics of eFuses | Background on inrush/reverse-polarity/overvoltage protection concepts | ti.com application report SLVA862 |
 | WIZnet hardware design guide | Generic decoupling (0.1uF bypass, 10uF/4.7uF bulk, 3.3V regulator >=300mA) | [WIZnet Design Guide](https://docs.wiznet.io/Design-Guide/hardware_design_guide) |
 | WIZnet W5500 reference schematic | Transformer/RJ45 config, isolation capacitors | [WIZnet W5500 ref-schematic](https://docs.wiznet.io/Product/Chip/Ethernet/W5500/ref-schematic) |
+| Bourns RS-485 Port Protection Evaluation Board design note | GDT + series-limiting + TVS cascade topology reference for RS485 lines (uses a TBU current limiter instead of plain resistors — informed this project's cascade order, not its exact parts) | [PDF](https://www.bourns.com/docs/technical-documents/technical-library/circuit-protection/design-notes/bourns_rs485_evalboard4_design_note.pdf) |
+| Würth ANP083 — RS-485 EMI filtering app note | Common-mode choke placement on an RS-485 interface (WE-SL2 family) | Referenced via Würth's WE-SL2 product page; direct PDF link 404'd 2026-09-08, retry before finalizing layout |
 
 No single vendor app note covers this exact combination (wide 10-30V input protection with
 multiple MagI3C modules) — the protection sequencing (fuse -> reverse-polarity ->
@@ -118,10 +158,9 @@ Identified during the original teardown; re-pull the current datasheet from the
 manufacturer/distributor before relying on exact figures.
 
 - Würth Elektronik 7499010441 — Ethernet magjack
-- Bencent B3D090L-C — gas discharge tube, RS485/RS232 surge protection
 - Toshiba SSM3J307T family — P-channel MOSFET behind the "PJ307U" board marking
-- Recom R05P215S — isolation-voltage rating (kVDC) not confirmed against the full datasheet
-  PDF this session, only distributor listing pages; confirm before BOM lock
+
+(Bencent B3D090L-C — moved to "RS485 subsystem" above, re-verified 2026-09-08.)
 
 ## Not added yet
 
