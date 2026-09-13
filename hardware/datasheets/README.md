@@ -131,15 +131,16 @@ photo evidence shows no dedicated protection stage for this port, unlike RS485).
 
 ## Ethernet subsystem
 
-Front end (W5500 crystal/support passives, magnetics/RJ45, LED/control lines) locked
-2026-09-10, cross-checked against WIZnet's own reference schematic and, for the magjack,
-against the reference-hardware's own LTEBOARD photos — see `docs/subsystems/ethernet.md`
-Steps 1-3 for the full component list.
+Schematic capture done 2026-09-13, cross-checked against WIZnet's own reference schematic
+and, for the magjack, against both the reference-hardware's own LTEBOARD photos and the
+part's own datasheet (read directly, not summarized) — see `docs/subsystems/ethernet.md`
+for the full component list and decision history.
 
 | Part | Role | Datasheet / source |
 |---|---|---|
-| WIZnet W5500 | SPI-to-MAC+PHY, 10/100 Ethernet | [W5500 datasheet v1.1.0](https://docs.wiznet.io/img/products/w5500/W5500_ds_v110e.pdf) — re-confirmed 2026-09-10 (pinout, crystal spec, SPI timing, LED pin behavior); chip visually matched on the reference LTEBOARD too |
-| Würth Elektronik 7499010441 (WE-RJ45LAN) | RJ45 jack with integrated 1:1 transformer, 2 bi-color LEDs | [Datasheet](https://www.we-online.com/components/products/datasheet/7499010441.pdf) — re-verified 2026-09-10 (isolation ≥1500V RMS, turns ratio, LED specs); exact part number visually confirmed against the reference LTEBOARD's own jack marking; Bob-Smith termination treated as integrated (high confidence, not 100% pin-level-guaranteed) — see `docs/subsystems/ethernet.md` decision 4 |
+| WIZnet W5500 | SPI-to-MAC+PHY, 10/100 Ethernet | [W5500 datasheet v1.1.0](https://docs.wiznet.io/img/products/w5500/W5500_ds_v110e.pdf) — re-confirmed 2026-09-10 (pinout, crystal spec, SPI timing, LED pin behavior); chip visually matched on the reference LTEBOARD too; AVDD pin count corrected 2026-09-13 against the real KiCad symbol (6 pins: 4, 8, 11, 15, 17, 21 — not 4) |
+| Würth Elektronik 7499010441 (WE-RJ45LAN) | RJ45 jack with integrated 1:1 transformer, 2 bi-color LEDs | [Datasheet](https://www.we-online.com/components/products/datasheet/7499010441.pdf) — full PDF read directly 2026-09-13 (user-supplied, not a summary): confirms isolation ≥1500V RMS, turns ratio, LED specs, AND the termination network — CTD/CRD terminated internally (75Ω/75Ω + 0.001µF/2kV + GDTs) into a combined "GND Shield" node (pin 8 + both shield pins are one net). Termination is now CONFIRMED integrated, no external Bob-Smith network needed — upgraded from the earlier "high confidence, not pin-level-guaranteed" call; see `docs/subsystems/ethernet.md` decision 4. Cross-checked against two related datasheets (Würth 7499011441A, Cetus J1B1211CCD) showing the same internal topology |
+| Generic 0603 ferrite bead (FB1) | AVDD filtering, `3V3_LOGIC` → `3V3A` | WIZnet forum support guidance (named `HH-1M1608-121JT`, but any bead meeting spec works): 120Ω @ 100MHz (90Ω min), DCR 200mΩ max, 1A max rated current — confirmed via a real datasheet on inductor.com. Sourcing equivalents: Murata BLM18PG121SN1D, TDK MPZ1608S121A |
 
 ## Connectors & wiring standards
 
@@ -185,7 +186,8 @@ manufacturer/distributor before relying on exact figures.
 
 (Bencent B3D090L-C — moved to "RS485 subsystem" above, re-verified 2026-09-08. Würth
 7499010441 — moved to "Ethernet subsystem" above, re-verified 2026-09-10 including a
-direct visual match against the reference hardware's own jack marking.)
+direct visual match against the reference hardware's own jack marking, then fully read
+directly from the datasheet PDF 2026-09-13 confirming the termination network.)
 
 ## Not added yet
 

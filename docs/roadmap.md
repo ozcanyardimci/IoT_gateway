@@ -43,9 +43,12 @@ Order:
 6. Analog I/O (input + output) — `docs/subsystems/analog-io.md` — **DONE**
 7. RS485 (isolated) — `docs/subsystems/rs485.md` — **DONE**
 8. RS232 — `docs/subsystems/rs232.md` — **DONE**
-9. Ethernet (W5500) — `docs/subsystems/ethernet.md` — **IN PROGRESS**: front end,
-   magnetics/RJ45, and LED/control lines locked 2026-09-10; schematic capture is next
-10. WiFi
+9. Ethernet (W5500) — `docs/subsystems/ethernet.md` — **DONE** through schematic capture
+   (2026-09-13); ERC and BOM still pending, same as every other subsystem's open items
+10. WiFi — `docs/subsystems/wifi.md` — **PLAN DRAFTED** 2026-09-13, awaiting Ozcan's
+    confirmation before schematic capture. Small scope: the ESP32-S3-WROOM-1U's radio is
+    already fixed (core-compute), this is just the external antenna path (SMA jack, coax
+    pigtail, antenna gain limit) — see that doc.
 11. LTE (Quectel EG915U-EU) — most complex, done last
 
 ERC is deferred to a single end-of-project pass across all subsystems, not a per-subsystem
