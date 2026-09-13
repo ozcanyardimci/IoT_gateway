@@ -36,6 +36,118 @@
 		(uuid "f2eba569-e367-477f-840f-384672935f8e")
 	)
 	(sheet
+		(at 71.12 131.064)
+		(size 35.56 40.132)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "06616d5d-3c70-459c-9d5b-630e19e07d6e")
+		(property "Sheetname" "ethernet"
+			(at 71.12 129.9874 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "ethernet.kicad_sch"
+			(at 71.12 172.0726 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left top)
+			)
+		)
+		(pin "3V3_LOGIC" input
+			(at 71.12 134.62 180)
+			(uuid "c8cedf0b-30b3-43ec-a8e7-e8082a0a58f7")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ETH_INTN" output
+			(at 71.12 139.7 180)
+			(uuid "096ff146-df7d-4b34-b929-95f158f076ab")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ETH_MISO" output
+			(at 71.12 146.05 180)
+			(uuid "0ba33231-30a5-4b04-a3ff-5841112a1548")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ETH_MOSI" input
+			(at 71.12 152.4 180)
+			(uuid "78375c64-efd6-40aa-8321-3583dce37378")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ETH_RSTN" input
+			(at 71.12 158.75 180)
+			(uuid "c9cdd8b8-7efc-494d-a901-f5c587eca924")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ETH_SCLK" input
+			(at 71.12 163.83 180)
+			(uuid "23e0f1bf-6970-4752-9f17-c566ae5f9b0d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ETH_SCSN" input
+			(at 71.12 168.91 180)
+			(uuid "a074557c-eb29-40ed-8bb5-2dca1b53e057")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "lteboard"
+				(path "/e3cbe890-827c-4e3e-bf4e-d33595c4d0b3"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
 		(at 35.56 38.1)
 		(size 41.91 57.15)
 		(exclude_from_sim no)

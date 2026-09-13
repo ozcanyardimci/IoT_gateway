@@ -1748,7 +1748,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "16450eef-13fc-49b7-992b-4b5276a6c0d3")
-		(property "Reference" "D_LTE"
+		(property "Reference" "D_LTE1"
 			(at 87.884 86.36 0)
 			(effects
 				(font
@@ -1809,7 +1809,7 @@
 		(instances
 			(project "lteboard"
 				(path "/e3cbe890-827c-4e3e-bf4e-d33595c4d0b3/ec8569af-218c-4aac-87d3-711148df7d45"
-					(reference "D_LTE")
+					(reference "D_LTE1")
 					(unit 1)
 				)
 			)
@@ -1824,7 +1824,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "24f8d531-977a-493f-b813-2fea46dd0260")
-		(property "Reference" "D_ETH"
+		(property "Reference" "D_ETH1"
 			(at 87.376 96.266 0)
 			(effects
 				(font
@@ -1885,7 +1885,7 @@
 		(instances
 			(project ""
 				(path "/e3cbe890-827c-4e3e-bf4e-d33595c4d0b3/ec8569af-218c-4aac-87d3-711148df7d45"
-					(reference "D_ETH")
+					(reference "D_ETH1")
 					(unit 1)
 				)
 			)
@@ -2125,7 +2125,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "341f6593-4ee8-40ff-b392-41f90ec116b5")
-		(property "Reference" "D_PWR"
+		(property "Reference" "D_PWR1"
 			(at 88.138 70.866 0)
 			(effects
 				(font
@@ -2186,7 +2186,7 @@
 		(instances
 			(project ""
 				(path "/e3cbe890-827c-4e3e-bf4e-d33595c4d0b3/ec8569af-218c-4aac-87d3-711148df7d45"
-					(reference "D_PWR")
+					(reference "D_PWR1")
 					(unit 1)
 				)
 			)
@@ -2548,7 +2548,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "84284f48-119b-4290-96a9-f4115da208f7")
-		(property "Reference" "D_HB"
+		(property "Reference" "D_HB1"
 			(at 88.138 79.502 0)
 			(effects
 				(font
@@ -2609,7 +2609,7 @@
 		(instances
 			(project "lteboard"
 				(path "/e3cbe890-827c-4e3e-bf4e-d33595c4d0b3/ec8569af-218c-4aac-87d3-711148df7d45"
-					(reference "D_HB")
+					(reference "D_HB1")
 					(unit 1)
 				)
 			)
@@ -2691,7 +2691,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "97ccdcf7-cf07-448e-9bfb-6304a6a7b4de")
-		(property "Reference" "D_WIFI"
+		(property "Reference" "D_WIFI1"
 			(at 87.63 105.156 0)
 			(effects
 				(font
@@ -2752,7 +2752,7 @@
 		(instances
 			(project "lteboard"
 				(path "/e3cbe890-827c-4e3e-bf4e-d33595c4d0b3/ec8569af-218c-4aac-87d3-711148df7d45"
-					(reference "D_WIFI")
+					(reference "D_WIFI1")
 					(unit 1)
 				)
 			)
@@ -2974,7 +2974,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "d0accfe0-32e6-41a6-952e-10d180ec7246")
-		(property "Reference" "D_FLT"
+		(property "Reference" "D_FLT1"
 			(at 87.884 114.046 0)
 			(effects
 				(font
@@ -3035,7 +3035,7 @@
 		(instances
 			(project "lteboard"
 				(path "/e3cbe890-827c-4e3e-bf4e-d33595c4d0b3/ec8569af-218c-4aac-87d3-711148df7d45"
-					(reference "D_FLT")
+					(reference "D_FLT1")
 					(unit 1)
 				)
 			)

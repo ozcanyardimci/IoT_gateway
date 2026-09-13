@@ -621,6 +621,10 @@
     [
       "ec8569af-218c-4aac-87d3-711148df7d45",
       "status_indication"
+    ],
+    [
+      "06616d5d-3c70-459c-9d5b-630e19e07d6e",
+      "ethernet"
     ]
   ],
   "text_variables": {}
