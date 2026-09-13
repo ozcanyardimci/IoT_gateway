@@ -1,0 +1,4 @@
+Ref,Part,Role,MPN,Manufacturer,Distributor link
+J2,"SMA female jack, 2-hole flange, PCB/panel mount","Board-side antenna connector; shield to EARTH, center pin No Connect (fed by pigtail, not a PCB net)",132163,Amphenol RF,https://www.amphenolrf.com/en-us/part/132163/1014/
+(off-board),"U.FL-to-SMA female bulkhead pigtail cable, RG178, ~10-15cm","Carries the RF signal from U1's onboard U.FL jack to J2 - not a schematic net; connectorized assembly, no MPN required",generic,generic,
+(off-board),"2.4-2.5GHz antenna, SMA-male, <=2.33dBi gain (certification limit - see wifi.md decision 3)","External antenna, screws onto J2",SMA 2.4G 2DB Antenna (2dBi),Waveshare,https://www.waveshare.com/sma-2.4g-2db-antenna.htm

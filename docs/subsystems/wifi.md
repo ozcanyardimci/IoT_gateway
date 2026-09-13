@@ -1,6 +1,8 @@
 # WiFi Subsystem — Build Plan
 
-**Status:** Plan drafted 2026-09-13, awaiting Ozcan's confirmation before schematic capture.
+**Status:** Complete. Schematic capture done and verified 2026-09-13 — J2 placed, wired,
+and checked at the coordinate level (not just visually) against `core-compute.kicad_sch`.
+Remaining: ERC (deferred project-wide, see `CLAUDE.md`) and Rev-A bench verification.
 
 ## Scope
 
@@ -87,15 +89,22 @@ Four decisions:
 | Certified reference antenna gain | 2.33dBi (do not exceed without expecting to redo EMC testing) |
 | Antenna connector family | U.FL (Hirose) / MHF-I (I-PEX) / AMC (Amphenol) — mechanically interchangeable |
 
-## Step 2: schematic capture — not started, next up once confirmed
+## Step 2: schematic capture — DONE, 2026-09-13
 
-Single addition to `hardware/kicad/lteboard/lteboard/core-compute.kicad_sch` (this lives
-next to the module it belongs to, not a separate sheet — there's no bus/signal to carry
-across a hierarchical boundary, just one connector): place the SMA jack symbol, tie its
-ground pin to `EARTH` (a new global label on this sheet if not already present — same
-label used by Ethernet, so should already be declared project-wide), mark its RF pin No
-Connect, and note in the schematic (or here) that the pigtail is a physical assembly, not a
-netlist connection. That's the entire wiring task for this subsystem.
+Added to `hardware/kicad/lteboard/lteboard/core-compute.kicad_sch` (lives next to U1, the
+module it belongs to — no new sheet, nothing crosses a hierarchical boundary):
+
+- **J2**: `Connector:Conn_Coaxial`, Value `Amphenol_132163`, footprint left blank
+  (deferred to layout, same pattern as several other subsystems' passives).
+- **Pin 1** (RF/center): No-Connect flag. Verified at the coordinate level — the flag's
+  placed position matches exactly where KiCad computes pin 1's connection point to be
+  given J2's placement, not just visually adjacent to it.
+- **Pin 2** (shield): wired to a new `EARTH` global label (shape `input`, matching every
+  other `EARTH` instance project-wide). Verified the same way — the wire's endpoint lands
+  exactly on both pin 2's computed connection point and the label's connection point, no
+  gap.
+
+Confirmed correct and complete — this was the entire wiring task for the subsystem.
 
 ## Step 3: verification checklist / ERC — not run yet
 
@@ -117,20 +126,22 @@ symbol's pin the same way it does elsewhere on this project.
 
 All of 2-4 need real hardware — Rev-A bring-up, same pattern as every other subsystem.
 
-## Step 5: documentation & BOM — not done yet
+## Step 5: documentation & BOM — DONE, 2026-09-13
 
-Will add a WiFi subsystem section to `hardware/datasheets/README.md` once the schematic
-placement (Step 2) is done and Ozcan confirms the connector's actual reference designator.
-BOM: the SMA jack (on-board), the pigtail cable (mechanical assembly, BOM'd but not a
-schematic symbol), and the antenna (off-board accessory, BOM'd for completeness the same
-way this project already BOMs connector-adjacent parts that never mount to the PCB itself).
+WiFi section added to `hardware/datasheets/README.md`. BOM written to
+`hardware/bom/wifi_bom.csv`: J2 (on-board), the pigtail cable and the antenna (both
+off-board, BOM'd for completeness the same way this project already BOMs connector-adjacent
+parts that never mount to the PCB itself).
 
-## Step 6: sign-off — not yet
+## Step 6: sign-off
 
-Pending confirmation, Step 2 (schematic capture), and Steps 3-5.
+Schematic capture, documentation, and BOM all done. Same as every other subsystem: ERC
+deferred to the single end-of-project pass, and bench items (WiFi association range/RSSI)
+wait for Rev-A hardware. Ready to commit and merge.
 
 ## Revision history
 
 | Date | Change |
 |---|---|
 | 2026-09-13 | Doc created. Antenna-path topology (module U.FL → coax pigtail → PCB-mount SMA jack, no PCB RF trace) confirmed against the reference-hardware LTEBOARD photos, cross-checked against Espressif's own WROOM-1U datasheet (antenna connector family, TX power/current, and — the one easy-to-miss finding — the 2.33dBi certified-antenna gain ceiling, which rules out a generic 3dBi rubber-duck antenna without extra EMC testing). Re-verified the 355mA WiFi-TX-peak figure already used in `power.md`/`core-compute.md` directly against the datasheet's own current-consumption table (it's the correct worst-case row, 802.11b @ 20.5dBm — no error, no change needed). SMA jack's shield/ground assigned to `EARTH` per this project's existing externally-facing-connector convention (same as Ethernet's magjack shield, RS485's GDT third electrode). |
+| 2026-09-13 | **Schematic capture completed by Ozcan and verified at the coordinate level** (pin positions computed from the symbol library definition and placement transform, not just visual inspection of a screenshot) — J2 placed correctly as `Connector:Conn_Coaxial`/`Amphenol_132163`, pin 1 No-Connect flag and pin 2-to-`EARTH` wire both land exactly on their computed connection points, no gaps. Added `hardware/bom/wifi_bom.csv` and a WiFi section to `hardware/datasheets/README.md`. Subsystem complete pending the end-of-project ERC pass and Rev-A bench verification (WiFi association range/RSSI). |

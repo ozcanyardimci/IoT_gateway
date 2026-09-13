@@ -142,6 +142,26 @@ for the full component list and decision history.
 | Würth Elektronik 7499010441 (WE-RJ45LAN) | RJ45 jack with integrated 1:1 transformer, 2 bi-color LEDs | [Datasheet](https://www.we-online.com/components/products/datasheet/7499010441.pdf) — full PDF read directly 2026-09-13 (user-supplied, not a summary): confirms isolation ≥1500V RMS, turns ratio, LED specs, AND the termination network — CTD/CRD terminated internally (75Ω/75Ω + 0.001µF/2kV + GDTs) into a combined "GND Shield" node (pin 8 + both shield pins are one net). Termination is now CONFIRMED integrated, no external Bob-Smith network needed — upgraded from the earlier "high confidence, not pin-level-guaranteed" call; see `docs/subsystems/ethernet.md` decision 4. Cross-checked against two related datasheets (Würth 7499011441A, Cetus J1B1211CCD) showing the same internal topology |
 | Generic 0603 ferrite bead (FB1) | AVDD filtering, `3V3_LOGIC` → `3V3A` | WIZnet forum support guidance (named `HH-1M1608-121JT`, but any bead meeting spec works): 120Ω @ 100MHz (90Ω min), DCR 200mΩ max, 1A max rated current — confirmed via a real datasheet on inductor.com. Sourcing equivalents: Murata BLM18PG121SN1D, TDK MPZ1608S121A |
 
+## WiFi subsystem
+
+Radio itself is the ESP32-S3-WROOM-1U module, already covered under "Core compute
+subsystem" above — nothing new to add there. This section is just the external antenna
+path (J2), confirmed 2026-09-13 against the reference-hardware LTEBOARD photos (module
+U.FL -> coax pigtail -> PCB-mount SMA jack, no PCB RF trace) and against the module's own
+datasheet for the antenna gain ceiling.
+
+| Part | Role | Datasheet / source |
+|---|---|---|
+| Amphenol RF 132163 | J2 - board-side SMA female jack, 2-hole flange, PCB/panel mount | [Product page](https://www.amphenolrf.com/en-us/part/132163/1014/) - representative real part matching the reference-hardware connector style; exact sourced part may differ, footprint deferred to layout |
+| Generic U.FL-to-SMA pigtail | Coax jumper, module's onboard U.FL jack to J2, RG178, ~10-15cm | Reference-hardware photos (topology); no PCB trace involved, generic assembly |
+| Waveshare "SMA 2.4G 2DB Antenna" | External antenna, SMA-male, 2dBi | [Product page](https://www.waveshare.com/sma-2.4g-2db-antenna.htm) - chosen to stay under the module's 2.33dBi certified-antenna gain ceiling (see below) |
+
+**Antenna gain ceiling — from the module's own datasheet, not a general guideline:**
+Espressif's ESP32-S3-WROOM-1U datasheet states the module's FCC/CE certification used a
+2.33dBi reference antenna, and a higher-gain or different-type antenna "may require
+additional testing, such as EMC." A generic 3dBi rubber-duck antenna would exceed that;
+picked a 2dBi part instead to stay inside the certified envelope with margin.
+
 ## Connectors & wiring standards
 
 | Item | Role | Source |
