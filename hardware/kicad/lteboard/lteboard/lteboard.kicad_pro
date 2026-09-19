@@ -625,6 +625,10 @@
     [
       "06616d5d-3c70-459c-9d5b-630e19e07d6e",
       "ethernet"
+    ],
+    [
+      "0235ef7e-b7d9-4b39-a094-b9919c9f739c",
+      "lte"
     ]
   ],
   "text_variables": {}

@@ -2,4 +2,8 @@
   (version 7)
   (lib (name "PCA9535PW")(type "KiCad")(uri "${KIPRJMOD}/../libs/PCA9535PW/PCA9535PW.kicad_sym")(options "")(descr ""))
   (lib (name "WE-RJ45_7499010441")(type "KiCad")(uri "C:/Users/asus/Desktop/gateway/hardware/kicad/lteboard/libs/WE-RJ45_7499010441/WE-RJ45_7499010441.kicad_sym")(options "")(descr ""))
+  (lib (name "EG915U-EU")(type "KiCad")(uri "C:/Users/asus/Desktop/gateway/hardware/kicad/lteboard/libs/EG915UEUAC-N05-SNNSA/EG915UEUAC-N05-SNNSA.kicad_sym")(options "")(descr ""))
+  (lib (name "TI TXB0102DCUR")(type "KiCad")(uri "C:/Users/asus/Desktop/gateway/hardware/kicad/lteboard/libs/TXB0102DCUR/KiCADv6/2026-09-13_20-21-56.kicad_sym")(options "")(descr ""))
+  (lib (name "SF53S006VCBR2000")(type "KiCad")(uri "C:/Users/asus/Desktop/gateway/hardware/kicad/lteboard/libs/SF53S006VCBR2000/KiCADv6/2026-09-15_05-56-01.kicad_sym")(options "")(descr ""))
+  (lib (name "ESDA6V1BC6")(type "KiCad")(uri "C:/Users/asus/Desktop/gateway/hardware/kicad/lteboard/libs/ESDA6V1BC6/ESDA6V1BC6.kicad_sym")(options "")(descr ""))
 )

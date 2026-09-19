@@ -49,7 +49,23 @@ Order:
     ESP32-S3-WROOM-1U's radio is already fixed (core-compute); this was just the external
     antenna path (J2 SMA jack -> EARTH, coax pigtail, gain-limited antenna) added to
     `core-compute.kicad_sch`. ERC and BOM's off-board items pending, same as everywhere.
-11. LTE (Quectel EG915U-EU) — most complex, done last
+11. LTE (Quectel EG915U-EU) — `docs/subsystems/lte.md` — **DONE** through schematic capture
+    and BOM (2026-09-19). Most complex subsystem: own rail, own UART (via a level shifter),
+    SIM interface, power-control circuit, own antenna path. Two findings from drafting it
+    were resolved early: the rail (renamed `VBAT_LTE`) was retapped from ~3.3V to ~3.82V for
+    real margin against Quectel's 3.3-4.3V spec (see `power.md`'s revision history), and
+    `architecture.md`'s header line now lists `VBAT_LTE` separately from `3V3_LOGIC` — see
+    `lte.md` decisions 2 and 8. The sheet symbol + 6 hierarchical pins were added to the
+    `lteboard.kicad_sch` master sheet 2026-09-19 and checked pin-by-pin against
+    `lte.kicad_sch`'s own labels (full netlist reconstruction, not hand-traced coordinates)
+    — exact match, no defect. Two real ERC-style gaps found in that same pass (D1's 4th ESD
+    channel unwired, two U4 no-connect flags missing) have since been fixed and re-verified.
+    ERC and BOM's off-board items pending, same as every other subsystem's open items. The
+    master sheet's 6 new pins aren't wired to anything yet: `3V3_LOGIC`/`VBAT_LTE` need the
+    board-to-board connector (step 7, not started — every subsystem's cross-board rails are
+    in the same state, not LTE-specific), and `LTE_PWRKEY`/`LTE_RESET`/`LTE_TXD`/`LTE_RXD`
+    need real MCU GPIO/UART pins that don't exist yet on `core-compute.kicad_sch` (step 6,
+    not started).
 
 ERC is deferred to a single end-of-project pass across all subsystems, not a per-subsystem
 pre-merge gate (Ozcan's explicit decision, confirmed 2026-09-10 — status-indication had

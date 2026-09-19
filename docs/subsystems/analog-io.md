@@ -357,8 +357,9 @@ redone correctly as documented exclusions instead.
 Deliberately left **un-excluded** (out of scope for this subsystem — pre-existing, belonging
 to other, already-signed-off subsystems, or project-wide policy):
 
-- `3V3_LTE` hierarchical sheet pin unconnected — a power/core-compute board-boundary
-  question, not this subsystem's.
+- `VBAT_LTE` (renamed from `3V3_LTE` 2026-09-13, see `power.md`) hierarchical sheet pin
+  unconnected — a power/LTE board-boundary question, not this subsystem's; will resolve
+  once `lte.kicad_sch` is wired.
 - `RELAY1_CTRL`...`RELAY4_CTRL` dangling labels — relay-outputs' own deferred GPIO
   assignment, same roadmap-step-6 pattern, but that subsystem's item to close, not this one's.
 - 9 `footprint_link_issues` warnings — the project-wide "footprints not yet verified before

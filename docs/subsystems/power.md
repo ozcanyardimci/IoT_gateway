@@ -23,7 +23,7 @@ industrial enclosure). Every component below is checked against this range.
 | Part | Rail | Supply range | Typical current | Peak/max current | Confidence |
 |---|---|---|---|---|---|
 | ESP32-S3-WROOM-1U | 3.3V | 3.0-3.6V | ~95-100 mA (WiFi RX) | 355 mA (WiFi TX burst) | Datasheet |
-| Quectel EG915U-EU | 3.3V-LTE (dedicated) | VBAT 3.3-4.3V | ~30 mA idle (approx.) | 2A (LTE) / 3A (GSM+LTE) TX burst | Datasheet |
+| Quectel EG915U-EU | `VBAT_LTE` (dedicated, renamed from `3V3_LTE` — see 2026-09-13 entry below) | VBAT 3.3-4.3V, typ. 3.8V | ~30 mA idle (approx.) | 2A (LTE) / 3A (GSM+LTE) TX burst | Datasheet |
 | WIZnet W5500 | 3.3V-LOGIC | 3.3V | 132 mA | No max published — budgeted at 200 mA (1.3-1.5x typical) | Typical figure from datasheet; margin is our own choice |
 | NXP PCA9535PW | 3.3V-LOGIC | 2.3-5.5V | ~0.03-0.1 mA | 0.2 mA max | Datasheet |
 | MAX3232E | 3.3V-LOGIC | 3.0-5.5V | 0.3 mA | 1 mA max | Datasheet |
@@ -43,7 +43,7 @@ need clean power. Five independent rails:
 |---|---|---|
 | 5V-RELAY | Relay coils (x4), plus the 15V-ANALOG-ISO module's input (U7) | ~160 mA + ~5 mA reflected (U7's actual ~1.2 mA output load, at ~80% conversion efficiency; U7 is rated for 66 mA output if that ever changes) |
 | 3.3V-LOGIC | ESP32-S3, W5500, PCA9535PW, MAX3232E, RS485 module, analog logic side, 6 status LEDs | ~660 mA (sized to ≥850 mA-1A with margin — the ~11.5mA LED addition doesn't change this conclusion) |
-| 3.3V-LTE | Quectel EG915U-EU only, dedicated | 2-3A transient |
+| `VBAT_LTE` (renamed from `3.3V-LTE`) | Quectel EG915U-EU only, dedicated | 2-3A transient |
 | 3.3V-ANALOG-ISO | Analog input isolation amp/ADC, U12 input-buffer op-amp | Tens of mA |
 | 15V-ANALOG-ISO | U13 output gain-stage op-amp only | ~1.2 mA |
 
@@ -86,7 +86,7 @@ are contained to the analog subsystem and worth the small BOM cost.
 | Rail | Part | Input range | Rating | Margin | Notes |
 |---|---|---|---|---|---|
 | 3.3V-LOGIC | Würth MagI3C-VDLM 171013801 | 3.5-38V (abs. max 42V) | 1A | ~54% headroom over 650mA peak | Adjustable output via divider |
-| 3.3V-LTE | Würth MagI3C-VDLM 171033801 | 3.5-38V (abs. max 42V) | 3A | Quectel's 2-3A transient inside continuous rating | Same part identified on the reference board's teardown |
+| `VBAT_LTE` | Würth MagI3C-VDLM 171033801 | 3.5-38V (abs. max 42V) | 3A | Quectel's 2-3A transient inside continuous rating | Same part identified on the reference board's teardown. **Output set point corrected 2026-09-13: 115k/402k divider (~3.82V), not 137k/402k (~3.3V)** — see revision history; 3.3V sat at the exact floor of Quectel's 3.3-4.3V spec with zero margin against the TX transient |
 | 5V (relays) | Würth MagI3C-VDLM 171013801, second instance | 3.5-38V | 1A | ~84% headroom over 160mA | Divider re-tapped to 5V |
 | 3.3V-ANALOG-ISO | Recom R1SX-3.33.3-R | 3.3V regulated input | ~300mA / 1W | Heavy margin over tens-of-mA load | 1kVDC isolation; "/H" option available for 3kVDC |
 | 15V-ANALOG-ISO | Recom RK-0515S | 4.5-5.5V (from 5V-RELAY) | 15V / 66mA, 80-82% eff. | Heavy margin — actual load is ~1.2 mA, ~50x under rating | 3kVDC isolation (4kVDC with "/H"); -VIN ties to GND_LOGIC, -VOUT to GND_ANALOG_ISO — these are separate, non-connected nets inside the module, which is the entire point of using an isolated part here rather than a simple linear/buck regulator |
@@ -187,17 +187,20 @@ standard PCB design-rule spacing and the terminal block's own pitch — not a dr
 constraint at this voltage, unlike the higher-voltage isolation barriers (optocouplers,
 RS485 module) which do need specific attention at layout.
 
-The board-to-board header's power pins (3.3V-LOGIC, 3.3V-LTE, 3.3V-ANALOG-ISO, 5V, returns)
-are covered under the general board-to-board interconnect milestone in the roadmap, not
-here — this section covers the field power input connector only.
+The board-to-board header's power pins (3.3V-LOGIC, `VBAT_LTE`, 3.3V-ANALOG-ISO, 5V,
+returns) are covered under the general board-to-board interconnect milestone in the
+roadmap, not here — this section covers the field power input connector only. `VBAT_LTE`
+specifically needs its own dedicated header pin(s), separate from 3.3V-LOGIC's, given its
+2-3A transient — see `architecture.md`'s header section (corrected 2026-09-13) and
+`lte.md` decision 8.
 
 ## 7. Schematic capture
 
 Full input-to-output chain wired in KiCad (`hardware/kicad/ioboard/`): J1 -> F1 -> Q1/U1 ->
 U2/TVS3300 -> five DC-DC modules. GND_LOGIC exposed as a project-wide Global Label; the
-other six rail/ground nets (3.3V-LOGIC, 3.3V-LTE, 5V-RELAY, 3.3V-ANALOG-ISO, 15V-ANALOG-ISO,
-GND_ANALOG_ISO) exposed via Hierarchical Label + matching Sheet Pin on the parent sheet
-(Output direction). 15V-ANALOG-ISO's producer (U7) sits in `power.kicad_sch`; its consumer
+other six rail/ground nets (3.3V-LOGIC, `VBAT_LTE` [renamed from `3.3V-LTE` 2026-09-13],
+5V-RELAY, 3.3V-ANALOG-ISO, 15V-ANALOG-ISO, GND_ANALOG_ISO) exposed via Hierarchical Label +
+matching Sheet Pin on the parent sheet (Output direction). 15V-ANALOG-ISO's producer (U7) sits in `power.kicad_sch`; its consumer
 (U13's V+ pin) was already anticipated in `analog_io.kicad_sch` before this rail existed —
 only the sheet-pin path through the root sheet (`ioboard.kicad_sch`) needed completing.
 See section 12 for the full reference/part table.
@@ -281,14 +284,15 @@ bring-up checks, listed under Commissioning below.
 | U1 | TI LM74610-Q1 | Ideal diode controller | LM74610QDGKRQ1 |
 | U2 | TI TVS3300 | Flat-Clamp surge protection | TVS3300DRVR |
 | U3 | Würth MagI3C-VDLM | 3.3V-LOGIC DC-DC module | 171013801 |
-| U4 | Würth MagI3C-VDLM | 3.3V-LTE DC-DC module (3A) | 171033801 |
+| U4 | Würth MagI3C-VDLM | `VBAT_LTE` DC-DC module (3A) | 171033801 |
 | U5 | Würth MagI3C-VDLM | 5V-RELAY DC-DC module | 171013801 |
 | U6 | Recom R1SX-3.33.3-R | Isolated 3.3V analog supply | R1SX-3.33.3-R |
 | U7 | Recom RK-0515S | Isolated 15V DC-DC module, analog output gain-stage supply | RK-0515S |
 | CY1 | Würth WCAP-CSSA | Input Y-cap, EMI/safety | 8853522140011 |
 | C1 | Ceramic, X7R, 16V | LM74610-Q1 charge-pump cap | 2.2uF |
-| R2/R5/R8 | E96 | FB top resistor (3.3V rails) | 402k |
-| R3/R6 | E96 | FB bottom resistor (3.3V rails) | 137k |
+| R2/R5/R8 | E96 | FB top resistor (3.3V-LOGIC / `VBAT_LTE` / 5V rails) | 402k |
+| R3 | E96 | FB bottom resistor (3.3V-LOGIC only) | 137k |
+| R6 | E96 | FB bottom resistor (`VBAT_LTE` only — corrected 2026-09-13, was 137k) | 115k |
 | R9 | E96 | FB bottom resistor (5V rail) | 80.6k |
 | R1/R4/R7 | — | FSW frequency-set resistor | 5.6k |
 
@@ -323,3 +327,4 @@ paper. None block sign-off — all are backed by comfortable design margin.
 | 2026-09-03 | U6 (analog isolated supply) reference designator corrected from P51 |
 | 2026-09-08 | Added U7 (Recom RK-0515S), an isolated 15V DC-DC module, for the analog output stage's gain amplifier — the "15V problem" flagged during analog-io's design. Powered from 5V-RELAY; -VIN on GND_LOGIC, -VOUT on GND_ANALOG_ISO (isolation preserved). Corrected the LM2904 load-budget entry: split into U12 (input-buffer stage, 3.3V-ANALOG-ISO) and U13 (output gain stage, new 15V-ANALOG-ISO rail) — the old single row had both on 3.3V-LOGIC, which was wrong, and used an imprecise per-amp current figure instead of the TI-datasheet-verified dual-package draw (both internal amps consume quiescent current whenever the package is powered). Updated grounding/isolation table: analog output is now isolated. Added acceptance criteria items 7 (rewritten) and 8, a commissioning item for U7's isolation, and the U7 BOM row. |
 | 2026-09-10 | Added the 6 status LEDs' ~11.5mA worst-case current addition to the 3.3V-LOGIC rail's load table and total — flagged by `status-indication.md` as a real gap when that subsystem was built (2026-09-07) but never actually applied here until this project-wide documentation pass caught it. Doesn't change the rail-sizing conclusion (still comfortably under the ≥850mA-1A margin target). |
+| 2026-09-13 | **Corrected the `3.3V-LTE` rail's output set point and renamed it `VBAT_LTE`.** Found while drafting `lte.md`: U4's feedback divider (R6=137k, same as R3's 3.3V-LOGIC divider) computes to ~3.3V via the 171033801's own Vout=Vref×(RFBT/RFBB+1) formula (Vref=0.85V, confirmed against that module's datasheet) — sitting at the *exact floor* of Quectel EG915U-EU's 3.3-4.3V VBAT spec with zero margin, right where the modem's 2-3A TX transient would sag it further, and below Quectel's own recommended 3.8V typical. Corrected R6 to 115k, computing to ~3.82V — matches Quectel's typical almost exactly, gives roughly even margin on both sides of the spec window instead of 0V on one side. Renamed the net from `3V3_LTE` to `VBAT_LTE` (matching Quectel's own VBAT pin naming) since calling a 3.82V rail "3V3" would be actively misleading — this rail has exactly one consumer (the LTE modem, not yet wired at the time of this fix), so the rename was fully contained: `power.kicad_sch`'s hierarchical label and `ioboard.kicad_sch`'s matching sheet pin were the only two live references. Split R6 out of the shared "R3/R6" BOM row now that they carry different values. |

@@ -24,7 +24,7 @@ copyrighted PDFs. Updated as each subsystem is worked through.
 | Part | Role | Datasheet / source |
 |---|---|---|
 | Würth MagI3C-VDLM 171013801 | 3.3V-LOGIC and 5V rail buck module (two instances) | [Datasheet](https://www.we-online.com/en/components/products/datasheet/171013801.pdf) |
-| Würth MagI3C-VDLM 171033801 | 3.3V-LTE rail buck module, 3A | [Datasheet](https://www.we-online.com/components/products/datasheet/171033801.pdf) |
+| Würth MagI3C-VDLM 171033801 | `VBAT_LTE` rail buck module (renamed from `3V3_LTE` 2026-09-13 — output retapped to ~3.82V, matching Quectel's typical VBAT, see `power.md` revision history), 3A | [Datasheet](https://www.we-online.com/components/products/datasheet/171033801.pdf) |
 | Recom R1SX-3.33.3-R | Isolated supply, analog input field side, 3.3V-in/3.3V-out | [Recom datasheet](https://recom-power.com/pdf/Econoline/R1SX.pdf) · [DigiKey](https://www.digikey.com/en/products/detail/recom-power/R1SX-3.33.3-R/6708875) |
 | Littelfuse RXEF135 | Input PTC resettable fuse | [Datasheet](https://www.littelfuse.com/assetdocs/resettable-ptc-rxef-datasheet?assetguid=e9a7b6b3-79ce-478c-a39a-0a70ee48ccec) |
 | TI LM74610-Q1 | Ideal diode controller, reverse-polarity protection | [Datasheet](https://www.ti.com/lit/ds/symlink/lm74610-q1.pdf) |
@@ -161,6 +161,34 @@ Espressif's ESP32-S3-WROOM-1U datasheet states the module's FCC/CE certification
 2.33dBi reference antenna, and a higher-gain or different-type antenna "may require
 additional testing, such as EMC." A generic 3dBi rubber-duck antenna would exceed that;
 picked a 2dBi part instead to stay inside the certified envelope with margin.
+
+## LTE subsystem
+
+Quectel EG915U-EU Cat-1 modem (+2G fallback), on its own `VBAT_LTE` rail and one of the
+project's 3 hardware UARTs. Own antenna path (same coax-pigtail/SMA-jack pattern as WiFi
+above), own power-control (PWRKEY/RESET_N) circuit, and a level-shifted UART to a
+micro-SIM interface. See `docs/subsystems/lte.md` for the full build plan, and
+`hardware/bom/lte_bom.csv` for the complete part list. Schematic capture (Step 4) is
+largely complete, including the UART level shifter (U5) — checked and confirmed correctly
+wired 2026-09-19; see `lte.md` Step 4 for details.
+
+| Part | Role | Datasheet / source |
+|---|---|---|
+| Quectel EG915UEUAC-N05-SNNSA | LTE Cat-1 modem, EU band variant | [Quectel EG915U Series Hardware Design v1.1](https://quectel.com/content/uploads/2024/02/Quectel_EG915U_Series_Hardware_Design_V1.1.pdf) (also listed under "Power subsystem" above) |
+| TI TXB0102DCUR | 2-channel level shifter, 1.8V<->3.3V UART | [Datasheet](https://www.ti.com/lit/gpn/txb0102) |
+| JAE SF53S006VCBR2000 | Micro-SIM push-push holder (J4), 6-contact | Matches reference-hardware LTEBOARD's SIM holder (`reference-photos/2026-09-08-hardware-assembly-photos/photo_23`, `photo_29`, `photo_30`) |
+| STMicroelectronics ESDA6V1BC6 | SIM interface ESD protection, quad TVS array (SOT23-6L) | Confirmed on SnapEDA and in stock via Mouser's Turkey storefront (2026-09-15) |
+| Littelfuse/Bourns SMAJ5.0A (representative) | VBAT reverse-standoff TVS protection | Closest standard part to Quectel's guidance (4.7V isn't a catalog value; 5.0V is the nearest step at or above it) |
+| TE Connectivity/Linx ANT-LTE-MON-SMA-L | Off-board wideband antenna (~617MHz-3.8GHz), SMA, tilt/swivel | DigiKey/Mouser listings (2026-09-14) — band figure from distributor text only, not an independently-pulled Linx PDF |
+| Quectel EG915U Series Reference Design v1.1 | ANT_MAIN matching network topology, SIM interface reference figures, PWRKEY/RESET_N driving circuits | [PDF](https://images.quectel.com/python/sites/2/2023/05/Quectel_EG915U_Series_Reference_Design_V1.1.pdf) |
+
+**Still open / not yet a real sourced part:** J3 (board-side SMA jack — placed as a generic
+`Conn_Coaxial` symbol, no MPN picked yet, same style as WiFi's J2 above); D4 (antenna ESD
+diode — Quectel's own spec, <=0.05pF/<=5V, doesn't match any real catalog part found so far;
+closest candidate is Littelfuse PGB1010603, but its 24V standoff exceeds the 5V ceiling —
+see `lte.md` decision 7 addendum); Q4/Q5 (PWRKEY/RESET_N driver transistors — any generic
+small-signal NPN works, e.g. MMBT3904/BC847; Rohm DTC043ZEBTL is a pre-biased single-part
+alternative if BOM count matters later).
 
 ## Connectors & wiring standards
 

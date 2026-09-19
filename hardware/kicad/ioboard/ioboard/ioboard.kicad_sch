@@ -381,9 +381,9 @@
 				(justify right)
 			)
 		)
-		(pin "RS485_RXD" input
-			(at 62.484 118.11 0)
-			(uuid "4c92b3b9-d8b4-4d54-93ed-8c3073801295")
+		(pin "RS485_TXD" input
+			(at 62.484 124.46 0)
+			(uuid "39a9313b-2609-408e-aed1-a2932cf0f7d4")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -391,9 +391,9 @@
 				(justify right)
 			)
 		)
-		(pin "RS485_TXD" input
-			(at 62.484 124.46 0)
-			(uuid "39a9313b-2609-408e-aed1-a2932cf0f7d4")
+		(pin "RS485_RXD" output
+			(at 62.484 118.11 0)
+			(uuid "07a87037-67da-4915-9bed-27f09724d39a")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -535,7 +535,7 @@
 				(justify right)
 			)
 		)
-		(pin "3V3_LTE" output
+		(pin "VBAT_LTE" output
 			(at 64.77 43.18 0)
 			(uuid "648ec840-15be-4a9e-ac35-43f6a770f20a")
 			(effects

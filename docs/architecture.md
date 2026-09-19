@@ -63,10 +63,14 @@ of a 4th UART.
 
 ## Board-to-board header
 
-Rough signal count ahead of exact pin assignment at step 6: power (3.3V, 5V, GND) + 4 relay
-GPIOs + 8 digital-input GPIOs + 1-2 ADC lines + 1 PWM line + RS485 UART (TX/RX + possible
-DE/RE) + RS232 UART (TX/RX) — roughly 20+ signal lines plus power/ground. Gets its own test
-milestone at roadmap step 7.
+Rough signal count ahead of exact pin assignment at step 6: power (3.3V-LOGIC, `VBAT_LTE`,
+5V, GND — **`VBAT_LTE` listed separately from 3.3V-LOGIC as of 2026-09-13**, since it's a
+dedicated rail specifically to keep the LTE modem's 2-3A TX transient from coupling into
+anything else; sharing a header pin with 3.3V-LOGIC would partly undo that, and 2-3A
+through a single small 0.1" pin is worth checking against that pin's own rating — may need
+2+ parallel pins, confirm at step 7) + 4 relay GPIOs + 8 digital-input GPIOs + 1-2 ADC lines
++ 1 PWM line + RS485 UART (TX/RX + possible DE/RE) + RS232 UART (TX/RX) — roughly 20+
+signal lines plus power/ground. Gets its own test milestone at roadmap step 7.
 
 ## Subsystem list
 
