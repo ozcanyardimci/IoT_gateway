@@ -2243,16 +2243,6 @@
 		)
 		(uuid "fbec74bf-f1a1-4155-b165-5bbee45932f3")
 	)
-	(label "SCL_ISO"
-		(at 149.86 35.56 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "0d669687-50b8-4091-a3e8-1e5b4fcf6315")
-	)
 	(label "AI2"
 		(at 15.24 101.6 0)
 		(effects
@@ -2272,16 +2262,6 @@
 			(justify left bottom)
 		)
 		(uuid "3ec8147e-bbe5-4ab3-b050-2ea5389bdc77")
-	)
-	(label "SDA_ISO"
-		(at 149.86 33.02 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "7b3b7170-00b4-485c-a19d-d74d533b003e")
 	)
 	(label "AI1"
 		(at 15.24 58.42 0)
@@ -2356,6 +2336,17 @@
 		)
 		(uuid "0326936c-56b8-4cba-83e5-dabce30ac705")
 	)
+	(hierarchical_label "I2C_SCL"
+		(shape bidirectional)
+		(at 149.86 35.56 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "0c1dc756-def0-44c7-bb74-abfa372f8da7")
+	)
 	(hierarchical_label "GND_ANALOG_ISO"
 		(shape input)
 		(at 124.46 146.05 180)
@@ -2377,6 +2368,17 @@
 			(justify right)
 		)
 		(uuid "46ccf418-3d88-4389-806e-1fb2a0c2445d")
+	)
+	(hierarchical_label "I2C_SDA"
+		(shape bidirectional)
+		(at 149.86 33.02 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "46e099f8-ff34-4378-bfba-bc463f6ac315")
 	)
 	(hierarchical_label "GND_ANALOG_ISO"
 		(shape input)
