@@ -6,6 +6,12 @@
 	(paper "A4")
 	(lib_symbols)
 	(junction
+		(at 86.36 123.19)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0fbce6bb-7b0f-46a4-a675-3e4768fb754d")
+	)
+	(junction
 		(at 86.36 50.8)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -13,13 +19,23 @@
 	)
 	(wire
 		(pts
-			(xy 86.36 130.81) (xy 86.36 50.8)
+			(xy 86.36 50.8) (xy 86.36 123.19)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "22e3445e-c740-4d65-866e-e28d389b278e")
+		(uuid "1f70098c-378f-4c50-b344-fe5404c34ae1")
+	)
+	(wire
+		(pts
+			(xy 64.77 123.19) (xy 86.36 123.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3b44fe16-3c6b-4aac-be90-d3125d5f247b")
 	)
 	(wire
 		(pts
@@ -33,7 +49,7 @@
 	)
 	(wire
 		(pts
-			(xy 86.36 130.81) (xy 120.65 130.81)
+			(xy 86.36 131.572) (xy 99.06 131.572)
 		)
 		(stroke
 			(width 0)
@@ -43,7 +59,7 @@
 	)
 	(wire
 		(pts
-			(xy 77.47 64.77) (xy 115.824 64.77)
+			(xy 77.47 64.77) (xy 99.06 64.77)
 		)
 		(stroke
 			(width 0)
@@ -53,7 +69,7 @@
 	)
 	(wire
 		(pts
-			(xy 86.36 50.8) (xy 115.824 50.8)
+			(xy 86.36 50.8) (xy 99.06 50.8)
 		)
 		(stroke
 			(width 0)
@@ -63,7 +79,7 @@
 	)
 	(wire
 		(pts
-			(xy 77.47 57.15) (xy 115.824 57.15)
+			(xy 77.47 57.15) (xy 99.06 57.15)
 		)
 		(stroke
 			(width 0)
@@ -71,9 +87,19 @@
 		)
 		(uuid "f2eba569-e367-477f-840f-384672935f8e")
 	)
+	(wire
+		(pts
+			(xy 86.36 123.19) (xy 86.36 131.572)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f9546454-a9e6-4b1d-8522-c015309a306b")
+	)
 	(sheet
-		(at 37.592 124.206)
-		(size 30.734 40.386)
+		(at 30.988 117.856)
+		(size 33.782 46.736)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -88,7 +114,7 @@
 		)
 		(uuid "0235ef7e-b7d9-4b39-a094-b9919c9f739c")
 		(property "Sheetname" "lte"
-			(at 37.592 123.1294 0)
+			(at 30.988 116.7794 0)
 			(effects
 				(font
 					(size 2 2)
@@ -97,7 +123,7 @@
 			)
 		)
 		(property "Sheetfile" "lte.kicad_sch"
-			(at 37.592 165.4686 0)
+			(at 30.988 165.4686 0)
 			(effects
 				(font
 					(size 2 2)
@@ -106,7 +132,7 @@
 			)
 		)
 		(pin "3V3_LOGIC" input
-			(at 68.326 127 0)
+			(at 64.77 123.19 0)
 			(uuid "4d39ec15-0331-4b22-aa7e-57c878d4e756")
 			(effects
 				(font
@@ -116,7 +142,7 @@
 			)
 		)
 		(pin "LTE_PWRKEY" input
-			(at 68.326 130.81 0)
+			(at 64.77 128.778 0)
 			(uuid "fbd5304d-03c5-480f-9565-888b07309b9b")
 			(effects
 				(font
@@ -126,7 +152,7 @@
 			)
 		)
 		(pin "LTE_RESET" input
-			(at 68.326 135.89 0)
+			(at 64.77 133.858 0)
 			(uuid "d0599d7b-6dd7-4341-9508-e4255cfa6092")
 			(effects
 				(font
@@ -136,7 +162,7 @@
 			)
 		)
 		(pin "VBAT_LTE" input
-			(at 68.326 140.97 0)
+			(at 64.77 138.938 0)
 			(uuid "762dab88-5b87-4900-b8f0-9b76a61b6106")
 			(effects
 				(font
@@ -146,7 +172,7 @@
 			)
 		)
 		(pin "LTE_RXD" output
-			(at 68.326 144.78 0)
+			(at 64.77 142.748 0)
 			(uuid "ff8adc6b-e604-4b55-ab91-822aae80baa7")
 			(effects
 				(font
@@ -156,7 +182,7 @@
 			)
 		)
 		(pin "LTE_TXD" input
-			(at 68.326 149.86 0)
+			(at 64.77 147.828 0)
 			(uuid "4a6a37a9-cd63-4ace-b324-8754ed4081df")
 			(effects
 				(font
@@ -174,7 +200,7 @@
 		)
 	)
 	(sheet
-		(at 120.904 127.254)
+		(at 99.06 127.254)
 		(size 35.56 40.132)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -190,7 +216,7 @@
 		)
 		(uuid "06616d5d-3c70-459c-9d5b-630e19e07d6e")
 		(property "Sheetname" "ethernet"
-			(at 120.904 126.1774 0)
+			(at 99.06 126.1774 0)
 			(effects
 				(font
 					(size 2 2)
@@ -199,7 +225,7 @@
 			)
 		)
 		(property "Sheetfile" "ethernet.kicad_sch"
-			(at 120.904 168.2626 0)
+			(at 99.06 168.2626 0)
 			(effects
 				(font
 					(size 2 2)
@@ -208,7 +234,7 @@
 			)
 		)
 		(pin "3V3_LOGIC" input
-			(at 120.904 130.81 180)
+			(at 99.06 131.572 180)
 			(uuid "c8cedf0b-30b3-43ec-a8e7-e8082a0a58f7")
 			(effects
 				(font
@@ -218,7 +244,7 @@
 			)
 		)
 		(pin "ETH_INTN" output
-			(at 120.904 135.89 180)
+			(at 99.06 136.652 180)
 			(uuid "096ff146-df7d-4b34-b929-95f158f076ab")
 			(effects
 				(font
@@ -228,7 +254,7 @@
 			)
 		)
 		(pin "ETH_MISO" output
-			(at 120.904 142.24 180)
+			(at 99.06 142.24 180)
 			(uuid "0ba33231-30a5-4b04-a3ff-5841112a1548")
 			(effects
 				(font
@@ -238,7 +264,7 @@
 			)
 		)
 		(pin "ETH_MOSI" input
-			(at 120.904 148.59 180)
+			(at 99.06 148.59 180)
 			(uuid "78375c64-efd6-40aa-8321-3583dce37378")
 			(effects
 				(font
@@ -248,7 +274,7 @@
 			)
 		)
 		(pin "ETH_RSTN" input
-			(at 120.904 154.94 180)
+			(at 99.06 154.94 180)
 			(uuid "c9cdd8b8-7efc-494d-a901-f5c587eca924")
 			(effects
 				(font
@@ -258,7 +284,7 @@
 			)
 		)
 		(pin "ETH_SCLK" input
-			(at 120.904 160.02 180)
+			(at 99.06 160.02 180)
 			(uuid "23e0f1bf-6970-4752-9f17-c566ae5f9b0d")
 			(effects
 				(font
@@ -268,7 +294,7 @@
 			)
 		)
 		(pin "ETH_SCSN" input
-			(at 120.904 165.1 180)
+			(at 99.06 165.1 180)
 			(uuid "a074557c-eb29-40ed-8bb5-2dca1b53e057")
 			(effects
 				(font
@@ -358,7 +384,7 @@
 		)
 	)
 	(sheet
-		(at 115.824 39.116)
+		(at 99.06 39.116)
 		(size 39.624 57.15)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -374,7 +400,7 @@
 		)
 		(uuid "ec8569af-218c-4aac-87d3-711148df7d45")
 		(property "Sheetname" "status_indication"
-			(at 115.824 38.0394 0)
+			(at 99.06 38.0394 0)
 			(effects
 				(font
 					(size 2 2)
@@ -383,7 +409,7 @@
 			)
 		)
 		(property "Sheetfile" "status_indication.kicad_sch"
-			(at 115.824 97.1426 0)
+			(at 99.06 97.1426 0)
 			(effects
 				(font
 					(size 2 2)
@@ -392,7 +418,7 @@
 			)
 		)
 		(pin "3V3_LOGIC" passive
-			(at 115.824 50.8 180)
+			(at 99.06 50.8 180)
 			(uuid "b443520f-0d3f-4474-8cdf-026e92833b10")
 			(effects
 				(font
@@ -402,7 +428,7 @@
 			)
 		)
 		(pin "I2C_SCL" bidirectional
-			(at 115.824 57.15 180)
+			(at 99.06 57.15 180)
 			(uuid "a823d783-92e1-4839-a139-1cbe19937786")
 			(effects
 				(font
@@ -412,7 +438,7 @@
 			)
 		)
 		(pin "I2C_SDA" bidirectional
-			(at 115.824 64.77 180)
+			(at 99.06 64.77 180)
 			(uuid "9c321dbd-bb24-4eec-8922-11189d107466")
 			(effects
 				(font

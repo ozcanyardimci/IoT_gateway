@@ -1,0 +1,1242 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "60af10c8-2735-4be0-af9d-20942c8c69b7")
+	(paper "A4")
+	(lib_symbols)
+	(text "LTEBOARD"
+		(exclude_from_sim no)
+		(at 215.392 5.842 0)
+		(effects
+			(font
+				(size 4 4)
+				(thickness 0.8)
+				(bold yes)
+				(color 255 32 31 1)
+			)
+		)
+		(uuid "615f926f-111e-4104-a353-1a6f2f8abe25")
+	)
+	(text "IOBOARD"
+		(exclude_from_sim no)
+		(at 84.836 5.08 0)
+		(effects
+			(font
+				(size 4 4)
+				(thickness 0.8)
+				(bold yes)
+				(color 255 28 45 1)
+			)
+		)
+		(uuid "c07ad7ae-fbd6-4bfb-b85e-deaa68037746")
+	)
+	(junction
+		(at 52.578 156.21)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "03632f17-3589-4909-b82e-637074d3ca98")
+	)
+	(junction
+		(at 219.202 35.814)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "264f3d95-3569-4476-8090-bfa245b9c05c")
+	)
+	(junction
+		(at 66.04 86.36)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6ee77933-3bbe-4f12-9b82-01523dca865e")
+	)
+	(junction
+		(at 219.202 108.204)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "751b07eb-0350-433a-b9d9-20cd7077c779")
+	)
+	(junction
+		(at 71.12 26.67)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8648f025-8b33-4084-85e3-e523d9c21bde")
+	)
+	(junction
+		(at 66.04 26.67)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "af8933ab-a108-4137-a639-472c620fcbc6")
+	)
+	(junction
+		(at 49.784 86.36)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ef351ec2-3a30-43cc-8e7e-f5c5efc41da9")
+	)
+	(wire
+		(pts
+			(xy 95.25 143.51) (xy 71.12 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "03107e1d-a29a-44ac-8c06-c228f9faebfa")
+	)
+	(wire
+		(pts
+			(xy 81.28 40.64) (xy 81.28 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0bb7b90c-7c2e-4fdc-8694-72832a07700c")
+	)
+	(wire
+		(pts
+			(xy 66.04 86.36) (xy 66.04 26.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1322f8fd-d6bf-4737-b8e0-41772e14ac0a")
+	)
+	(wire
+		(pts
+			(xy 78.74 46.99) (xy 78.74 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "14aeb3b1-4ca0-4653-9810-a342186606e5")
+	)
+	(wire
+		(pts
+			(xy 52.578 156.21) (xy 66.04 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "18b6cd3c-7f2e-4725-91c1-30c8d8b9bd84")
+	)
+	(wire
+		(pts
+			(xy 210.312 49.784) (xy 231.902 49.784)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "21c42ee4-2faa-46fa-91a8-45c09a74a4d9")
+	)
+	(wire
+		(pts
+			(xy 52.07 26.67) (xy 66.04 26.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2748d4da-de7a-43b5-be80-22f4e3b50b39")
+	)
+	(wire
+		(pts
+			(xy 76.2 138.43) (xy 95.25 138.43)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2f88cbec-b35b-456f-b7fd-24201b699ebc")
+	)
+	(wire
+		(pts
+			(xy 78.74 133.35) (xy 95.25 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "305f932c-d2b5-42e8-b2e7-0d4b65ea25d8")
+	)
+	(wire
+		(pts
+			(xy 83.82 26.67) (xy 83.82 34.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3c77ad39-6fe0-4872-9356-282538635078")
+	)
+	(wire
+		(pts
+			(xy 68.58 57.15) (xy 68.58 153.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "43eafee6-e7a1-4a4b-b666-d0d0bea8d1e7")
+	)
+	(wire
+		(pts
+			(xy 76.2 53.34) (xy 76.2 138.43)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "44d250dc-9e8d-487a-ba49-e1ee80f8f4cd")
+	)
+	(wire
+		(pts
+			(xy 197.612 108.204) (xy 219.202 108.204)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "47a6b4a1-4c63-4ae9-b07f-d99f06f61e66")
+	)
+	(wire
+		(pts
+			(xy 66.04 26.67) (xy 71.12 26.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4cddc0bd-0888-4975-9885-c24ea847f89c")
+	)
+	(wire
+		(pts
+			(xy 210.312 42.164) (xy 231.902 42.164)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5827da3a-f4ed-40f2-b33e-a88ec3d80ded")
+	)
+	(wire
+		(pts
+			(xy 219.202 35.814) (xy 219.202 108.204)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5c118812-4a23-49e2-b11d-20234570fb38")
+	)
+	(wire
+		(pts
+			(xy 219.202 116.586) (xy 231.902 116.586)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "72a372ac-b647-4f90-b0cc-ba970a64022b")
+	)
+	(wire
+		(pts
+			(xy 219.202 108.204) (xy 219.202 116.586)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "80adfe3e-6d38-4f60-82c5-24afe6e0900c")
+	)
+	(wire
+		(pts
+			(xy 49.784 86.36) (xy 66.04 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8117ae4f-bae7-4637-9159-bcf6825ab02c")
+	)
+	(wire
+		(pts
+			(xy 49.53 86.36) (xy 49.53 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "87c6226b-5019-4c8d-aca9-efc3d541ca45")
+	)
+	(wire
+		(pts
+			(xy 52.07 53.34) (xy 76.2 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8801b3ef-b78a-46a5-821e-ea2c3d0e59cd")
+	)
+	(wire
+		(pts
+			(xy 52.07 40.64) (xy 81.28 40.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "97659182-07a4-4e7b-a7f1-28bd5a2fc2da")
+	)
+	(wire
+		(pts
+			(xy 210.312 35.814) (xy 219.202 35.814)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "98b20da1-b2a0-4923-b9c7-6e9355f660a9")
+	)
+	(wire
+		(pts
+			(xy 71.12 143.51) (xy 71.12 26.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9ed9c867-45ee-4d43-a7e8-b23f6ad327eb")
+	)
+	(wire
+		(pts
+			(xy 49.53 86.36) (xy 49.784 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a8e2c0ec-f400-4d34-8685-869e41028d3a")
+	)
+	(wire
+		(pts
+			(xy 52.07 46.99) (xy 78.74 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ae9a18bf-c94b-4bd6-9992-63181749f23a")
+	)
+	(wire
+		(pts
+			(xy 68.58 153.67) (xy 95.25 153.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "baedc9fb-b778-4ca3-9860-1b6fff6075ff")
+	)
+	(wire
+		(pts
+			(xy 71.12 26.67) (xy 83.82 26.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ca02c341-915c-465f-9130-6c36ce9ed82c")
+	)
+	(wire
+		(pts
+			(xy 83.82 34.29) (xy 91.44 34.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d40988cf-d32f-443b-8437-3bda6aa90379")
+	)
+	(wire
+		(pts
+			(xy 219.202 35.814) (xy 231.902 35.814)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d65a3ce8-bed9-4971-a422-1d393f88b442")
+	)
+	(wire
+		(pts
+			(xy 52.07 156.21) (xy 52.578 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d7f58ed4-cadf-47f0-8a86-bf13dbddcadd")
+	)
+	(wire
+		(pts
+			(xy 90.17 77.47) (xy 81.28 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dd8d9b74-8f60-4ff3-b111-f81793a1b652")
+	)
+	(wire
+		(pts
+			(xy 66.04 86.36) (xy 66.04 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e095ccf4-b18e-4f68-a9d9-03c327e294ed")
+	)
+	(wire
+		(pts
+			(xy 52.07 57.15) (xy 68.58 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f82f1483-fb55-45eb-8493-ce88b6530a8b")
+	)
+	(rule_area
+		(polyline
+			(pts
+				(xy 139.7 15.24) (xy 139.7 189.23) (xy 13.97 189.23) (xy 13.97 15.24)
+			)
+			(stroke
+				(width 1)
+				(type dash)
+			)
+			(fill
+				(type none)
+			)
+			(uuid 1c094280-5e4a-45a6-a416-6d5bfb42beb0)
+		)
+	)
+	(rule_area
+		(polyline
+			(pts
+				(xy 152.4 16.51) (xy 284.48 16.51) (xy 284.48 163.83) (xy 152.4 163.83)
+			)
+			(stroke
+				(width 1)
+				(type dash)
+			)
+			(fill
+				(type none)
+			)
+			(uuid 9074b32f-72ec-4a6e-b210-90e62e5ac45f)
+		)
+	)
+	(sheet
+		(at 163.83 102.87)
+		(size 33.782 46.736)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "07bcbbf0-12a7-4fe2-89e0-eb516554806e")
+		(property "Sheetname" "lte"
+			(at 163.83 101.7934 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "lte.kicad_sch"
+			(at 163.83 150.4826 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left top)
+			)
+		)
+		(pin "3V3_LOGIC" input
+			(at 197.612 108.204 0)
+			(uuid "b36662ab-f136-4bee-a2bd-488af5abd265")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "LTE_PWRKEY" input
+			(at 197.612 113.792 0)
+			(uuid "ed74b61e-9105-485c-9b90-fed77c0457e2")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "LTE_RESET" input
+			(at 197.612 118.872 0)
+			(uuid "e08b8019-9e96-4fb5-aac3-523b2055526b")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "VBAT_LTE" input
+			(at 197.612 123.952 0)
+			(uuid "f2f3c2d7-5b98-418f-8f76-35d554ff91b7")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "LTE_RXD" output
+			(at 197.612 127.762 0)
+			(uuid "e47d4309-589d-4c83-b59c-248aea8ac923")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "LTE_TXD" input
+			(at 197.612 132.842 0)
+			(uuid "7c601bb5-3c76-4a0e-90b8-23cb19664f0f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "ioboard+lteboard"
+				(path "/60af10c8-2735-4be0-af9d-20942c8c69b7"
+					(page "10")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 18.542 77.978)
+		(size 31.242 44.958)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "1831870f-3602-4113-a01a-78918f067b0d")
+		(property "Sheetname" "rs485"
+			(at 18.542 76.9014 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "rs485.kicad_sch"
+			(at 18.542 123.8126 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left top)
+			)
+		)
+		(pin "3V3_LOGIC" input
+			(at 49.784 86.36 0)
+			(uuid "6c26f897-0ec1-43ff-b4e9-0daffc295246")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "RS485_TXD" input
+			(at 49.784 97.79 0)
+			(uuid "6831d156-5dfc-4be6-a623-95d7da1b860c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "RS485_RXD" output
+			(at 49.784 91.44 0)
+			(uuid "e5380bec-37d8-4f3e-a610-2a978c210373")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "ioboard+lteboard"
+				(path "/60af10c8-2735-4be0-af9d-20942c8c69b7"
+					(page "7")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 19.05 21.59)
+		(size 33.02 38.1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "3af81907-0b68-4503-90f3-ad2d07e961df")
+		(property "Sheetname" "power"
+			(at 19.05 20.5134 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "power.kicad_sch"
+			(at 19.05 60.5666 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left top)
+			)
+		)
+		(pin "3V3_ANALOG_ISO" output
+			(at 52.07 46.99 0)
+			(uuid "93612dff-af4f-4c28-93e5-48393247076c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "3V3_LOGIC" output
+			(at 52.07 26.67 0)
+			(uuid "23538c92-4e42-4a90-a84b-575fa034f28c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "VBAT_LTE" output
+			(at 52.07 31.75 0)
+			(uuid "28323d5c-c299-4ed4-ba8d-31227395bee2")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "5V_RELAY" output
+			(at 52.07 40.64 0)
+			(uuid "0f3771b0-1812-4c5b-9da0-fa44cd2fe069")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "GND_ANALOG_ISO" output
+			(at 52.07 53.34 0)
+			(uuid "1608353b-8da6-4c40-9071-505c3351d178")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "15V_ANALOG_ISO" output
+			(at 52.07 57.15 0)
+			(uuid "fdf6a579-3cab-452f-b57e-dbd473379e7a")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "ioboard+lteboard"
+				(path "/60af10c8-2735-4be0-af9d-20942c8c69b7"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 95.25 129.54)
+		(size 32.385 33.655)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "5a3dc205-41d3-4fe0-8240-526355c30a7e")
+		(property "Sheetname" "analog_io"
+			(at 95.25 128.8284 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "analog_io.kicad_sch"
+			(at 95.25 163.7796 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "3V3_ANALOG_ISO" input
+			(at 95.25 133.35 180)
+			(uuid "d21481d3-789a-43a5-9c49-c37e521b41ed")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "15V_ANALOG_ISO" input
+			(at 95.25 153.67 180)
+			(uuid "484a9a25-4235-419b-b2c3-65199253f926")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "GND_ANALOG_ISO" input
+			(at 95.25 138.43 180)
+			(uuid "2468f3a2-8c62-4a20-8f40-4c3da9b6b682")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "3V3_LOGIC" input
+			(at 95.25 143.51 180)
+			(uuid "0c7f41c6-13ec-4d33-94eb-c65ab305e3cf")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "ioboard+lteboard"
+				(path "/60af10c8-2735-4be0-af9d-20942c8c69b7"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 231.902 112.268)
+		(size 35.56 40.132)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "93a36a61-396c-40d8-82bf-6947524ffaec")
+		(property "Sheetname" "ethernet"
+			(at 231.902 111.1914 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "ethernet.kicad_sch"
+			(at 231.902 153.2766 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left top)
+			)
+		)
+		(pin "3V3_LOGIC" input
+			(at 231.902 116.586 180)
+			(uuid "3d279401-aef9-4b3b-a09f-ed7d24e2a128")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ETH_INTN" output
+			(at 231.902 121.666 180)
+			(uuid "9245e76a-ca07-4ae0-8296-75216275d34a")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ETH_MISO" output
+			(at 231.902 127.254 180)
+			(uuid "7618a946-e9c8-4d58-9819-037cd0ba7a12")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ETH_MOSI" input
+			(at 231.902 133.604 180)
+			(uuid "ffffae92-26f1-4bd8-b9fb-3ceaefd944e5")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ETH_RSTN" input
+			(at 231.902 139.954 180)
+			(uuid "7b20bb53-726c-4255-bd2f-47cc74ad1487")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ETH_SCLK" input
+			(at 231.902 145.034 180)
+			(uuid "371746f0-a5ac-40c4-a1d4-3d04d350fa72")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ETH_SCSN" input
+			(at 231.902 150.114 180)
+			(uuid "4ea1b370-fff7-4d8d-bfc1-060d17a44ae0")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "ioboard+lteboard"
+				(path "/60af10c8-2735-4be0-af9d-20942c8c69b7"
+					(page "9")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 168.402 23.114)
+		(size 41.91 57.15)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "96aabf14-be8f-4bf0-9d96-f69d53954bed")
+		(property "Sheetname" "core-compute"
+			(at 168.402 22.0374 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "core-compute.kicad_sch"
+			(at 168.402 81.1406 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left top)
+			)
+		)
+		(pin "3V3_LOGIC" passive
+			(at 210.312 35.814 0)
+			(uuid "c02c06c3-a0d2-4e24-a606-b09b5d28415a")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "I2C_SCL" bidirectional
+			(at 210.312 42.164 0)
+			(uuid "3d0e46a2-75fd-487d-853b-2ae28d146200")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "I2C_SDA" bidirectional
+			(at 210.312 49.784 0)
+			(uuid "52a68bd7-748e-4944-9e7e-1bbea22b0156")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "ioboard+lteboard"
+				(path "/60af10c8-2735-4be0-af9d-20942c8c69b7"
+					(page "8")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 231.902 24.13)
+		(size 39.624 57.15)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "9f59b4bd-0306-42d0-b3cc-ff7f8e0fd41b")
+		(property "Sheetname" "status_indication"
+			(at 231.902 23.0534 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "status_indication.kicad_sch"
+			(at 231.902 82.1566 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left top)
+			)
+		)
+		(pin "3V3_LOGIC" passive
+			(at 231.902 35.814 180)
+			(uuid "55e1771a-2a1a-4172-8000-4bf7e07159fe")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "I2C_SCL" bidirectional
+			(at 231.902 42.164 180)
+			(uuid "b774db04-3e7d-40d9-b862-5f90d1c077cd")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "I2C_SDA" bidirectional
+			(at 231.902 49.784 180)
+			(uuid "c171829d-f3f6-4cf5-9c2b-f39ed314ef5f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "ioboard+lteboard"
+				(path "/60af10c8-2735-4be0-af9d-20942c8c69b7"
+					(page "11")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 23.368 150.876)
+		(size 29.21 28.702)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "bcd95786-c88d-4a00-a5e9-53f319eadcc3")
+		(property "Sheetname" "rs232"
+			(at 23.368 149.7994 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "rs232.kicad_sch"
+			(at 23.368 180.4546 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left top)
+			)
+		)
+		(pin "3V3_LOGIC" input
+			(at 52.578 156.21 0)
+			(uuid "397d4801-9f92-49d4-bd7e-ea75efb0f0bd")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "RS232_RXD" output
+			(at 52.578 161.29 0)
+			(uuid "6df70b89-e699-4ec3-be01-9603a0995b1c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "RS232_TXD" input
+			(at 52.578 167.64 0)
+			(uuid "6145a986-e9a4-4a42-b312-8354f3bb763e")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "ioboard+lteboard"
+				(path "/60af10c8-2735-4be0-af9d-20942c8c69b7"
+					(page "6")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 90.17 71.12)
+		(size 31.115 41.275)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "cb846a68-7f8f-4811-bd0a-4c0d69da006c")
+		(property "Sheetname" "relay_outputs"
+			(at 90.17 70.4084 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "relay_outputs.kicad_sch"
+			(at 90.17 112.9796 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "5V_RELAY" input
+			(at 90.17 77.47 180)
+			(uuid "69eeb48c-04c9-4a06-a584-89dafdb70b64")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "ioboard+lteboard"
+				(path "/60af10c8-2735-4be0-af9d-20942c8c69b7"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 91.44 21.59)
+		(size 31.75 40.64)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "cdd50cf9-34ae-435f-8374-15808a6e4601")
+		(property "Sheetname" "digital_inputs"
+			(at 91.44 20.5134 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "digital_inputs.kicad_sch"
+			(at 91.44 63.1066 0)
+			(effects
+				(font
+					(size 2 2)
+				)
+				(justify left top)
+			)
+		)
+		(pin "3V3_LOGIC" input
+			(at 91.44 34.29 180)
+			(uuid "66abc7d6-4b8d-41fd-92ad-a0907a0f7568")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "ioboard+lteboard"
+				(path "/60af10c8-2735-4be0-af9d-20942c8c69b7"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
