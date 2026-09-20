@@ -56,12 +56,6 @@
 		(uuid "6598aab7-4537-4801-ab02-70e7d6ef095f")
 	)
 	(junction
-		(at 219.202 35.56)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "8314139b-016e-473e-9eab-dff27f28942d")
-	)
-	(junction
 		(at 271.78 83.82)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -72,6 +66,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "ade97299-2a36-4926-8e9a-a822a55c04a8")
+	)
+	(junction
+		(at 219.202 48.26)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d6ad80fb-8dcd-44ab-a8df-3bd152c6aa2c")
 	)
 	(wire
 		(pts
@@ -195,7 +195,7 @@
 	)
 	(wire
 		(pts
-			(xy 210.82 49.53) (xy 236.22 49.53)
+			(xy 210.82 59.69) (xy 236.22 59.69)
 		)
 		(stroke
 			(width 0)
@@ -205,7 +205,7 @@
 	)
 	(wire
 		(pts
-			(xy 236.22 49.53) (xy 236.22 86.36)
+			(xy 236.22 59.69) (xy 236.22 86.36)
 		)
 		(stroke
 			(width 0)
@@ -365,7 +365,7 @@
 	)
 	(wire
 		(pts
-			(xy 219.202 35.56) (xy 241.3 35.56)
+			(xy 219.202 48.26) (xy 241.3 48.26)
 		)
 		(stroke
 			(width 0)
@@ -385,7 +385,7 @@
 	)
 	(wire
 		(pts
-			(xy 238.76 41.91) (xy 238.76 83.82)
+			(xy 238.76 55.88) (xy 238.76 83.82)
 		)
 		(stroke
 			(width 0)
@@ -505,7 +505,7 @@
 	)
 	(wire
 		(pts
-			(xy 210.82 35.56) (xy 219.202 35.56)
+			(xy 210.82 48.26) (xy 219.202 48.26)
 		)
 		(stroke
 			(width 0)
@@ -685,6 +685,16 @@
 	)
 	(wire
 		(pts
+			(xy 219.202 48.26) (xy 219.202 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b6273a10-d57e-48e0-b09c-1c75a2da3680")
+	)
+	(wire
+		(pts
 			(xy 69.85 26.67) (xy 91.44 26.67)
 		)
 		(stroke
@@ -705,17 +715,7 @@
 	)
 	(wire
 		(pts
-			(xy 219.202 35.56) (xy 219.202 127)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bcfc6366-f15a-4638-98ea-f44d1221c37a")
-	)
-	(wire
-		(pts
-			(xy 210.82 41.91) (xy 238.76 41.91)
+			(xy 210.82 55.88) (xy 238.76 55.88)
 		)
 		(stroke
 			(width 0)
@@ -1471,7 +1471,7 @@
 			)
 		)
 		(pin "3V3_LOGIC" passive
-			(at 210.82 35.56 0)
+			(at 210.82 48.26 0)
 			(uuid "c02c06c3-a0d2-4e24-a606-b09b5d28415a")
 			(effects
 				(font
@@ -1481,7 +1481,7 @@
 			)
 		)
 		(pin "I2C_SCL" bidirectional
-			(at 210.82 41.91 0)
+			(at 210.82 55.88 0)
 			(uuid "3d0e46a2-75fd-487d-853b-2ae28d146200")
 			(effects
 				(font
@@ -1491,7 +1491,7 @@
 			)
 		)
 		(pin "I2C_SDA" bidirectional
-			(at 210.82 49.53 0)
+			(at 210.82 59.69 0)
 			(uuid "52a68bd7-748e-4944-9e7e-1bbea22b0156")
 			(effects
 				(font
@@ -1640,6 +1640,126 @@
 				(justify left)
 			)
 		)
+		(pin "DI2_MCU" input
+			(at 167.64 29.21 180)
+			(uuid "78527b26-322e-423f-a197-0034232f9017")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "DI4_MCU" input
+			(at 167.64 36.83 180)
+			(uuid "b0e5406a-85bb-413a-8cf0-cbaa326c60aa")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "DI1_MCU" input
+			(at 167.64 25.4 180)
+			(uuid "8931fc3d-6fba-4be4-ab68-0be5e8ce77b4")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "RELAY2_CTRL" output
+			(at 210.82 31.75 0)
+			(uuid "181da2e7-e774-46b4-a9ad-baf2e074b9ba")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "RELAY1_CTRL" output
+			(at 210.82 27.94 0)
+			(uuid "3cdd8ea2-0b8b-440c-8256-46e2c478e316")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "RELAY3_CTRL" output
+			(at 210.82 35.56 0)
+			(uuid "9b832c79-3c8c-4d14-863e-b5f50f88ce45")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "DI6_MCU" input
+			(at 167.64 44.45 180)
+			(uuid "dd4ff315-a091-4b5c-866d-2596f6821df8")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "DI8_MCU" input
+			(at 167.64 52.07 180)
+			(uuid "dace11a1-9fc1-4326-b822-1482d849dd7c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "DI7_MCU" input
+			(at 167.64 48.26 180)
+			(uuid "d1791095-8c4d-4b14-80db-56c7a99c20bf")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "RELAY4_CTRL" output
+			(at 210.82 39.37 0)
+			(uuid "2c5b3028-0490-45f3-a815-ad9af15e6717")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "DI3_MCU" input
+			(at 167.64 33.02 180)
+			(uuid "0ec48f8a-2fa6-476f-a3c1-a6edd2137cf5")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "DI5_MCU" input
+			(at 167.64 40.64 180)
+			(uuid "e8375d02-5177-4d83-8d53-92c71c85aae4")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
 		(instances
 			(project "ioboard+lteboard"
 				(path "/60af10c8-2735-4be0-af9d-20942c8c69b7"
@@ -1685,7 +1805,7 @@
 			)
 		)
 		(pin "3V3_LOGIC" passive
-			(at 241.3 35.56 180)
+			(at 241.3 48.26 180)
 			(uuid "55e1771a-2a1a-4172-8000-4bf7e07159fe")
 			(effects
 				(font
@@ -1842,6 +1962,46 @@
 				(justify left)
 			)
 		)
+		(pin "RELAY2_CTRL" input
+			(at 123.698 77.47 0)
+			(uuid "024a0c4c-bec8-485d-8105-97ed5271cb26")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "RELAY1_CTRL" input
+			(at 123.698 73.66 0)
+			(uuid "8c390fb9-e5be-4ad3-9bcf-2fa62ba3668d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "RELAY4_CTRL" input
+			(at 123.698 85.09 0)
+			(uuid "46bdb1d5-5c57-468a-a1c3-d21fcf12bc47")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "RELAY3_CTRL" input
+			(at 123.698 81.28 0)
+			(uuid "6fa67933-308f-4581-b80c-286c7670db91")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
 		(instances
 			(project "ioboard+lteboard"
 				(path "/60af10c8-2735-4be0-af9d-20942c8c69b7"
@@ -1894,6 +2054,86 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+			)
+		)
+		(pin "DI5_MCU" output
+			(at 126.746 39.37 0)
+			(uuid "be0322bf-6542-4bd1-8b67-6c8c5cef83f4")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "DI3_MCU" output
+			(at 126.746 31.75 0)
+			(uuid "a18d9753-b5e1-4f40-bace-9d6112c2673b")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "DI1_MCU" output
+			(at 126.746 24.13 0)
+			(uuid "1ed065bc-fd2e-46e4-baa7-0c396131d78d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "DI4_MCU" output
+			(at 126.746 35.56 0)
+			(uuid "a34250e3-5ac0-4607-b074-d00e91379596")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "DI2_MCU" output
+			(at 126.746 27.94 0)
+			(uuid "34f1f401-44cf-4d82-a8d7-d685860ecb12")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "DI7_MCU" output
+			(at 126.746 46.99 0)
+			(uuid "1847a0a7-a686-4c99-b0b5-17a4416ffa5d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "DI6_MCU" output
+			(at 126.746 43.18 0)
+			(uuid "82fdcf7d-7d39-43f2-932b-7c9ee27ca06a")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "DI8_MCU" output
+			(at 126.746 50.8 0)
+			(uuid "df386bfc-9116-41a4-8a3e-d32fb22f0731")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
 			)
 		)
 		(instances

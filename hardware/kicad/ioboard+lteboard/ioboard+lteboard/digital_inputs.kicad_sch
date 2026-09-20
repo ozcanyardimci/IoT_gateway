@@ -1357,6 +1357,16 @@
 	)
 	(wire
 		(pts
+			(xy 83.82 36.83) (xy 81.28 36.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "06435ed8-ce18-4a4b-85e9-ef4bd71f5937")
+	)
+	(wire
+		(pts
 			(xy 120.65 41.91) (xy 127 41.91)
 		)
 		(stroke
@@ -1394,6 +1404,16 @@
 			(type default)
 		)
 		(uuid "11421463-5b1a-4876-93df-b474fa79093e")
+	)
+	(wire
+		(pts
+			(xy 152.4 36.83) (xy 149.86 36.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "182c824f-65d1-40b7-aae3-5d4925dadd32")
 	)
 	(wire
 		(pts
@@ -1577,6 +1597,16 @@
 	)
 	(wire
 		(pts
+			(xy 148.59 161.29) (xy 146.05 161.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "54436b31-acbc-4d7e-97b8-f21fb49773c7")
+	)
+	(wire
+		(pts
 			(xy 100.33 41.91) (xy 113.03 41.91)
 		)
 		(stroke
@@ -1747,6 +1777,16 @@
 	)
 	(wire
 		(pts
+			(xy 80.01 161.29) (xy 77.47 161.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7e8c8eb6-a5b9-4598-a88d-4e2cbdd290bd")
+	)
+	(wire
+		(pts
 			(xy 191.77 81.28) (xy 204.47 81.28)
 		)
 		(stroke
@@ -1794,6 +1834,16 @@
 			(type default)
 		)
 		(uuid "96b0b32d-533c-47bb-9667-36c561aedca4")
+	)
+	(wire
+		(pts
+			(xy 81.28 120.65) (xy 78.74 120.65)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9a86079b-41da-44aa-a83a-4fd761be933c")
 	)
 	(wire
 		(pts
@@ -1924,6 +1974,26 @@
 			(type default)
 		)
 		(uuid "b3f3d4a0-42d1-4c71-a083-72e113e028b4")
+	)
+	(wire
+		(pts
+			(xy 151.13 77.47) (xy 148.59 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b438389e-2dd9-4f2a-9488-1cbe96a6c4ba")
+	)
+	(wire
+		(pts
+			(xy 149.86 120.65) (xy 147.32 120.65)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b48b7ce6-f00f-46ee-8d20-cbac49dfdc69")
 	)
 	(wire
 		(pts
@@ -2067,6 +2137,16 @@
 	)
 	(wire
 		(pts
+			(xy 82.55 77.47) (xy 80.01 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dc5f61d5-4a48-427d-b813-9aa88930b780")
+	)
+	(wire
+		(pts
 			(xy 106.68 36.83) (xy 113.03 36.83)
 		)
 		(stroke
@@ -2196,7 +2276,7 @@
 		(uuid "1da3d929-34eb-42a7-b2c7-17ecc90d5618")
 	)
 	(label "DI5_IN"
-		(at 191.77 88.9 0)
+		(at 194.31 88.9 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2206,7 +2286,7 @@
 		(uuid "21196edc-e70c-49de-a6f1-1ebcbcaf314f")
 	)
 	(label "DI8_IN"
-		(at 191.77 96.52 0)
+		(at 194.31 96.52 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2266,7 +2346,7 @@
 		(uuid "61c33f43-edd8-4f64-865d-38d4c516af90")
 	)
 	(label "DI1_IN"
-		(at 191.77 78.74 0)
+		(at 194.31 78.74 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2276,7 +2356,7 @@
 		(uuid "6933e1a7-668c-48bb-94a1-e25e64cf1142")
 	)
 	(label "DI7_IN"
-		(at 191.77 93.98 0)
+		(at 194.31 93.98 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2286,7 +2366,7 @@
 		(uuid "6bcea35d-b345-48ac-8deb-ceb81bbf967b")
 	)
 	(label "DI3_IN"
-		(at 191.77 83.82 0)
+		(at 194.31 83.82 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2336,7 +2416,7 @@
 		(uuid "8e148659-4e07-4aaa-945f-5c8301bc4a6f")
 	)
 	(label "DI6_IN"
-		(at 191.77 91.44 0)
+		(at 194.31 91.44 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2366,7 +2446,7 @@
 		(uuid "c27f7724-cbc2-4dbd-aedf-88aa4509f5ae")
 	)
 	(label "DI2_IN"
-		(at 191.77 81.28 0)
+		(at 194.31 81.28 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2386,7 +2466,7 @@
 		(uuid "dd121496-c96a-42cb-892a-3370307a18a1")
 	)
 	(label "DI4_IN"
-		(at 191.77 86.36 0)
+		(at 194.31 86.36 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2800,6 +2880,17 @@
 		)
 		(uuid "1e72dc8a-6629-4643-9f25-220d285fd134")
 	)
+	(hierarchical_label "DI8_MCU"
+		(shape output)
+		(at 148.59 161.29 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "3948a07c-23d1-4f00-af0a-ff24df800a36")
+	)
 	(hierarchical_label "3V3_LOGIC"
 		(shape input)
 		(at 80.01 64.77 0)
@@ -2833,6 +2924,50 @@
 		)
 		(uuid "4d7a4a46-e3b7-4d51-aca8-1d94d979cc59")
 	)
+	(hierarchical_label "DI4_MCU"
+		(shape output)
+		(at 151.13 77.47 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "4f06ceff-5f62-48cb-917c-496271515372")
+	)
+	(hierarchical_label "DI2_MCU"
+		(shape output)
+		(at 82.55 77.47 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "612c1e20-d9b0-4044-8059-9fbabfe3d416")
+	)
+	(hierarchical_label "DI1_MCU"
+		(shape output)
+		(at 83.82 36.83 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "775b1e41-3dfc-4c1d-869b-da3d5ebaa000")
+	)
+	(hierarchical_label "DI6_MCU"
+		(shape output)
+		(at 80.01 161.29 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "c4107f5e-5f06-4081-bd06-4551d8324776")
+	)
 	(hierarchical_label "3V3_LOGIC"
 		(shape input)
 		(at 147.32 107.95 0)
@@ -2843,6 +2978,39 @@
 			(justify left)
 		)
 		(uuid "cd0faad1-07d4-4202-8fb9-b0446eff3442")
+	)
+	(hierarchical_label "DI5_MCU"
+		(shape output)
+		(at 81.28 120.65 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "d155ecc8-df02-42a8-b9cc-4e176f8ff89b")
+	)
+	(hierarchical_label "DI3_MCU"
+		(shape output)
+		(at 152.4 36.83 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "e2c02a62-045a-4d31-8c63-5d1da94fe2c9")
+	)
+	(hierarchical_label "DI7_MCU"
+		(shape output)
+		(at 149.86 120.65 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "e68bc539-2529-42ac-a416-5995f89b21df")
 	)
 	(hierarchical_label "3V3_LOGIC"
 		(shape input)

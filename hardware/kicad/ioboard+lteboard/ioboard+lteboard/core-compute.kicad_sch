@@ -2734,6 +2734,17 @@
 			)
 		)
 	)
+	(hierarchical_label "DI7_MCU"
+		(shape input)
+		(at 144.78 100.33 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "02535fae-3abe-4410-a2d2-ff77049bdf69")
+	)
 	(hierarchical_label "3V3_LOGIC"
 		(shape passive)
 		(at 130.81 41.91 0)
@@ -2800,6 +2811,61 @@
 		)
 		(uuid "3ebb55f2-a9cd-4c6d-af80-3f11c63ad2a8")
 	)
+	(hierarchical_label "DI6_MCU"
+		(shape input)
+		(at 144.78 95.25 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5a555bc5-b8dc-4ec7-94e7-90fe2b96f6ad")
+	)
+	(hierarchical_label "DI3_MCU"
+		(shape input)
+		(at 144.78 105.41 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5bfda398-f0e4-48c0-9be5-4570d1f286bc")
+	)
+	(hierarchical_label "RELAY4_CTRL"
+		(shape output)
+		(at 144.78 62.23 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5c4c068e-9ec9-4879-abb8-5d33264eb31b")
+	)
+	(hierarchical_label "DI8_MCU"
+		(shape input)
+		(at 144.78 102.87 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "6316f077-d585-4050-81ed-0293111a06b4")
+	)
+	(hierarchical_label "DI2_MCU"
+		(shape input)
+		(at 144.78 92.71 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "6436f139-8ad4-4e57-a97f-de4812b0c33a")
+	)
 	(hierarchical_label "LTE_RESET"
 		(shape output)
 		(at 114.3 105.41 180)
@@ -2833,6 +2899,17 @@
 		)
 		(uuid "78a2154a-36b7-4d3c-a945-d54fe23941a4")
 	)
+	(hierarchical_label "DI1_MCU"
+		(shape input)
+		(at 144.78 90.17 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "7df5da6b-56e3-43cd-8c36-d9b587fcf9e1")
+	)
 	(hierarchical_label "ETH_RSTN"
 		(shape output)
 		(at 114.3 74.93 180)
@@ -2854,6 +2931,17 @@
 			(justify right)
 		)
 		(uuid "86b94155-a113-4109-aa7c-3a01e83f1da3")
+	)
+	(hierarchical_label "RELAY2_CTRL"
+		(shape output)
+		(at 144.78 85.09 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "9b4d3386-bfd2-4a20-854a-354b8265cda3")
 	)
 	(hierarchical_label "ETH_SCSN"
 		(shape output)
@@ -2877,6 +2965,17 @@
 		)
 		(uuid "a7753b98-c967-4451-ac69-543688e16788")
 	)
+	(hierarchical_label "DI5_MCU"
+		(shape input)
+		(at 144.78 87.63 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "a976770e-006e-4e21-b3bc-1a070ed4efc0")
+	)
 	(hierarchical_label "RS485_TXD"
 		(shape output)
 		(at 114.3 67.31 180)
@@ -2888,6 +2987,17 @@
 		)
 		(uuid "c09cb493-571c-4e68-8586-009eed6ceecf")
 	)
+	(hierarchical_label "DI4_MCU"
+		(shape input)
+		(at 114.3 72.39 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "ca9a297e-be57-4ee7-a006-5c8e47c1d05c")
+	)
 	(hierarchical_label "ETH_MOSI"
 		(shape output)
 		(at 114.3 92.71 180)
@@ -2898,6 +3008,17 @@
 			(justify right)
 		)
 		(uuid "cddda781-107c-4141-af83-a8df2246553a")
+	)
+	(hierarchical_label "RELAY1_CTRL"
+		(shape output)
+		(at 114.3 82.55 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "df999286-09ce-4865-ba97-623262f063e5")
 	)
 	(hierarchical_label "RS232_RXD"
 		(shape input)
@@ -2920,6 +3041,17 @@
 			(justify right)
 		)
 		(uuid "e5cec623-d4c5-49a0-89c4-c9a500cd9bd9")
+	)
+	(hierarchical_label "RELAY3_CTRL"
+		(shape output)
+		(at 144.78 59.69 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "f817211e-7c59-40f1-9484-319d808052bb")
 	)
 	(symbol
 		(lib_id "Connector:USB_C_Receptacle_USB2.0_14P")
