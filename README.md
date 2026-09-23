@@ -56,11 +56,15 @@ See `docs/architecture.md` and `docs/build-log.md` for details as the project pr
 
 ## Status
 
-Seven subsystems complete on paper — power, core compute (ESP32-S3 bring-up), digital
-inputs (8x, opto-isolated), relay outputs (4x), status indication (I2C GPIO expander + 6
-LEDs), analog I/O (2 in / 1 out, isolated), and RS485 (isolated) — protection, regulation,
-part selection, and schematic capture done for each, verified pin-by-pin against
-manufacturer documentation. RS232 is next. Not yet built or tested on real hardware.
+All 11 subsystems complete on paper (power, core compute, digital inputs, relay outputs,
+status indication, analog I/O, RS485, RS232, Ethernet, WiFi, LTE) — protection,
+regulation, part selection, and schematic capture done for each, verified pin-by-pin
+against manufacturer documentation. Both boards' schematics are merged into one KiCad
+project (`hardware/kicad/ioboard+lteboard/`, see `docs/board-merge.md`), fine-grained MCU
+pin assignment and the board-to-board connector are both wired, and a full project-wide
+Electrical Rules Check passes clean (2026-09-23). Firmware development is starting now.
+Not yet built or tested on real hardware — Rev-A prototype PCB is the next physical
+milestone (`docs/roadmap.md` step 8).
 
 ## License
 

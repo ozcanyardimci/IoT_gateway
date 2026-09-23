@@ -13,10 +13,11 @@ I/O board), captured as one merged KiCad schematic project.
 
   The two boards are marked on the root sheet with a graphic border and label around each
   cluster of subsystem sheets — visual grouping only, no electrical meaning. This is
-  where all schematic work happens going forward: fine-grained pin assignment, the
-  board-to-board interconnect wiring, and anything after. See `docs/board-merge.md` for
-  what the merge covered, what's verified connected, and a known open question about
-  producing two separate physical-board PCB files from this one project at layout time.
+  where all schematic work happens going forward. Fine-grained pin assignment
+  and the board-to-board interconnect wiring (the reason for the merge) are both done as
+  of 2026-09-22/23, ERC-clean — see `docs/board-merge.md` for what the merge covered and
+  what's verified connected, and a known open question about producing two separate
+  physical-board PCB files from this one project at layout time.
 
 - **ioboard/**, **lteboard/** — the original per-board projects, frozen as of the
   2026-09-19 merge. Kept as the historical record of each board's schematic capture up to

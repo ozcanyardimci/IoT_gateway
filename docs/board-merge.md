@@ -2,10 +2,13 @@
 
 ## Status
 
-DONE (2026-09-19). `hardware/kicad/ioboard+lteboard/` is now the single active KiCad
-project for all future schematic work. `ioboard/` and `lteboard/` are frozen as of this
+Merge itself DONE (2026-09-19). `hardware/kicad/ioboard+lteboard/` is the single active
+KiCad project for all schematic work. `ioboard/` and `lteboard/` are frozen as of that
 date — not edited further, kept only as the historical record of each board's schematic
-capture up to the point of merge.
+capture up to the point of merge. The board-to-board wiring and fine-grained pin
+assignment this merge was done *for* (roadmap steps 6 and 7) are also now DONE, as of
+2026-09-22/23 — see "Verified" below, updated to match; this doc's original
+"Not yet connected" section is now historical, kept for the reasoning trail.
 
 ## Why
 
@@ -56,18 +59,28 @@ Connected, confirmed correct:
   project-wide automatically regardless of sheet hierarchy, so no sheet-pin wiring was
   needed for them; confirmed present in every file that should have them
 
-Not yet connected — expected, waiting on later roadmap steps, not new defects found by
-this merge:
+Not yet connected as of 2026-09-19 — expected at the time, waiting on later roadmap
+steps, not new defects found by this merge. **Update 2026-09-23: both steps below are now
+done, this section is historical.**
 
-- IOBOARD-side `3V3_LOGIC` and LTEBOARD-side `3V3_LOGIC` are two separate islands, not
-  tied to each other yet — needs the physical board-to-board connector (step 7, not
-  started)
-- `VBAT_LTE`: isolated on both `power`'s output pin and `lte`'s input pin — same reason,
-  step 7
+- IOBOARD-side `3V3_LOGIC` and LTEBOARD-side `3V3_LOGIC` were two separate islands —
+  ~~needs the physical board-to-board connector (step 7, not started)~~ **DONE.** Tied via
+  the `J_PWR_IO`/`J_PWR_LTE` connector pair, full pinout in `docs/architecture.md`'s
+  "Board-to-board header" section.
+- `VBAT_LTE`: was isolated on both `power`'s output pin and `lte`'s input pin —
+  ~~same reason, step 7~~ **DONE**, same connector pair as above.
 - `LTE_PWRKEY`/`LTE_RESET`/`LTE_RXD`/`LTE_TXD`, `RS485_TXD`/`RS485_RXD`,
-  `RS232_TXD`/`RS232_RXD`, and all 6 `ETH_*` SPI pins: isolated because
-  `core-compute.kicad_sch` doesn't expose matching GPIO/UART/SPI pins yet (step 6,
-  fine-grained pin assignment, not started)
+  `RS232_TXD`/`RS232_RXD`, and all 6 `ETH_*` SPI pins — ~~isolated because
+  `core-compute.kicad_sch` doesn't expose matching GPIO/UART/SPI pins yet (step 6, not
+  started)~~ **DONE.** All 28 cross-subsystem signals now have real GPIOs on
+  `core-compute.kicad_sch` — full table in `docs/architecture.md`'s "Core-compute pin
+  assignment." (LTE/Ethernet's signals turned out not to need the board-to-board
+  connector at all — `lte`, `ethernet`, and `core-compute` are all LTEBOARD-side, so
+  those wire directly; only RS485/RS232/digital-inputs/relay-outputs/I2C actually cross
+  `J_SIG`.)
+
+Project-wide ERC confirmed clean 2026-09-23 (see `CLAUDE.md`'s open items for the
+error-by-error history of what that took).
 
 ## Known open question for later — PCB layout (steps 8-9)
 

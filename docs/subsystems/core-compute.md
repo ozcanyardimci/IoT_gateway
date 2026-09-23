@@ -170,3 +170,11 @@ this project's standing practice.
 subsystems using this MCU's remaining GPIOs -- this sheet itself is not touched again
 except to add wires out to newly-assigned pins. Following subsystem: digital inputs (8x,
 opto-isolated).
+
+## Revision history
+
+| Date | Change |
+|---|---|
+| 2026-09-03/04 | Requirements, design approach, schematic capture, verification checklist, acceptance criteria, BOM, sign-off — all 11 plan steps closed. |
+| 2026-09-19/22 | **Roadmap step 6 (fine-grained pin/bus assignment) executed on this sheet, contrary to the 2026-09-04 note above assuming it wouldn't be touched again beyond adding wires.** All 28 cross-subsystem signals given real GPIOs and wired: I2C x2, Ethernet x6, LTE x4 (+PWRKEY/RESET x2), RS232 x2, RS485 x2, digital inputs x8, relay outputs x4. Full table in `docs/architecture.md`'s "Core-compute pin assignment." A real pre-existing defect was also found and fixed in this pass: USB-C D+/D- (via R40/R41) were wired to GPIO13/14 (ordinary GPIOs) instead of the module's actual native-USB pins (`USB_D-`/`USB_D+` = GPIO19/GPIO20, sitting unconnected) — as originally built this port could not do USB data at all. Fixed, GPIO13/14 freed and reused elsewhere in the pin table. |
+| 2026-09-23 | **Final project-wide ERC pass.** Five pins (IO21, IO35, IO36, IO37, IO45) flagged No-Connect — all match this doc's own documented reserved/excluded-pin list, not a new finding. Separately, re-verified the strapping-pin claims this project had been carrying: checked GPIO3/39/42/45/46/47/48 directly against Espressif's official ESP32-S3 + WROOM-1/1U datasheets — only GPIO0/3/45/46 are actual strapping pins (GPIO39/42/47, previously flagged here as "nonstandard reset behavior," are not; corrected in `docs/architecture.md`'s "Fixed MCU constraints"). `firmware/platformio.ini` updated to declare the real module (N16R8: 16MB flash, 8MB octal PSRAM) via `board_build.flash_size`/`board_build.arduino.memory_type` overrides — was silently using a generic N8 profile before. Project-wide ERC confirmed clean 2026-09-23. |

@@ -2276,7 +2276,7 @@
 		(uuid "1da3d929-34eb-42a7-b2c7-17ecc90d5618")
 	)
 	(label "DI5_IN"
-		(at 194.31 88.9 0)
+		(at 191.77 88.9 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2286,7 +2286,7 @@
 		(uuid "21196edc-e70c-49de-a6f1-1ebcbcaf314f")
 	)
 	(label "DI8_IN"
-		(at 194.31 96.52 0)
+		(at 191.77 96.52 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2346,7 +2346,7 @@
 		(uuid "61c33f43-edd8-4f64-865d-38d4c516af90")
 	)
 	(label "DI1_IN"
-		(at 194.31 78.74 0)
+		(at 191.77 78.74 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2356,7 +2356,7 @@
 		(uuid "6933e1a7-668c-48bb-94a1-e25e64cf1142")
 	)
 	(label "DI7_IN"
-		(at 194.31 93.98 0)
+		(at 191.77 93.98 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2366,7 +2366,7 @@
 		(uuid "6bcea35d-b345-48ac-8deb-ceb81bbf967b")
 	)
 	(label "DI3_IN"
-		(at 194.31 83.82 0)
+		(at 191.77 83.82 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2416,7 +2416,7 @@
 		(uuid "8e148659-4e07-4aaa-945f-5c8301bc4a6f")
 	)
 	(label "DI6_IN"
-		(at 194.31 91.44 0)
+		(at 191.77 91.44 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2446,7 +2446,7 @@
 		(uuid "c27f7724-cbc2-4dbd-aedf-88aa4509f5ae")
 	)
 	(label "DI2_IN"
-		(at 194.31 81.28 0)
+		(at 191.77 81.28 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2466,7 +2466,7 @@
 		(uuid "dd121496-c96a-42cb-892a-3370307a18a1")
 	)
 	(label "DI4_IN"
-		(at 194.31 86.36 0)
+		(at 191.77 86.36 0)
 		(effects
 			(font
 				(size 1.27 1.27)

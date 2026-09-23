@@ -1093,22 +1093,20 @@
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "U"
-				(at -30.48 59.182 0)
+			(property "Reference" "U19"
+				(at 0 63.5 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left bottom)
 				)
 			)
 			(property "Value" "EG915UEUAC-N05-SNNSA"
-				(at -30.48 -59.182 0)
+				(at 0 60.96 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left top)
 				)
 			)
 			(property "Footprint" "EG915UEUAC-N05-SNNSA:XCVR_EG915UEUAC-N05-SNNSA"
@@ -2395,24 +2393,6 @@
 					)
 				)
 				(pin power_in line
-					(at 35.56 55.88 180)
-					(length 5.08)
-					(name "VDD_EXT"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "29"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
-				(pin power_in line
 					(at 35.56 53.34 180)
 					(length 5.08)
 					(name "VBAT_BB"
@@ -2479,24 +2459,6 @@
 						)
 					)
 					(number "53"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 35.56 45.72 180)
-					(length 5.08)
-					(name "USIM1_VDD"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "43"
 						(effects
 							(font
 								(size 1.016 1.016)
@@ -3568,6 +3530,44 @@
 						)
 					)
 					(number "91"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+				)
+			)
+			(symbol "EG915UEUAC-N05-SNNSA_1_0"
+				(pin power_out line
+					(at 35.56 55.88 180)
+					(length 5.08)
+					(name "VDD_EXT"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+					(number "29"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+				)
+				(pin power_out line
+					(at 35.56 45.72 180)
+					(length 5.08)
+					(name "USIM1_VDD"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+					(number "43"
 						(effects
 							(font
 								(size 1.016 1.016)
@@ -6255,6 +6255,10 @@
 	(no_connect
 		(at 74.93 114.3)
 		(uuid "6c1fc0f6-33d3-4ba9-a873-07a8656b1dda")
+	)
+	(no_connect
+		(at 74.93 121.92)
+		(uuid "7094249a-e8c7-48d6-8943-eeedd99c27fb")
 	)
 	(no_connect
 		(at 74.93 101.6)

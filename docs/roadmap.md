@@ -83,23 +83,55 @@ sole active one; `ioboard/` and `lteboard/` are frozen as of 2026-09-19.
 Each subsystem's own plan now defines its pass/fail acceptance criteria as part of that
 subsystem's build (see `docs/subsystems/power.md`, step 11).
 
-## 6. Fine-grained resource planning — NOT STARTED
+## 6. Fine-grained resource planning — SUBSTANTIALLY DONE, 2 ITEMS OPEN
 
-Exact pin/bus assignment across the full design. Also where `platformio.ini`'s board
-variant gets corrected to match the real N16R8 module (currently a generic N8 profile), and
-where the analog-output DAC-vs-PWM decision gets finalized. Happens in `ioboard+lteboard`
-now (see step 4 and `docs/board-merge.md`), since the pins being assigned on
-`core-compute.kicad_sch` serve subsystems on both physical boards.
+Exact pin/bus assignment across the full design, done in `ioboard+lteboard` (see step 4
+and `docs/board-merge.md`), since the pins being assigned on `core-compute.kicad_sch`
+serve subsystems on both physical boards. All 28 cross-subsystem signals (LTE x4, RS485
+x2, RS232 x2, Ethernet x6, I2C x2, digital inputs x8, relay outputs x4) now have real
+GPIOs assigned and wired on `core-compute.kicad_sch` — full table in
+`docs/architecture.md`. The analog-output DAC-vs-PWM question is also decided: an
+MCP4725 I2C DAC (see `docs/subsystems/analog-io.md`), riding the existing shared I2C bus
+— no separate PWM/GPIO line needed, `architecture.md` updated to match.
 
-## 7. Incremental consolidation — IN PROGRESS
+Two items still open before this step is fully closed:
+
+1. `firmware/platformio.ini` still declares `board = esp32-s3-devkitc-1` with no
+   flash/PSRAM override — a generic N8 profile, not the real N16R8 module (16MB flash /
+   8MB octal PSRAM). Needs a `board_build.flash_size`/`board_build.psram_type` override
+   (or an N16R8-specific board definition).
+2. Five of the eight digital-input pin assignments landed on pins this project's own
+   `architecture.md` flags under "Fixed MCU constraints" as sensitive: `DI4_MCU` →
+   GPIO3 and `DI7_MCU` → GPIO46 (both strapping pins), `DI5_MCU`/`DI6_MCU`/`DI8_MCU` →
+   GPIO39/42/47 (nonstandard reset behavior). This wasn't re-checked against that
+   constraints list when the assignment was made — worth a deliberate accept-or-reroute
+   decision before calling pin planning final, not a silent pass.
+
+## 7. Incremental consolidation — DONE
 
 Firmware: git branches per subsystem, merged incrementally. Hardware: KiCad hierarchical
 sub-schematics per subsystem — done per-board already, and both boards' hierarchies were
-brought into one schematic project 2026-09-19 (`docs/board-merge.md`). What's still
-outstanding is the actual board-to-board interconnect test milestone: `3V3_LOGIC` and
-`VBAT_LTE` still need to be tied across the two board-side islands the merge revealed, and
-that wiring needs a real decision on how the board-to-board connector itself is
-represented in the schematic before it's just a plain wire.
+brought into one schematic project 2026-09-19 (`docs/board-merge.md`).
+
+Board-to-board connector decision made 2026-09-22 — see `docs/architecture.md`'s
+"Board-to-board header" section for the full two-connector pinout (J_PWR 2x5, J_SIG
+2x12, Samtec TSW/SSW 2.54mm). Reference-design photos were reviewed first to check for a
+precedent part; the reference doesn't stack its two boards the same way (likely
+cable/harness-linked), so its headers didn't dictate a specific part, only confirmed
+2.54mm THT pin headers are a reasonable, unexotic choice.
+
+Connector symbols placed and wired per that pinout (4 symbols: J_PWR_IO/J_PWR_LTE,
+J_SIG_IO/J_SIG_LTE), no-connect flags added to spare pins, `rs485.kicad_sch`'s `EARTH`
+label promoted to `global_label` for consistency with the other three sheets that use
+it, and a defect on `PS1`/`U13` (RK-0515S / R1SX-3.33.3-R isolated DC-DC modules) caught
+and fixed during the ERC pass — not a label swap: both SnapEDA-imported symbols had
+their return-side output pin (`-VOUT`) generically typed as plain `Output` instead of
+the electrically-correct `Power output`/`Passive` split, which reads as two driven
+outputs shorted together ("pins of type output and output are connected"). Fixed by
+retyping each symbol's `+VOUT` to `Power output` (the genuinely driven pin) and `-VOUT`
+to `Passive` (the return/reference side, not a second driven output).
+
+ERC confirmed clean 2026-09-23 (Ozcan, full project pass). This closes step 7.
 
 ## 8. Rev-A prototype PCB spin — NOT STARTED
 
