@@ -639,4 +639,15 @@ still not required for any of it. See F5 below for what still needs real hardwar
 The only point F2-F4 get functionally verified against real hardware instead of just
 compile-checked.
 
-*   **USB CDC Flag Verification**: `ARDUINO_USB_CDC_ON_BOOT=1` was set defensively without confirming the board manifest's actual default — verify against the real manifest during F5 hardware bring-up, once a real `pio run` environment exists.
+*   **USB CDC Flag Verification — RESOLVED, 2026-09-25.** `ARDUINO_USB_CDC_ON_BOOT=1`
+    was set defensively without confirming the board manifest's actual default.
+    Checked directly against Ozcan's real PlatformIO install: neither
+    `esp32-s3-devkitc-1.json` (the board manifest) nor the generic `esp32s3` variant's
+    `pins_arduino.h` define this macro at all — the real fallback, confirmed in the
+    core's own `cores/esp32/HardwareSerial.h`, is `#ifndef ARDUINO_USB_CDC_ON_BOOT
+    #define ARDUINO_USB_CDC_ON_BOOT 0`. Without this project's explicit override,
+    `Serial` would default to UART0 instead of the native USB-C connector this board's
+    schematic actually wires to the S3's native-USB pins (see the D+/D- wiring defect
+    caught and fixed at roadmap step 6). The explicit `=1` is therefore correct and
+    necessary, not a redundant guess — no code or config change needed, this was a
+    verification-only item.
