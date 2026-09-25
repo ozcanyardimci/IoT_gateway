@@ -447,10 +447,17 @@ confirming once the real part is placed).
 2. Module powers on reliably via the PWRKEY transistor stage (>=2s low pulse) and powers
    off cleanly via `AT+QPOWD` — bench item.
 3. UART communicates at the configured baud rate through the level shifter with no
-   corruption — bench item. **Firmware TODO, not hardware:** since RTS/CTS are left
-   unwired (decision 4), hardware flow control must be disabled in the modem's own UART
-   config (Quectel AT command, e.g. `AT+IFC=0,0`) — otherwise the module may wait for a
-   CTS assertion that will never come. Tracked here so it isn't forgotten at firmware time.
+   corruption — bench item. **Firmware TODO, not hardware — DONE, 2026-09-24/25:** since
+   RTS/CTS are left unwired (decision 4), hardware flow control had to be disabled in the
+   modem's own UART config, otherwise the module could wait for a CTS assertion that would
+   never come. Resolved in `firmware/lib/lte_ppp/lte_ppp.h` — its `setPins()` call passes
+   `ESP_MODEM_FLOW_CONTROL_NONE` (confirmed against the real `PPPClass::setPins()` API, not
+   assumed), the PPP/esp_modem-layer equivalent of the raw `AT+IFC=0,0` this note
+   originally called for (AT command handling itself moved from `lte_modem` into PPP/
+   esp_modem during F4's LTE-backhaul work — see `docs/roadmap.md`'s F4 section — so the
+   fix landed at that layer instead of as a literal AT command). Still genuinely a bench
+   item pending Rev-A hardware — this closes the "will this be forgotten" risk the TODO
+   was tracking, not the real-hardware verification itself.
 4. SIM is detected and registers on the EU band network — bench item, needs a real SIM.
 5. LTE associates and holds a data session at expected signal quality with the chosen
    antenna — bench item.
@@ -485,6 +492,7 @@ Last subsystem — sign-off here closes out the entire subsystem-by-subsystem bu
 
 | Date | Change |
 |---|---|
+| 2026-09-23 | **Final project-wide ERC pass.** U3 (EG915UEUAC-N05-SNNSA)'s `VDD_EXT` (pin 29) and `USIM1_VDD` (pin 43) showed as power inputs undriven by any output — traced to a SnapEDA-import symbol defect, both pins were typed `power_in` when they're actually module-generated supply outputs (VDD_EXT is the level-shifter/SIM supply the modem itself provides, not something this design feeds in). Retyped both to `Power output` directly on the symbol. Not a wiring gap, not a `PWR_FLAG` situation — a genuine symbol mistyping, same defect class as `power.md`'s PS1/U13 finding. Project-wide ERC confirmed clean 2026-09-23. |
 | 2026-09-19 | **D1's 4th ESD channel wired in, and U4's two missing No-Connect flags added — both fixed in KiCad and re-verified.** Ozcan fixed the two gaps flagged in the master-sheet-integration check (below) directly in `lte.kicad_sch`. Re-ran the same netlist reconstruction against a fresh pull of the file (caught mid-check that the file had changed size/mtime since the first pass — pulled again rather than trusting the stale copy): D1 pin4 now lands on the real `USIM1_VDD` net (with C13/R28/J4 pin C1/U4 pin43), and both `PSM_EINT`/`PSM_IND` now carry No-Connect markers. Also re-swept every other pin in the sheet for the same "unlabeled, unconnected, not-NC" pattern — nothing else turned up. Schematic-level Step 4 has no known open items now. Updated Step 4's heading and Step 8 in this doc, and `roadmap.md`'s LTE line (schematic capture + BOM now DONE, master-sheet wiring noted as pending on roadmap steps 6/7). |
 | 2026-09-19 | **Master-sheet integration checked, using a full netlist reconstruction (not hand-traced coordinates, learning from the U5 mistake above).** Ozcan added the LTE sheet symbol + 6 hierarchical pins to `lteboard.kicad_sch`; verified all 6 match `lte.kicad_sch`'s hierarchical labels exactly (name and direction) and land on the correct internal nets — no mismatch. Same pass resolved R25/R29/R30's role (0-ohm links in series with SIM RST/DATA/CLK, between J4 and D1) and found two new, previously-undocumented open items: D1's 4th ESD channel (pin 4, labeled `USIM1_VDD`) isn't actually wired to that net — just a disconnected label; and U4's `PSM_EINT`/`PSM_IND` pins are missing the No-Connect flag every neighboring unused pin has. Also confirmed the 6 new pins aren't wired to anything yet on the master sheet, which is expected, not a defect: `3V3_LOGIC`/`VBAT_LTE` need the board-to-board connector (roadmap step 7, not started, affects every subsystem's cross-board rails, not LTE-specific) and `LTE_PWRKEY`/`LTE_RESET`/`LTE_TXD`/`LTE_RXD` need real MCU pins that don't exist yet on `core-compute.kicad_sch` (roadmap step 6, not started). Updated Step 4, Step 7, Step 8, and `hardware/bom/lte_bom.csv`'s R25/R29/R30 rows. |
 | 2026-09-19 | **Retracted the 2026-09-18 "U5 wiring defect" finding — it was wrong.** Ozcan pushed back twice (first "maybe it mirrored to x exen", then a screenshot of the actual circuit) after the 2026-09-18 entry below claimed VCCB/GND and VCCA/OE were swapped on U5. Re-derived the pin math from scratch: converting a KiCad symbol's pin position from the library's own coordinate frame (+Y up) to the sheet's frame (+Y down) requires negating Y even with no mirror applied at all — mirroring is a second, separate flip on top of that. The 2026-09-18 check applied only the mirror's flip and missed the base one, which happened to swap exactly the two pin-pairs (VCCA↔OE, GND↔VCCB) reported as "swapped" — a self-consistent-looking but entirely wrong result. Redone with the correct transform and checked against Ozcan's screenshot: all 8 of U5's pins land exactly where decision 4 specifies. **There was never a defect.** Corrected the Status block, Step 2's OE row, Step 4, and Step 7 in this doc, plus the matching false claims in `hardware/datasheets/README.md` and `hardware/bom/lte_bom.csv`. Also resolved R31's previously-unidentified role (OE divider low side) while re-checking U5. |

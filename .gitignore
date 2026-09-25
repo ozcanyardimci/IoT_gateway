@@ -26,3 +26,10 @@ CLAUDE.md
 
 # Reference-hardware teardown photos — never committed, see CLAUDE.md non-negotiable policy
 reference-photos/
+
+# ESP-IDF component manager cache and generated sdkconfig dumps (written by
+# every `pio run` under pioarduino/ESP-IDF - not source; managed_components/
+# alone is 500MB+ of downloaded dependency trees, regenerable from
+# platformio.ini/idf_component.yml, never meant to be committed)
+firmware/managed_components/
+firmware/sdkconfig.*

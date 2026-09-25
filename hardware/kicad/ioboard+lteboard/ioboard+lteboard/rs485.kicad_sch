@@ -1769,6 +1769,16 @@
 	)
 	(wire
 		(pts
+			(xy 66.04 68.58) (xy 68.58 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6b429440-74a9-44df-92a8-d918422801c4")
+	)
+	(wire
+		(pts
 			(xy 72.39 55.88) (xy 68.58 55.88)
 		)
 		(stroke
@@ -1866,6 +1876,16 @@
 			(type default)
 		)
 		(uuid "af8d8144-b3e8-48c0-90fb-36355d0e9a55")
+	)
+	(wire
+		(pts
+			(xy 199.39 78.74) (xy 199.39 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b25fd7e8-7753-4617-af22-c882554a8239")
 	)
 	(wire
 		(pts
@@ -2029,6 +2049,16 @@
 	)
 	(wire
 		(pts
+			(xy 199.39 82.55) (xy 201.93 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f2a42f09-f8c9-45f2-a60e-9524623d8b99")
+	)
+	(wire
+		(pts
 			(xy 205.74 63.5) (xy 205.74 59.69)
 		)
 		(stroke
@@ -2067,18 +2097,8 @@
 		)
 		(uuid "ff0a44a4-da37-453f-b9f0-f9a17e56c7db")
 	)
-	(label "EARTH"
-		(at 199.39 72.39 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "40320363-5999-4adb-9f93-4c9772693b95")
-	)
 	(label "GND_RS485_ISO"
-		(at 66.04 68.58 0)
+		(at 68.58 68.58 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2105,6 +2125,28 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "EARTH"
+		(shape input)
+		(at 201.93 82.55 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "4fdd8a95-2a56-4a0b-86fd-6a37f29162ee")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 210.7209 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 				(hide yes)
 			)
 		)

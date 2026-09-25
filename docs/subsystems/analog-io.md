@@ -475,6 +475,7 @@ left it as — check before treating that connection as done.
   via ERC re-run and reverted before being treated as final. Steps 7 (acceptance criteria), 8
   (documentation & BOM, including new `hardware/bom/analog_io_bom.csv`), and 9 (sign-off)
   completed same day — all 9 steps of this subsystem's build plan are now done. |
+| 2026-09-23 | **Final project-wide ERC pass on the merged project.** U9 (ADS1115)'s AIN2, AIN3, and ALERT/RDY pins showed as undriven inputs — all three are genuinely unused by design (this subsystem only needs 2 single-ended analog inputs, ALERT/RDY's comparator-alarm function isn't used), confirmed against TI's own datasheet as safe to leave floating, not a wiring gap. Flagged with No-Connect markers rather than wired. U10 (ISO1540)'s VCC2 "not driven" finding traced to `power.kicad_sch` missing a `PWR_FLAG` on `3V3_LOGIC` (now added, see `power.md`'s matching entry) — nothing to fix on this sheet itself. This subsystem's `I2C_SCL`/`I2C_SDA` hierarchical labels (added at roadmap step 6, see `CLAUDE.md`) now carry the DAC/ADC over the shared I2C bus to `core-compute.kicad_sch`, alongside `status-indication`'s expander — full bus assignment in `docs/architecture.md`. |
 | 2026-09-10 | **Correction, project-wide documentation pass.** This doc still described the
   15V rail as an open item with candidate part Recom R05P215S and said the `power.md`
   addition was "written up separately once this doc is locked" — but that addition actually

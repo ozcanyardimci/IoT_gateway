@@ -297,6 +297,7 @@ subsystem.
 
 | Date | Change |
 |---|---|
+| 2026-09-23 | **Signals promoted to hierarchical labels and pin-assigned (roadmap step 6).** `RELAY1_CTRL`..`RELAY4_CTRL` were purely local to this sheet until now — promoted to hierarchical, wired to real GPIOs on `core-compute.kicad_sch`: RELAY1→GPIO7, RELAY2→GPIO38, RELAY3→GPIO43 (module's default UART0 TX), RELAY4→GPIO44 (default UART0 RX). Sharing UART0's pins is fine here since the debug/console UART isn't used elsewhere in this design — worth remembering if a hardware debug UART is ever wanted later. Full pin table in `docs/architecture.md`. |
 | 2026-09-05 | Scope, design approach, driver-stage math, and connector selection locked |
 | 2026-09-06 | Bulk/bypass capacitor decision added; schematic capture, verification checklist, acceptance criteria, BOM, and sign-off completed |
 | 2026-09-10 | Clarified this doc's top-of-file status line — it read only "schematic capture complete," understating that all 8 plan steps (through sign-off) are actually closed. Caught during a project-wide documentation consistency pass; no design content changed. |

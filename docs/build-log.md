@@ -119,3 +119,118 @@
   (input-buffer stage, 3.3V-ANALOG-ISO) and U13 (output gain stage, new 15V-ANALOG-ISO
   rail), both at the TI-datasheet-verified 0.7-1.2 mA dual-package draw.
 - See `docs/subsystems/power.md`'s revision history for the full writeup.
+
+
+## 2026-09-10 — RS485 and RS232 subsystems complete
+- **RS485 (isolated):** Mornsun TD321S485H-A transceiver module, copying Mornsun's own
+  Fig. 2 harsh-environment reference circuit exactly (GDT + series R + TVS + common-mode
+  choke + external 4.7kΩ bias). Phoenix Contact MC 1,5/3-ST-3,5 connector. Schematic
+  captured in `hardware/kicad/ioboard/ioboard/rs485.kicad_sch`.
+- **RS232:** TI MAX3232EIPWR front end (switched from an initially-misidentified
+  "MAX3232EI" part number, not a real orderable SKU), no added protection network (the
+  receiver's own ±25V-safe-unpowered rating plus reference-design evidence supported
+  skipping one), reusing RS485's connector family. Schematic captured in
+  `hardware/kicad/ioboard/ioboard/rs232.kicad_sch`.
+- ERC policy formalized for both and going forward: deferred to a single project-wide pass
+  once every subsystem is built, rather than per-subsystem before each merge — matching
+  status-indication's approach, superseding the earlier per-subsystem policy.
+- See `docs/subsystems/rs485.md` and `docs/subsystems/rs232.md` for full writeups.
+
+## 2026-09-13 — Ethernet and WiFi subsystems complete
+- **Ethernet:** WIZnet W5500 SPI controller, Würth 7499010441 magjack — exact part number
+  and internally-terminated construction confirmed directly from its own datasheet (no
+  external Bob-Smith network needed). Schematic captured in
+  `hardware/kicad/lteboard/lteboard/ethernet.kicad_sch`. One label typo found (C7,
+  `1nF/2kW` should read `1nF/2kV`) — fixed 2026-09-23, see below.
+- **WiFi:** small scope — the ESP32-S3-WROOM-1U's radio is already fixed at the module;
+  this subsystem was just the external antenna path (SMA jack, coax pigtail, gain-limited
+  2dBi antenna to stay under the module's 2.33dBi certified-antenna ceiling), added
+  directly to `core-compute.kicad_sch`.
+- See `docs/subsystems/ethernet.md` and `docs/subsystems/wifi.md` for full writeups.
+
+## 2026-09-19 — LTE subsystem complete; both boards merged into one KiCad project
+- **LTE:** Quectel EG915U-EU, the largest/most complex subsystem — own rail (`VBAT_LTE`,
+  retapped from ~3.3V to ~3.82V for real margin against the TX transient, see `power.md`),
+  own UART through a TXB0102 level shifter, SIM interface, PWRKEY/RESET power-control
+  circuit, own antenna path. Schematic captured in
+  `hardware/kicad/lteboard/lteboard/lte.kicad_sch`.
+- All 11 subsystems now schematic-complete. `ioboard/` and `lteboard/` merged into one
+  active project, `hardware/kicad/ioboard+lteboard/`, so roadmap steps 6 (fine-grained pin
+  assignment) and 7 (board-to-board wiring) could be done with both boards visible at
+  once. `ioboard/`/`lteboard/` frozen as historical record from this date. Full detail:
+  `docs/board-merge.md`.
+- See `docs/subsystems/lte.md` for the full writeup.
+
+## 2026-09-22/23 — Roadmap steps 6 and 7 closed; project-wide ERC clean; firmware starting
+- **Step 6 (fine-grained pin assignment):** all 28 cross-subsystem signals given real
+  GPIOs on `core-compute.kicad_sch` — I2C, Ethernet SPI, LTE UART+control, RS232/RS485
+  UARTs, 8 digital inputs, 4 relay outputs. Full table in `docs/architecture.md`. A
+  pre-existing defect was caught and fixed in the same pass: USB-C D+/D- were wired to the
+  wrong GPIOs (ordinary pins instead of the module's actual native-USB pins), meaning USB
+  data would never have worked as originally built. Five DI signals landed on GPIO3/39/
+  42/46/47 — checked against Espressif's official ESP32-S3 datasheet for strapping/JTAG
+  concerns; accepted as safe (two are real strapping pins but safe for this use, three
+  were incorrectly flagged as risky in earlier project notes and are actually plain
+  GPIOs). Analog output's DAC-vs-PWM question, open since early planning, was confirmed
+  already decided in practice: MCP4725 I2C DAC, not PWM+filter.
+- **Step 7 (board-to-board wiring):** two connector pairs added (`J_PWR` 2x5, `J_SIG`
+  2x12, Samtec TSW/SSW 2.54mm) carrying `3V3_LOGIC`/`VBAT_LTE`/`GND_LOGIC`/`EARTH` and 18
+  of 24 signal pins (6 spare, reserved). Full pinout in `docs/architecture.md`.
+- **Final project-wide ERC pass:** found and fixed real defects across several sheets —
+  two SnapEDA-imported power-module symbols (PS1/RK-0515S, U13/R1SX-3.33.3-R) had their
+  return-side output pin mistyped, reading as a driven-output conflict; five isolated
+  power/ground nets needed `PWR_FLAG`s their symbol-level connectivity couldn't establish
+  across sheets; the LTE modem's VDD_EXT/USIM1_VDD pins were mistyped power-input instead
+  of power-output; three genuinely-floating Ethernet PMODE pins got pull-up resistors;
+  several genuinely-unused pins (ADS1115, core-compute) got No-Connect flags instead of
+  being left ambiguous. ERC confirmed clean 2026-09-23.
+- `firmware/platformio.ini` corrected to declare the real ESP32-S3-WROOM-1U-N16R8 module
+  (16MB flash, 8MB octal PSRAM) instead of a generic N8 devkit profile.
+- Full reasoning trail for all of the above: `CLAUDE.md`'s open items and each affected
+  subsystem doc's revision history.
+- **Firmware development starts from here.**
+
+## 2026-09-23/24 — Firmware F1-F4 written, all modules compile/gcc-verified
+
+- Full firmware implementation written against the real, merged schematic's pin
+  assignments: protocol/logic layer (Modbus RTU/TCP, MQTT payloads, DI/AI/relay
+  register mapping), all 10 hardware drivers, and the industrial-grade layer
+  (commissioning portal, MQTT resilience + TLS, local rule engine, OTA with
+  rollback, NTP, event logging, WireGuard VPN, an application-layer outbound
+  allowlist, LTE registration resilience, brownout safe-state handling).
+- System integration (F4): FreeRTOS task scheduler split (dedicated Modbus RTU
+  polling task + cooperative `main.cpp` loop for everything else), task watchdog,
+  WireGuard config storage/wiring, a from-scratch OTA update-trigger flow with
+  application-level ECDSA signature verification (mbedtls, after two "obvious"
+  ESP-IDF/arduino-esp32 signing mechanisms were researched and ruled out as
+  actually broken or inapplicable under `framework = arduino`), and LTE backhaul
+  via arduino-esp32's built-in PPP library as a real third connectivity tier
+  (`Ethernet -> LTE -> WiFi`, Ozcan's explicit priority call).
+- Verification at this stage was write + compile/gcc-verify only — real hardware
+  didn't exist yet, and Ozcan's own call (2026-09-24) was to defer the actual
+  `pio run` build/link pass until the whole of F4 was finished, then do it once,
+  together, against the complete integrated firmware rather than piecemeal.
+- Full module-by-module detail: `docs/roadmap.md`'s "Firmware roadmap" section
+  (F1-F4).
+
+## 2026-09-25 — First real `pio run`/`pio test` build verification — F4 closed
+
+- Ran the real build on Ozcan's machine (WSL, real `pio` binary) for the first
+  time against the complete F1-F4 firmware above. Took 4 iterations to reach a
+  clean build/link — a duplicate `libsodium` install colliding at the SCons
+  level, a missing project-wide include path for `pin_map.h`, three stray
+  `void`-to-`bool` checks in `main.cpp`'s boot sequence, and a nested-vs-top-level
+  `MqttOutbox` class mismatch left over from an earlier library split — none of
+  them catchable by gcc/g++ stub-compiling alone, all specific to the real
+  ESP32-S3 build path.
+- `pio run -e esp32-s3-devkitc-1` now succeeds end to end: links `firmware.elf`,
+  builds `firmware.bin`/`firmware.factory.bin` (RAM 21.8%, Flash 32.7% against the
+  build's reported budget).
+- `pio test -e native` ran for the first time against the real PlatformIO/Unity
+  test runner — **132 of 132 test cases passed** across all 15 native-testable
+  modules.
+- This is the first real, non-gcc-stub verification of the whole codebase.
+  Hardware still isn't required for any of it — Rev-A prototype PCB (roadmap step
+  8) remains the next physical milestone, and the only thing gating F5
+  (functional hardware bring-up).
+- Full detail: `docs/roadmap.md`'s F4.1 section.

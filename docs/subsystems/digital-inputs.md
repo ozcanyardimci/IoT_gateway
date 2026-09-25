@@ -126,14 +126,6 @@ conducts -> pulls the node low. Firmware needs to treat LOW as the input's activ
 | Low-end input reliability | Confirm a clean logic-low is registered at 10V field input across all 8 channels | LED current (~3.25mA) is below the datasheet's 5mA CTR test point; margin exists but isn't formally guaranteed on paper |
 | Series resistor thermal | Confirm 1W-rated resistors run within their derated limit with multiple channels active simultaneously at 30V | Real thermal behavior depends on enclosure airflow/layout, not modeled yet |
 
-## Revision history
-
-| Date | Change |
-|---|---|
-| 2026-09-04 | Scope, design approach, and step 1 requirements (LTV-247 specs, resistor sizing, pull-up, filter cap, logic sense) locked |
-
----
-
 ## Step 3 results: connector selection (2026-09-05)
 
 **Phoenix Contact MC 1,5/9-ST-3,5** (MPN 1840434) — 9-position, 3.5mm pitch, 8A/160V rated,
@@ -263,3 +255,4 @@ intended to guide every remaining subsystem.
 | 2026-09-04 | Scope, design approach, and step 1 requirements (LTV-247 specs, resistor sizing, pull-up, filter cap, logic sense) locked |
 | 2026-09-05 | Connector selected, strapping-pin cross-check done, full schematic capture (8 channels + J2), verification checklist, acceptance criteria, BOM, sign-off |
 | 2026-09-10 | Corrected this doc's own top-of-file status line — it still read "in progress, schematic capture not started" despite the body showing all 9 steps closed since 2026-09-05. Caught during a project-wide documentation consistency pass; no design content changed. |
+| 2026-09-23 | **Signals promoted to hierarchical labels and pin-assigned (roadmap step 6).** `DI1_MCU`..`DI8_MCU` were purely local to this sheet until now — promoted to hierarchical, wired to real GPIOs on `core-compute.kicad_sch`: DI1-3→GPIO40/41/48, DI4→GPIO3, DI5→GPIO39, DI6→GPIO42, DI7→GPIO46, DI8→GPIO47. Five of these (GPIO3/39/42/46/47) were checked against Espressif's official ESP32-S3 + WROOM-1/1U datasheets 2026-09-23 for strapping/JTAG-safety concerns before accepting: only GPIO3 and GPIO46 are actual strapping pins, and both are safe for a pure-input signal under normal boot (full reasoning in `docs/architecture.md`'s "Fixed MCU constraints"). `GND_FIELD_DI`'s "not driven" ERC concern (raised during the same pass, by analogy with the other isolated grounds needing a `PWR_FLAG`) turned out to be a non-issue on live ERC — no `Power input`-typed pin sits on this net, so the check that requires a driver never fires here; no flag added, none needed. Also removed a stray duplicate "Revision history" stub that had been left mid-document since the 2026-09-04 entry, ahead of Step 3 — a documentation artifact, not a design issue. Project-wide ERC confirmed clean 2026-09-23. |
