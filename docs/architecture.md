@@ -162,6 +162,7 @@ LTEBOARD-side) wire directly to `core-compute` without crossing the header.
 | `ETH_SCLK` | GPIO12 | No | W5500 SPI |
 | `ETH_MISO` | GPIO13 | No | W5500 SPI |
 | `ETH_INTN` | GPIO14 | No | W5500 interrupt |
+| `ETH_RESET` | (GPIO9/38?) | No | CONFLICT: architecture.md originally planned GPIO38, but firmware (ethernet_link.cpp) uses GPIO9. GPIO9 is the BOOT button on standard S3 modules. Requires hardware-revision confirmation before changing code. |
 | `LTE_TXD` | GPIO17 | No | MCU -> modem |
 | `LTE_RXD` | GPIO18 | No | modem -> MCU |
 | `RELAY1_CTRL` | GPIO7 | Yes | |

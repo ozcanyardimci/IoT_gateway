@@ -189,3 +189,48 @@
 - Full reasoning trail for all of the above: `CLAUDE.md`'s open items and each affected
   subsystem doc's revision history.
 - **Firmware development starts from here.**
+
+## 2026-09-23/24 — Firmware F1-F4 written, all modules compile/gcc-verified
+
+- Full firmware implementation written against the real, merged schematic's pin
+  assignments: protocol/logic layer (Modbus RTU/TCP, MQTT payloads, DI/AI/relay
+  register mapping), all 10 hardware drivers, and the industrial-grade layer
+  (commissioning portal, MQTT resilience + TLS, local rule engine, OTA with
+  rollback, NTP, event logging, WireGuard VPN, an application-layer outbound
+  allowlist, LTE registration resilience, brownout safe-state handling).
+- System integration (F4): FreeRTOS task scheduler split (dedicated Modbus RTU
+  polling task + cooperative `main.cpp` loop for everything else), task watchdog,
+  WireGuard config storage/wiring, a from-scratch OTA update-trigger flow with
+  application-level ECDSA signature verification (mbedtls, after two "obvious"
+  ESP-IDF/arduino-esp32 signing mechanisms were researched and ruled out as
+  actually broken or inapplicable under `framework = arduino`), and LTE backhaul
+  via arduino-esp32's built-in PPP library as a real third connectivity tier
+  (`Ethernet -> LTE -> WiFi`, Ozcan's explicit priority call).
+- Verification at this stage was write + compile/gcc-verify only — real hardware
+  didn't exist yet, and Ozcan's own call (2026-09-24) was to defer the actual
+  `pio run` build/link pass until the whole of F4 was finished, then do it once,
+  together, against the complete integrated firmware rather than piecemeal.
+- Full module-by-module detail: `docs/roadmap.md`'s "Firmware roadmap" section
+  (F1-F4).
+
+## 2026-09-25 — First real `pio run`/`pio test` build verification — F4 closed
+
+- Ran the real build on Ozcan's machine (WSL, real `pio` binary) for the first
+  time against the complete F1-F4 firmware above. Took 4 iterations to reach a
+  clean build/link — a duplicate `libsodium` install colliding at the SCons
+  level, a missing project-wide include path for `pin_map.h`, three stray
+  `void`-to-`bool` checks in `main.cpp`'s boot sequence, and a nested-vs-top-level
+  `MqttOutbox` class mismatch left over from an earlier library split — none of
+  them catchable by gcc/g++ stub-compiling alone, all specific to the real
+  ESP32-S3 build path.
+- `pio run -e esp32-s3-devkitc-1` now succeeds end to end: links `firmware.elf`,
+  builds `firmware.bin`/`firmware.factory.bin` (RAM 21.8%, Flash 32.7% against the
+  build's reported budget).
+- `pio test -e native` ran for the first time against the real PlatformIO/Unity
+  test runner — **132 of 132 test cases passed** across all 15 native-testable
+  modules.
+- This is the first real, non-gcc-stub verification of the whole codebase.
+  Hardware still isn't required for any of it — Rev-A prototype PCB (roadmap step
+  8) remains the next physical milestone, and the only thing gating F5
+  (functional hardware bring-up).
+- Full detail: `docs/roadmap.md`'s F4.1 section.

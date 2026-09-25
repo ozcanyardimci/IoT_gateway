@@ -447,10 +447,17 @@ confirming once the real part is placed).
 2. Module powers on reliably via the PWRKEY transistor stage (>=2s low pulse) and powers
    off cleanly via `AT+QPOWD` — bench item.
 3. UART communicates at the configured baud rate through the level shifter with no
-   corruption — bench item. **Firmware TODO, not hardware:** since RTS/CTS are left
-   unwired (decision 4), hardware flow control must be disabled in the modem's own UART
-   config (Quectel AT command, e.g. `AT+IFC=0,0`) — otherwise the module may wait for a
-   CTS assertion that will never come. Tracked here so it isn't forgotten at firmware time.
+   corruption — bench item. **Firmware TODO, not hardware — DONE, 2026-09-24/25:** since
+   RTS/CTS are left unwired (decision 4), hardware flow control had to be disabled in the
+   modem's own UART config, otherwise the module could wait for a CTS assertion that would
+   never come. Resolved in `firmware/lib/lte_ppp/lte_ppp.h` — its `setPins()` call passes
+   `ESP_MODEM_FLOW_CONTROL_NONE` (confirmed against the real `PPPClass::setPins()` API, not
+   assumed), the PPP/esp_modem-layer equivalent of the raw `AT+IFC=0,0` this note
+   originally called for (AT command handling itself moved from `lte_modem` into PPP/
+   esp_modem during F4's LTE-backhaul work — see `docs/roadmap.md`'s F4 section — so the
+   fix landed at that layer instead of as a literal AT command). Still genuinely a bench
+   item pending Rev-A hardware — this closes the "will this be forgotten" risk the TODO
+   was tracking, not the real-hardware verification itself.
 4. SIM is detected and registers on the EU band network — bench item, needs a real SIM.
 5. LTE associates and holds a data session at expected signal quality with the chosen
    antenna — bench item.

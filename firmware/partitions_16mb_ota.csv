@@ -1,0 +1,42 @@
+# Custom partition table for the real hardware (ESP32-S3-WROOM-1U-N16R8,
+# 16MB flash) - platformio.ini's board profile (esp32-s3-devkitc-1) is a
+# generic N8 (8MB) profile and its default `framework=arduino` partition
+# table (default_8MB.csv, from arduino-esp32's own tools/partitions/) is
+# sized for that 8MB, leaving half the real flash unaddressed. Confirmed
+# by fetching that file directly - it already has ota_0/ota_1/otadata
+# (this board's default already supports OTA, just undersized for this
+# module), plus nvs/spiffs/coredump, in that same layout - this file is
+# that same structure, offsets kept identical up through app0's start
+# (so the alignment reasoning below matches the original exactly), just
+# with bigger app/spiffs slots sized for the real 16MB part.
+#
+# App partitions (app0/app1, type "app") MUST start at a 64KB-aligned
+# offset - an ESP-IDF hard requirement (gen_esp32part.py rejects an
+# unaligned one at build time). nvs+otadata are sized so app0 lands
+# exactly on 0x10000: 0x9000 + 0x5000 + 0x2000 = 0x10000 - same trick
+# the stock file uses, kept unchanged here. app0/app1 at 4MB each is
+# real, deliberate headroom over this project's likely actual binary
+# size (WiFi+LTE+TLS+MQTT Arduino builds commonly land in the 1.5-2.5MB
+# range) - the point of the extra flash this module has is exactly this
+# kind of margin, not leaving it unpartitioned. spiffs (used by
+# firmware/lib/event_log's LittleFS.begin(), which looks for a
+# partition literally named "spiffs" by default) gets what's left after
+# a 64KB-aligned coredump slot at the end - far more than event_log's
+# current 32KB rotation cap needs, deliberately, for future
+# config/log growth.
+#
+# Verified with a plain arithmetic check (offsets/sizes below, all
+# contiguous, no gaps, every partition start 64KB-aligned, total under
+# 16MB with ~384KB spare) - not run through gen_esp32part.py itself
+# here (PlatformIO's own tooling isn't runnable in this environment -
+# see CLAUDE.md), so treat this as reasoned-correct, not build-verified,
+# same caveat as every other ESP32-target file in this project; the
+# first real `pio run` happens in Ozcan's VS Code.
+#
+# Name,     Type, SubType,  Offset,   Size,      Flags
+nvs,        data, nvs,      0x9000,   0x5000,
+otadata,    data, ota,      0xe000,   0x2000,
+app0,       app,  ota_0,    0x10000,  0x400000,
+app1,       app,  ota_1,    0x410000, 0x400000,
+spiffs,     data, spiffs,   0x810000, 0x780000,
+coredump,   data, coredump, 0xf90000, 0x10000,

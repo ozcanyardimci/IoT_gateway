@@ -12,7 +12,7 @@ learning project spanning electronics, PCB design (KiCad), and embedded firmware
 - RS485 (galvanically isolated) and RS232 (not isolated — see `docs/subsystems/power.md`'s
   isolation table) serial interfaces
 - 10-30 VDC field power input, DIN-rail enclosure target
-- Firmware targets: web UI, Modbus TCP/RTU, MQTT, HTTP, and eventually a WireGuard VPN tunnel
+- Firmware: web UI (commissioning portal), Modbus TCP/RTU master, MQTT (with TLS + resilience), OTA updates with rollback and signature verification, and a WireGuard VPN tunnel
 
 ## Architecture
 
@@ -56,15 +56,23 @@ See `docs/architecture.md` and `docs/build-log.md` for details as the project pr
 
 ## Status
 
-All 11 subsystems complete on paper (power, core compute, digital inputs, relay outputs,
-status indication, analog I/O, RS485, RS232, Ethernet, WiFi, LTE) — protection,
-regulation, part selection, and schematic capture done for each, verified pin-by-pin
-against manufacturer documentation. Both boards' schematics are merged into one KiCad
-project (`hardware/kicad/ioboard+lteboard/`, see `docs/board-merge.md`), fine-grained MCU
-pin assignment and the board-to-board connector are both wired, and a full project-wide
-Electrical Rules Check passes clean (2026-09-23). Firmware development is starting now.
-Not yet built or tested on real hardware — Rev-A prototype PCB is the next physical
-milestone (`docs/roadmap.md` step 8).
+**Hardware:** all 11 subsystems complete on paper (power, core compute, digital inputs,
+relay outputs, status indication, analog I/O, RS485, RS232, Ethernet, WiFi, LTE) —
+protection, regulation, part selection, and schematic capture done for each, verified
+pin-by-pin against manufacturer documentation. Both boards' schematics are merged into
+one KiCad project (`hardware/kicad/ioboard+lteboard/`, see `docs/board-merge.md`),
+fine-grained MCU pin assignment and the board-to-board connector are both wired, and a
+full project-wide Electrical Rules Check passes clean (2026-09-23). Not yet built as
+real hardware — Rev-A prototype PCB is the next physical milestone (`docs/roadmap.md`
+step 8).
+
+**Firmware:** the full protocol/driver/industrial/system-integration stack (Modbus,
+MQTT+TLS, OTA with rollback and signature verification, WireGuard, rule engine, task
+scheduler/watchdog, LTE-PPP backhaul, and more) is written and build-verified — a real
+`pio run` links and flashes a complete image, and all 132 native unit tests pass
+(2026-09-25). What's left needs the Rev-A hardware above: nothing in the firmware has
+been exercised against real peripherals yet (`docs/roadmap.md`'s F5). See
+`docs/build-log.md` and `docs/roadmap.md` for the full detail.
 
 ## License
 
